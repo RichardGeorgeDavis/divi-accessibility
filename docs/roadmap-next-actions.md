@@ -16,6 +16,8 @@
   - Use the updated PR notes after runtime verification, not the earlier Cursor notes.
   - Complete persistence checks after save/reopen in Divi 5.
   - Complete packaged-plugin validation rather than relying on source-checkout behavior.
+  - Update PR notes with final runtime results only after verification is complete.
+  - Use the finalized PR notes for upstream review once verification is complete.
 
 ## Phase 1.5: Package And Validate The Plugin
 
@@ -31,6 +33,12 @@
 - Manual progress since that automation attempt:
   - visual pass completed for frontend tabs
   - visual pass completed for Divi 5 Visual Builder `Accessibility Settings` visibility
+- Explicit next runtime tasks:
+  - install and activate `packaged/divi-accessibility-2.1.0.zip`
+  - verify Divi 5 toggle persistence after save/reopen
+  - verify frontend behavior on slider, mobile menu, search/cart controls, and contact forms
+  - verify Divi 4 backward compatibility
+  - verify one migrated D4-to-D5 content case
 
 ## Phase 2: Documentation Refresh
 

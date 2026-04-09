@@ -1,5 +1,9 @@
 # Release 2.1.0 PR Notes
 
+## Status
+
+Do not use these notes for upstream review yet. Final runtime verification is still required before this document can be treated as the reviewer-facing summary.
+
 ## Summary
 
 This branch prepares Divi Accessibility `2.1.0` as a broad compatibility and modernization release. The work focuses on shipping Divi 5 support without regressing Divi 4, while also fixing the release pipeline so the packaged plugin reflects the actual branch state.
@@ -34,3 +38,7 @@ This branch prepares Divi Accessibility `2.1.0` as a broad compatibility and mod
 - Divi 5 frontend smoke test
 - Divi 5 Visual Builder persistence check for the two module-level toggles
 - migrated D4-to-D5 content check for legacy accessibility attrs
+
+## Final Runtime Results
+
+Pending manual verification. Update this section only after the packaged-plugin checks and Divi 4/5 runtime matrix are complete.

@@ -10,6 +10,16 @@
   - persistence checks after save/reopen
   - broader module-type coverage across Divi 4, Divi 5, and migrated D4-to-D5 content
 
+## Remaining Tasks To Perform
+
+- install and activate `packaged/divi-accessibility-2.1.0.zip`
+- confirm packaged-plugin behavior matches the source-checkout visual pass
+- verify Divi 5 toggle persistence after save/reopen
+- verify slider, mobile menu, search/cart controls, and contact form behaviors on real pages
+- verify Divi 4 backward compatibility
+- verify one migrated D4-to-D5 content case
+- update PR notes with final runtime results only after the checks above are complete
+
 ## Static Checks
 
 - `npm run lint`
