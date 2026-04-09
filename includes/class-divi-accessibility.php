@@ -161,6 +161,7 @@ class Divi_Accessibility {
 		add_action( 'init', array( $plugin_public, 'remove_divi_viewport_meta' ) );
 		add_action( 'wp_head', array( $plugin_public, 'accessible_viewport_meta' ) );
 		add_filter( 'init', array( $plugin_public, 'remove_duplicate_menu_ids' ) );
+		add_filter( 'body_class', array( $plugin_public, 'add_divi_version_body_class' ) );
 
 		add_action( 'et_module_process_display_conditions', array( $plugin_public, 'add_accessibilty_classes' ), PHP_INT_MAX, 3 );
 	}

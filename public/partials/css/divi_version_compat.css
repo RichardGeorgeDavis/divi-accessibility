@@ -1,0 +1,18 @@
+/* Divi version compatibility hooks.
+ * Keep this intentionally minimal and scoped to plugin-owned classes. */
+
+/* Divi 4: ensure skip-link focus treatment wins over theme styles. */
+body.da11y-divi-4 .da11y-screen-reader-text:focus {
+	z-index: 1000000;
+}
+
+/* Divi 5: newer visual builder shells can overlay focused utility links. */
+body.da11y-divi-5 .da11y-screen-reader-text:focus {
+	z-index: 1000001;
+}
+
+/* Preserve keyboard outline visibility across version-specific wrappers. */
+body.da11y-divi-4 .keyboard-outline,
+body.da11y-divi-5 .keyboard-outline {
+	outline-offset: 2px;
+}

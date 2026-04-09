@@ -139,7 +139,8 @@ class Divi_Accessibility_Public {
 	 */
 	public function get_public_data() {
 		$data     = array(
-			'version' => $this->version,
+			'version'      => $this->version,
+			'divi_version' => $this->get_divi_major_version(),
 		);
 		$defaults = Divi_Accessibility_Admin::get_options_list();
 		if ( $this->is_in_developer_mode() ) {
@@ -188,11 +189,48 @@ class Divi_Accessibility_Public {
 	public function get_style_resources() {
 		return array(
 			'dropdown_keyboard_navigation',
+			'divi_version_compat',
 			'keyboard_navigation_outline',
 			'screen_reader_text',
 			'underline_urls',
 			'underline_urls_not_title',
 		);
+	}
+
+	/**
+	 * Detect active Divi major version.
+	 *
+	 * @return int
+	 */
+	public function get_divi_major_version() {
+		$theme = wp_get_theme();
+
+		if ( is_child_theme() ) {
+			$parent = $theme->parent();
+			if ( $parent ) {
+				$theme = $parent;
+			}
+		}
+
+		$version = (string) $theme->get( 'Version' );
+		$major   = (int) strtok( $version, '.' );
+
+		if ( $major > 0 ) {
+			return $major;
+		}
+
+		return 4;
+	}
+
+	/**
+	 * Add body class for Divi major version targeting.
+	 *
+	 * @param array $classes Existing body classes.
+	 * @return array
+	 */
+	public function add_divi_version_body_class( $classes ) {
+		$classes[] = 'da11y-divi-' . $this->get_divi_major_version();
+		return $classes;
 	}
 
 	/**
