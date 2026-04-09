@@ -169,6 +169,15 @@ class Divi_Accessibility_Public {
 				'go_to_slide' => __( 'Go to slide %d', 'divi-accessibility' ),
 			);
 		}
+		if ( $this->can_load( 'fix_labels' ) || $this->can_load( 'aria_support' ) ) {
+			$data['control_labels'] = array(
+				'close_search' => __( 'Close search', 'divi-accessibility' ),
+				'open_search'  => __( 'Open search', 'divi-accessibility' ),
+				'search'       => __( 'Search', 'divi-accessibility' ),
+				'search_for'   => __( 'Search for...', 'divi-accessibility' ),
+				'view_cart'    => __( 'View cart', 'divi-accessibility' ),
+			);
+		}
 		return $data;
 	}
 
@@ -204,6 +213,7 @@ class Divi_Accessibility_Public {
 			'keyboard_navigation_outline',
 			'reduced_motion',
 			'screen_reader_text',
+			'slider_accessibility',
 			'underline_urls',
 			'underline_urls_not_title',
 		);

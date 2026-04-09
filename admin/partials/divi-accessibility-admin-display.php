@@ -38,15 +38,17 @@ if ( ! defined( 'WPINC' ) ) {
 
 		</a>
 
-		<h3>Resources</h3>
+			<h3><?php esc_html_e( 'Resources', 'divi-accessibility' ); ?></h3>
 
-		<ul>
+			<ul>
 
-			<li><a target="_blank" href="https://www.w3.org/TR/WCAG20/">Web Content Accessibility Guidelines (WCAG) 2.0</a></li>
+				<li><a target="_blank" rel="noopener noreferrer" href="https://www.w3.org/TR/WCAG22/"><?php esc_html_e( 'Web Content Accessibility Guidelines (WCAG) 2.2', 'divi-accessibility' ); ?></a></li>
 
-			<li><a target="_blank" href="https://khan.github.io/tota11y/">Tota11y</a></li>
+				<li><a target="_blank" rel="noopener noreferrer" href="https://www.w3.org/WAI/ARIA/apg/"><?php esc_html_e( 'WAI-ARIA Authoring Practices Guide', 'divi-accessibility' ); ?></a></li>
 
-		</ul>
+				<li><a target="_blank" rel="noopener noreferrer" href="https://khan.github.io/tota11y/"><?php esc_html_e( 'Tota11y', 'divi-accessibility' ); ?></a></li>
+
+			</ul>
 
 	</div><!-- .settings-information -->
 

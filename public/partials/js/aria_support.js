@@ -1,6 +1,13 @@
 jQuery(document).ready(function($) {
+		var labels = (_da11y && _da11y.control_labels) || {
+			close_search: 'Close search',
+			open_search: 'Open search',
+			search: 'Search',
+			search_for: 'Search for...',
+			view_cart: 'View cart'
+		};
 
-	/**
+		/**
 	 * Add role="tabList".
 	 *
 	 * @divi-module  Tab
@@ -253,30 +260,61 @@ jQuery(document).ready(function($) {
 	 * @divi-module  Contact Form
 	 */
 	function syncContactFieldValidationState($form) {
-		$form.find('input, textarea, select').not('.et_pb_contactform_validate_field, [type="hidden"]').each(function() {
-			var $field = $(this);
-			var hasError = $field.hasClass('et_contact_error') || $field.closest('.et_pb_contact_field').hasClass('et_contact_error');
-			$field.attr('aria-invalid', hasError ? 'true' : 'false');
-		});
+			$form.find('input, textarea, select').not('.et_pb_contactform_validate_field, [type="hidden"]').each(function() {
+				var $field = $(this);
+				var hasError = $field.hasClass('et_contact_error') || $field.closest('.et_pb_contact_field').hasClass('et_contact_error');
+				$field.attr('aria-invalid', hasError ? 'true' : 'false');
+			});
 
-		$form.find('.et_pb_checkbox_handle').each(function() {
-			var $handle = $(this);
-			var hasError = $handle.hasClass('et_contact_error') || $handle.closest('.et_pb_contact_field').hasClass('et_contact_error');
-			$handle.attr('aria-invalid', hasError ? 'true' : 'false');
-		});
-	}
+			$form.find('.et_pb_checkbox_handle').each(function() {
+				var $handle = $(this);
+				var $checkboxLabels = $handle.siblings('.et_pb_contact_field_options_wrapper').find('label[role="checkbox"]');
+				var hasError = $handle.hasClass('et_contact_error') || $handle.closest('.et_pb_contact_field').hasClass('et_contact_error');
+				$handle.attr('aria-invalid', hasError ? 'true' : 'false');
+				$checkboxLabels.attr('aria-invalid', hasError ? 'true' : 'false');
+			});
+		}
 
-	/**
-	 * Refresh contact form accessibility after Divi updates the DOM.
+		function syncContactCheckboxLabel(label) {
+			var labelFor = label.getAttribute('for');
+			var checkbox = labelFor ? document.getElementById(labelFor) : null;
+			var $label = $(label);
+
+			if (!checkbox || 'checkbox' !== checkbox.type) {
+				return;
+			}
+
+			$label.attr({
+				'aria-checked': checkbox.checked ? 'true' : 'false',
+				'role': 'checkbox',
+				'tabindex': '0'
+			});
+
+			if (checkbox.disabled) {
+				$label.attr('aria-disabled', 'true');
+			} else {
+				$label.removeAttr('aria-disabled');
+			}
+		}
+
+		function refreshContactCheckboxAccessibility($scope) {
+			$scope.find('.et_pb_contact_form label[for], .et_pb_contact label[for]').addBack('.et_pb_contact_form label[for], .et_pb_contact label[for]').each(function() {
+				syncContactCheckboxLabel(this);
+			});
+		}
+
+		/**
+		 * Refresh contact form accessibility after Divi updates the DOM.
 	 *
 	 * @divi-module  Contact Form
 	 */
-	function refreshContactFormAccessibility($scope) {
-		$scope.find('.et_pb_contact_form').addBack('.et_pb_contact_form').each(function() {
-			syncContactFieldValidationState($(this));
-		});
-		setContactMessageLiveRegion($scope);
-	}
+		function refreshContactFormAccessibility($scope) {
+			refreshContactCheckboxAccessibility($scope);
+			$scope.find('.et_pb_contact_form').addBack('.et_pb_contact_form').each(function() {
+				syncContactFieldValidationState($(this));
+			});
+			setContactMessageLiveRegion($scope);
+		}
 
 	/**
 	 * Observe async contact form updates so live regions and invalid states persist.
@@ -318,6 +356,34 @@ jQuery(document).ready(function($) {
 		observeContactFormAccessibility($(this));
 	});
 
+	$(document).on('keydown', '.et_pb_contact_form label[role="checkbox"], .et_pb_contact label[role="checkbox"]', function(event) {
+		var labelFor;
+		var checkbox;
+
+		if (13 !== event.which && 32 !== event.which) {
+			return;
+		}
+
+		labelFor = this.getAttribute('for');
+		checkbox = labelFor ? document.getElementById(labelFor) : null;
+
+		if (!checkbox) {
+			return;
+		}
+
+		event.preventDefault();
+		checkbox.click();
+		syncContactCheckboxLabel(this);
+	});
+
+	$(document).on('change', '.et_pb_contact_form input[type="checkbox"], .et_pb_contact input[type="checkbox"]', function() {
+		var $label = $('label[for="' + this.id + '"]');
+
+		if ($label.length) {
+			syncContactCheckboxLabel($label.get(0));
+		}
+	});
+
 	/**
 	* Add main role to main-content
 	*/
@@ -332,6 +398,9 @@ jQuery(document).ready(function($) {
 		$(this).attr('aria-label', 'Wide Header' + e);
 	});
 	$('#comment-wrap').attr('aria-label', 'Comments');
+	$('#et_search_icon, .et_pb_menu__icon.et_pb_menu__search-button').attr('aria-label', labels.open_search);
+	$('.et_close_search_field, .et_pb_menu__icon.et_pb_menu__close-search-button').attr('aria-label', labels.close_search);
+	$('.et-cart-info, .et_pb_menu__icon.et_pb_menu__cart-button').attr('aria-label', labels.view_cart);
 
 	/**
 	 * Hide manually disabled ARIA elements

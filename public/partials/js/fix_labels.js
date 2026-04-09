@@ -1,4 +1,51 @@
 jQuery(document).ready(function($) {
+		var labels = (_da11y && _da11y.control_labels) || {
+			close_search: 'Close search',
+			open_search: 'Open search',
+			search: 'Search',
+			search_for: 'Search for...',
+			view_cart: 'View cart'
+		};
+
+		function isNativelyInteractive(element) {
+			return $(element).is('a, button, input, select, textarea');
+		}
+
+		function ensureSearchLabel($field, idPrefix, includeSubmit) {
+			var id = $field.attr('id');
+
+			if (!id) {
+				id = idPrefix;
+				$field.attr('id', id);
+			}
+
+			if (!$field.prevAll('label[for="' + id + '"]').length) {
+				$field.before('<label class="da11y-screen-reader-text" for="' + id + '">' + labels.search_for + '</label>');
+			}
+
+			if (includeSubmit && !$field.siblings('button.da11y-screen-reader-text[type="submit"]').length) {
+				$field.after('<button type="submit" class="da11y-screen-reader-text">' + labels.search + '</button>');
+			}
+		}
+
+		function setControlLabel(selector, label, role) {
+			$(selector).each(function() {
+				var $control = $(this);
+
+				$control.attr('aria-label', label);
+
+				if (role) {
+					$control.attr('role', role);
+				}
+
+				if (!isNativelyInteractive(this)) {
+					$control.attr({
+						'tabindex': '0',
+						'data-da11y-keyboard-activate': 'true'
+					});
+				}
+			});
+		}
 
 	/**
 	 * Add unique ID to search module input with matching label.
@@ -6,9 +53,7 @@ jQuery(document).ready(function($) {
 	 * @divi-module  Search
 	 */
 	$('.et-search-field').each(function (e) {
-		$(this).attr('id', 'et_pb_search_module_input_' + e);
-		$('#et_pb_search_module_input_' + e).before('<label class="da11y-screen-reader-text" for="et_pb_search_module_input_' + e + '">Search for...</label>');
-		$('#et_pb_search_module_input_' + e).after('<button type="submit" class="da11y-screen-reader-text">Search</button>');
+		ensureSearchLabel($(this), 'et_pb_search_module_input_' + e, true);
 	});
 
 	/**
@@ -17,8 +62,20 @@ jQuery(document).ready(function($) {
 	 * @divi-module  Search
 	 */
 	$('.et_pb_s').each(function (e) {
-		$(this).attr('id', 'et_pb_s_module_input_' + e);
-		$('#et_pb_s_module_input_' + e).before('<label class="da11y-screen-reader-text" for="et_pb_s_module_input_' + e + '">Search for...</label>');
+		ensureSearchLabel($(this), 'et_pb_s_module_input_' + e, false);
+	});
+
+	setControlLabel('#et_search_icon, .et_pb_menu__icon.et_pb_menu__search-button', labels.open_search, 'button');
+	setControlLabel('.et_close_search_field, .et_pb_menu__icon.et_pb_menu__close-search-button', labels.close_search, 'button');
+	setControlLabel('.et-cart-info, .et_pb_menu__icon.et_pb_menu__cart-button', labels.view_cart, 'link');
+
+	$(document).on('keydown', '[data-da11y-keyboard-activate="true"]', function(event) {
+		if (13 !== event.which && 32 !== event.which) {
+			return;
+		}
+
+		event.preventDefault();
+		$(this).trigger('click');
 	});
 
 	/**
@@ -49,4 +106,3 @@ jQuery(document).ready(function($) {
 	$('.et-social-rss a.icon span').text('RSS');
 
 });
-

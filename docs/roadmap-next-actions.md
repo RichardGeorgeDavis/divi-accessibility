@@ -1,69 +1,67 @@
 # Roadmap / Next Actions
 
-## Current status
+## Phase 1: Close Out Current Work
 
-- Completed in this repo:
-  - Slider accessibility labels and keyboard support.
-  - Reduced motion support.
-  - Contact form live-region and `aria-invalid` improvements.
-  - Minimal Divi 4/5 compatibility hooks.
-  - NPM lint configuration now passes with ESLint 9 + CSS syntax checks.
-  - Mobile menu now hides main page content from screen readers while open.
-  - Divi 5 builder integration now registers the two module-level accessibility toggles and maps legacy D4 attrs into the D5 settings structure.
-- Commits:
-  - `227c133` `Add slider and reduced-motion accessibility support`
-  - `3124b7b` `Fix npm lint configuration`
-  - `e7a384d` `Hide page content when mobile menu is open`
+- Completed:
+  - Divi 5 module-level `Accessibility Settings` support is in place.
+  - Mobile menu screen-reader isolation is in place.
+  - Slider accessibility and reduced motion support are in place.
+  - Contact form live-region and invalid-state syncing are in place.
+  - Release metadata is aligned on `2.1.0`.
+  - Package output now includes `languages/`.
+  - npm lint now covers both public JS and admin-side Divi 5 builder JS.
+  - Release docs, handover notes, and PR notes were added under `docs/`.
+- Still required before upstream integration:
+  - Push the branch.
+  - Run manual Divi 4 and Divi 5 runtime checks in WordPress.
+  - Use the updated PR notes after runtime verification, not the earlier Cursor notes.
 
-## Runtime verification and PR readiness
+## Phase 1.5: Package And Validate The Plugin
 
-- The paste-ready PR comments from the prior Cursor handover have not been used yet.
-- Before using those comments, run local runtime verification on:
-  - Divi 4 + plugin defaults.
-  - Divi 5 + plugin defaults.
-  - Keyboard-only traversal for skip link, primary/submenu nav, slider controls, and contact form feedback.
-  - Screen reader smoke checks for slider labels and contact form success/error messaging.
-- After verification, regenerate concise PR-ready comments for the relevant branches/PRs instead of reusing the old notes blindly.
+- Completed:
+  - `divi-accessibility-2.1.0.zip` builds successfully.
+  - Zip contents were checked for the expected plugin files.
+  - The package no longer includes `.DS_Store`.
+- Blocked in this environment:
+  - Local WordPress package install and activation.
+  - Divi 4/Divi 5 runtime matrix execution.
+- Current blocker:
+  - Available Local WordPress sites did not have a live database connection during automation attempts.
 
-## Items identified from `ref/divi-assistant` and the article
+## Phase 2: Documentation Refresh
 
-- High-priority candidates to port into this plugin:
-  - Hide page content from screen readers while the mobile menu is open.
-  - Sync/override/fallback alt text from the WordPress media library into Divi modules.
-  - Improve Divi contact form checkbox accessibility.
-  - Improve accessible names/support for search and cart icons in navigation.
-  - Increase slider navigation dot spacing/touch target size.
-- Lower-priority or likely not core to this plugin:
-  - Hide skip link for non-screen readers.
-  - Back-to-top appearance tooling.
+- Completed:
+  - `README.md` updated for Divi 4/5 support and the `2.1.0` release path.
+  - `readme.txt` updated for release metadata, FAQ, and changelog.
+  - POT metadata regenerated at `2.1.0`.
+  - Admin resources updated to current WCAG/WAI references.
+  - Internal release checklist, handover, and PR notes added.
 
-## Styling strategy
+## Phase 2.5: Feedback From Packaging/Runtime
 
-- Keep styling owned by this plugin.
-- Use active Divi version detection only to scope narrow compatibility overrides.
-- Do not import theme styling directly from Divi or from `ref/divi-assistant`.
-- Only split into larger per-version plugin stylesheets if the compatibility layer becomes materially larger or riskier to maintain inline.
+- Completed:
+  - Packaging feedback applied:
+    - translations included in zip
+    - POT generation excludes `ref/`
+    - release command path works end-to-end
+- Pending:
+  - apply any findings from manual WordPress/Divi runtime verification
 
-## Divi 5 module settings
+## Phase 3: Quick Wins
 
-- Current module-level Accessibility Settings are still implemented via builder hooks:
-  - `et_builder_module_general_fields`
-  - `et_builder_get_parent_modules`
-  - `et_builder_get_child_modules`
-- Divi 5 implementation path now added in this repo:
-  - Registers a Visual Builder package build to inject module settings in D5.
-  - Adds an `Accessibility Settings` group in the D5 Advanced panel.
-  - Adds D5 fields for `Hide From Screen Readers` and `Show For Screen Readers Only`.
-  - Maps legacy D4 attrs into `accessibility.advanced.*` during D4 to D5 conversion.
-- Required verification:
-  - Confirm the two module toggles appear in Divi 5 across representative modules.
-  - Confirm values persist after save/reopen in the Divi 5 builder.
-  - Confirm converted D4 content keeps the settings after migration to D5.
-  - Confirm frontend output still adds `aria-hidden` and `screen-reader-text` classes from D5 nested attrs.
+- Completed:
+  - Slider navigation dot target sizing via plugin-owned CSS
+  - Improved accessible names for search and cart controls
+  - Improved contact form checkbox keyboard accessibility
+- Remaining candidate:
+  - Alt-text sync/override/fallback from the WordPress media library into Divi modules
 
-## Next implementation order
+## Phase 4: Modernization And Structure
 
-1. Runtime-verify Divi 5 module-level Accessibility Settings behavior.
-2. Add slider dot spacing compatibility as plugin-owned CSS.
-3. Port contact form checkbox accessibility improvements.
-4. Design and implement alt-text sync/override/fallback for Divi modules.
+- Completed:
+  - Divi-version-specific compatibility remains plugin-owned and version-scoped
+  - Release/package/docs/tooling are substantially more modernized than the pre-`2.1.0` branch state
+- Next structural work after release validation:
+  - Implement alt-text sync/override/fallback
+  - Decide whether additional appearance compatibility work should stay in the shared layer or split into clearer Divi 4/Divi 5 stylesheets
+  - Expand runtime coverage around migrated D4-to-D5 content

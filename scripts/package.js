@@ -7,6 +7,7 @@ const whitelist = [
 	'admin',
 	'divi-accessibility.php',
 	'includes',
+	'languages',
 	'license.txt',
 	'public',
 	'readme.txt',
@@ -28,14 +29,21 @@ sh.ls( '.' ).forEach( raw => {
 		return true;
 	}
 	const entry = path.resolve( raw );
-	console.log( `\t\tAdding ${ raw }` );
-	if ( sh.test( '-d', entry ) ) {
-		zip.addLocalFolder( entry, `${ pkg.name }/${ raw }` );
-	} else {
-		zip.addLocalFile( entry, pkg.name );
+		console.log( `\t\tAdding ${ raw }` );
+		if ( sh.test( '-d', entry ) ) {
+			zip.addLocalFolder(
+				entry,
+				`${ pkg.name }/${ raw }`,
+				( filename ) => path.basename( filename ) !== '.DS_Store'
+			);
+		} else {
+			if ( '.DS_Store' === path.basename( entry ) ) {
+				return true;
+			}
+			zip.addLocalFile( entry, pkg.name );
 
-	}
-} );
+		}
+	} );
 console.log( `\t- Writing package archive: ${ package_file }` );
 zip.writeZip( package_file );
 console.log( `--- All done ---` );
