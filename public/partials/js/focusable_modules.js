@@ -64,13 +64,13 @@ jQuery(document).ready(function($) {
 		if (isAccordion) {
 			// Only change the aria attributes if an accordion toggle isn't already open
 			if (!$clickedToggle.hasClass('et_pb_toggle_open')) {
-				var $allSiblingToggles = $clickedToggleTitle.closest('.et_pb_accordion').find('.et_pb_toggle');
+					var $allSiblingToggles = $clickedToggleTitle.closest('.et_pb_accordion').find('.et_pb_toggle');
 
-				// Reset the aria attributes on the open toggle
-				$allSiblingToggles.each(function() {
-					$toggle = $(this);
-					if ($toggle.hasClass('et_pb_toggle_open')) {
-						var $openToggleTitle = $toggle.find('.et_pb_toggle_title')
+					// Reset the aria attributes on the open toggle
+					$allSiblingToggles.each(function() {
+						var $toggle = $(this);
+						if ($toggle.hasClass('et_pb_toggle_open')) {
+							var $openToggleTitle = $toggle.find('.et_pb_toggle_title')
 
 						$openToggleTitle.attr('aria-expanded', false);
 						$openToggleTitle.removeAttr('aria-disabled');
@@ -94,4 +94,3 @@ jQuery(document).ready(function($) {
 	});
 
 });
-
