@@ -1,4 +1,43 @@
 jQuery(document).ready(function($) {
+	var hiddenSelector = '#top-header, #main-content, #main-footer, .et-l--body, .et-l--footer';
+
+	function setManagedAriaHidden($elements, hidden) {
+		$elements.each(function() {
+			var $element = $(this);
+
+			if (hidden) {
+				if (!$element.attr('data-da11y-mobile-menu-managed')) {
+					var previous = $element.attr('aria-hidden');
+
+					if (typeof previous !== 'undefined') {
+						$element.attr('data-da11y-mobile-menu-prev-aria-hidden', previous);
+					}
+
+					$element.attr('data-da11y-mobile-menu-managed', 'true');
+				}
+
+				$element.attr('aria-hidden', 'true');
+				return;
+			}
+
+			if (!$element.attr('data-da11y-mobile-menu-managed')) {
+				return;
+			}
+
+			if ($element.is('[data-da11y-mobile-menu-prev-aria-hidden]')) {
+				$element.attr('aria-hidden', $element.attr('data-da11y-mobile-menu-prev-aria-hidden'));
+				$element.removeAttr('data-da11y-mobile-menu-prev-aria-hidden');
+			} else {
+				$element.removeAttr('aria-hidden');
+			}
+
+			$element.removeAttr('data-da11y-mobile-menu-managed');
+		});
+	}
+
+	function setPageContentHidden(isOpen) {
+		setManagedAriaHidden($(hiddenSelector), isOpen);
+	}
 
 	/**
 	 * Mobile menu Aria support.
@@ -7,8 +46,10 @@ jQuery(document).ready(function($) {
 	$('.mobile_menu_bar').on('click', function() {
 		if($(this).hasClass('a11y-mobile-menu-open') ) {
 			$(this).removeClass('a11y-mobile-menu-open').attr('aria-expanded', 'false');
+			setPageContentHidden(false);
 		} else {
 			$(this).addClass('a11y-mobile-menu-open').attr('aria-expanded', 'true');
+			setPageContentHidden(true);
 		}
 	});
 
@@ -42,5 +83,7 @@ jQuery(document).ready(function($) {
 			}
 		}
 	});
+
+	setPageContentHidden(false);
 
 });
