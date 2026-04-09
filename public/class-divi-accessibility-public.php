@@ -457,6 +457,44 @@ class Divi_Accessibility_Public {
 	}
 
 	/**
+	 * Get a nested module prop value.
+	 *
+	 * @param mixed $props Module props.
+	 * @param array $path Path segments.
+	 * @return mixed|null
+	 */
+	private function get_nested_module_prop( $props, array $path ) {
+		$value = $props;
+
+		foreach ( $path as $segment ) {
+			if ( ! is_array( $value ) || ! array_key_exists( $segment, $value ) ) {
+				return null;
+			}
+
+			$value = $value[ $segment ];
+		}
+
+		return $value;
+	}
+
+	/**
+	 * Determine whether a module prop is enabled in D4 or D5 storage formats.
+	 *
+	 * @param array $props Module props.
+	 * @param array $paths Candidate prop paths.
+	 * @return bool
+	 */
+	private function module_prop_is_enabled( array $props, array $paths ) {
+		foreach ( $paths as $path ) {
+			if ( 'on' === $this->get_nested_module_prop( $props, $path ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * @param string $output
 	 * @param string $render_method
 	 * @param ET_Builder_Element $element
@@ -464,14 +502,26 @@ class Divi_Accessibility_Public {
 	 * @return string
 	 */
 	function add_accessibilty_classes( $output, $render_method, $element ) {
-		if( is_string( $output ) ) {
+		if ( is_string( $output ) && isset( $element->props ) && is_array( $element->props ) ) {
 
 			$class_list = '';
 
-			if( isset( $element->props['hide_aria_element'] ) && $element->props['hide_aria_element'] === 'on' ) {
+			if ( $this->module_prop_is_enabled(
+				$element->props,
+				array(
+					array( 'hide_aria_element' ),
+					array( 'accessibility', 'advanced', 'hideAriaElement', 'desktop', 'value' ),
+				)
+			) ) {
 				$class_list .= ' aria-hidden';
 			}
-			if( isset( $element->props['show_for_screen_readers_only'] ) && $element->props['show_for_screen_readers_only'] === 'on' ) {
+			if ( $this->module_prop_is_enabled(
+				$element->props,
+				array(
+					array( 'show_for_screen_readers_only' ),
+					array( 'accessibility', 'advanced', 'showForScreenReadersOnly', 'desktop', 'value' ),
+				)
+			) ) {
 				$class_list .= ' screen-reader-text';
 			}
 			if ( $class_list ) {

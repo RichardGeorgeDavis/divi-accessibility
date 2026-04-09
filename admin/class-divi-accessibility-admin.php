@@ -676,4 +676,80 @@ class Divi_Accessibility_Admin {
 		}
 		return $modules;
 	}
+
+	/**
+	 * Register Divi 5 Visual Builder assets for module-level accessibility settings.
+	 *
+	 * @return void
+	 */
+	public function enqueue_divi_5_visual_builder_assets() {
+		if ( ! function_exists( 'et_core_is_fb_enabled' ) || ! function_exists( 'et_builder_d5_enabled' ) ) {
+			return;
+		}
+
+		if ( ! et_core_is_fb_enabled() || ! et_builder_d5_enabled() ) {
+			return;
+		}
+
+		if ( ! class_exists( '\ET\Builder\VisualBuilder\Assets\PackageBuildManager' ) ) {
+			return;
+		}
+
+		\ET\Builder\VisualBuilder\Assets\PackageBuildManager::register_package_build(
+			array(
+				'name'    => 'divi-accessibility-d5-module-settings',
+				'version' => $this->version,
+				'script'  => array(
+					'src'                => plugin_dir_url( __FILE__ ) . 'js/divi-accessibility-d5-module-settings.js',
+					'deps'               => array(
+						'lodash',
+						'divi-vendor-wp-hooks',
+						'divi-vendor-wp-i18n',
+					),
+					'enqueue_top_window' => false,
+					'enqueue_app_window' => true,
+					'args'               => array(
+						'in_footer' => false,
+					),
+				),
+			)
+		);
+	}
+
+	/**
+	 * Register D4 to D5 conversion mapping for accessibility module settings.
+	 *
+	 * @param array $conversion_map Existing conversion map.
+	 * @return array
+	 */
+	public function register_divi_5_accessibility_conversion_map( $conversion_map ) {
+		if ( ! class_exists( '\ET\Builder\Packages\ModuleLibrary\ModuleRegistration' ) ) {
+			return $conversion_map;
+		}
+
+		$core_modules = \ET\Builder\Packages\ModuleLibrary\ModuleRegistration::get_all_core_modules_metadata();
+		$attribute_map = array(
+			'hide_aria_element'            => 'accessibility.advanced.hideAriaElement.*',
+			'show_for_screen_readers_only' => 'accessibility.advanced.showForScreenReadersOnly.*',
+		);
+
+		foreach ( array_keys( $core_modules ) as $module_slug ) {
+			$module_conversion_map = array();
+
+			if ( isset( $conversion_map[ $module_slug ] ) && is_array( $conversion_map[ $module_slug ] ) ) {
+				$module_conversion_map = $conversion_map[ $module_slug ];
+			}
+
+			$module_conversion_map['attributeMap'] = array_merge(
+				isset( $module_conversion_map['attributeMap'] ) && is_array( $module_conversion_map['attributeMap'] )
+					? $module_conversion_map['attributeMap']
+					: array(),
+				$attribute_map
+			);
+
+			$conversion_map[ $module_slug ] = $module_conversion_map;
+		}
+
+		return $conversion_map;
+	}
 }

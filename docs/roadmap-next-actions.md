@@ -8,9 +8,12 @@
   - Contact form live-region and `aria-invalid` improvements.
   - Minimal Divi 4/5 compatibility hooks.
   - NPM lint configuration now passes with ESLint 9 + CSS syntax checks.
+  - Mobile menu now hides main page content from screen readers while open.
+  - Divi 5 builder integration now registers the two module-level accessibility toggles and maps legacy D4 attrs into the D5 settings structure.
 - Commits:
   - `227c133` `Add slider and reduced-motion accessibility support`
   - `3124b7b` `Fix npm lint configuration`
+  - `e7a384d` `Hide page content when mobile menu is open`
 
 ## Runtime verification and PR readiness
 
@@ -47,14 +50,20 @@
   - `et_builder_module_general_fields`
   - `et_builder_get_parent_modules`
   - `et_builder_get_child_modules`
+- Divi 5 implementation path now added in this repo:
+  - Registers a Visual Builder package build to inject module settings in D5.
+  - Adds an `Accessibility Settings` group in the D5 Advanced panel.
+  - Adds D5 fields for `Hide From Screen Readers` and `Show For Screen Readers Only`.
+  - Maps legacy D4 attrs into `accessibility.advanced.*` during D4 to D5 conversion.
 - Required verification:
-  - Confirm the two module toggles still appear and persist correctly in Divi 5.
-  - If not, add a Divi-5-specific integration path instead of relying on the Divi 4 hook path.
+  - Confirm the two module toggles appear in Divi 5 across representative modules.
+  - Confirm values persist after save/reopen in the Divi 5 builder.
+  - Confirm converted D4 content keeps the settings after migration to D5.
+  - Confirm frontend output still adds `aria-hidden` and `screen-reader-text` classes from D5 nested attrs.
 
 ## Next implementation order
 
-1. Hide page content from screen readers while the mobile menu is open.
-2. Verify Divi 5 module-level Accessibility Settings behavior.
-3. Add slider dot spacing compatibility as plugin-owned CSS.
-4. Port contact form checkbox accessibility improvements.
-5. Design and implement alt-text sync/override/fallback for Divi modules.
+1. Runtime-verify Divi 5 module-level Accessibility Settings behavior.
+2. Add slider dot spacing compatibility as plugin-owned CSS.
+3. Port contact form checkbox accessibility improvements.
+4. Design and implement alt-text sync/override/fallback for Divi modules.

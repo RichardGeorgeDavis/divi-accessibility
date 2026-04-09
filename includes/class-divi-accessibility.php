@@ -140,6 +140,8 @@ class Divi_Accessibility {
 		), 15, 1 );
 		add_filter( 'et_builder_get_parent_modules', array( $plugin_admin, 'divi_builder_add_accessibility_group' ), 15, 2 );
 		add_filter( 'et_builder_get_child_modules', array( $plugin_admin, 'divi_builder_add_accessibility_group' ), 15, 2 );
+		add_action( 'divi_visual_builder_assets_before_enqueue_scripts', array( $plugin_admin, 'enqueue_divi_5_visual_builder_assets' ) );
+		add_filter( 'divi.conversion.moduleLibrary.conversionMap', array( $plugin_admin, 'register_divi_5_accessibility_conversion_map' ) );
 	}
 
 	/**
