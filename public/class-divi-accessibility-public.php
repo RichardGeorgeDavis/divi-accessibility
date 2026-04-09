@@ -415,14 +415,17 @@ class Divi_Accessibility_Public {
 	public function can_load_tota11y() {
 
 		$settings = $this->settings;
+		$tota11y = false;
 
 		if ( isset( $settings['tota11y'] ) ) {
-			$tota11y = $settings['tota11y'];
+			$tota11y = (bool) $settings['tota11y'];
 		}
 
-		if ( current_user_can( 'manage_options' ) && ( true == $tota11y ) ) {
+		if ( current_user_can( 'manage_options' ) && $tota11y ) {
 			return true;
 		}
+
+		return false;
 
 	}
 
