@@ -12,9 +12,10 @@
   - npm lint now covers both public JS and admin-side Divi 5 builder JS.
   - Release docs, handover notes, and PR notes were added under `docs/`.
 - Still required before upstream integration:
-  - Push the branch.
   - Run manual Divi 4 and Divi 5 runtime checks in WordPress.
   - Use the updated PR notes after runtime verification, not the earlier Cursor notes.
+  - Complete persistence checks after save/reopen in Divi 5.
+  - Complete packaged-plugin validation rather than relying on source-checkout behavior.
 
 ## Phase 1.5: Package And Validate The Plugin
 
@@ -27,6 +28,9 @@
   - Divi 4/Divi 5 runtime matrix execution.
 - Current blocker:
   - Available Local WordPress sites did not have a live database connection during automation attempts.
+- Manual progress since that automation attempt:
+  - visual pass completed for frontend tabs
+  - visual pass completed for Divi 5 Visual Builder `Accessibility Settings` visibility
 
 ## Phase 2: Documentation Refresh
 

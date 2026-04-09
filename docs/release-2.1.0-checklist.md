@@ -1,5 +1,15 @@
 # Release 2.1.0 Checklist
 
+## Current Verification Status
+
+- Manual visual pass completed:
+  - frontend tabs are working
+  - Divi 5 Visual Builder modules show `Accessibility Settings`
+- Still pending:
+  - packaged-plugin install/activate verification
+  - persistence checks after save/reopen
+  - broader module-type coverage across Divi 4, Divi 5, and migrated D4-to-D5 content
+
 ## Static Checks
 
 - `npm run lint`

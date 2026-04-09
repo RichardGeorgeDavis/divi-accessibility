@@ -23,6 +23,9 @@ This branch prepares Divi Accessibility `2.1.0` as a broad compatibility and mod
 - `npm run i18n`
 - package zip generation and zip content inspection
 - targeted `php -l` and `node --check`
+- manual visual pass:
+  - frontend tabs working
+  - Divi 5 Visual Builder modules display `Accessibility Settings`
 
 ## Still Needs Integration Review
 
