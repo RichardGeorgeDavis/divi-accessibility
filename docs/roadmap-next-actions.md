@@ -11,6 +11,9 @@
   - Package output now includes `languages/`.
   - npm lint now covers both public JS and admin-side Divi 5 builder JS.
   - Release docs, handover notes, and PR notes were added under `docs/`.
+  - Upstream draft PR `#121` has been updated with current summary, testing requests, and packaged-build download links.
+  - A downloadable prerelease test build was published on the fork.
+  - The `tota11y` undefined-variable fix was folded into the current branch.
 - Still required before upstream integration:
   - Run manual Divi 4 and Divi 5 runtime checks in WordPress.
   - Use the updated PR notes after runtime verification, not the earlier Cursor notes.
@@ -39,6 +42,7 @@
   - verify frontend behavior on slider, mobile menu, search/cart controls, and contact forms
   - verify Divi 4 backward compatibility
   - verify one migrated D4-to-D5 content case
+  - refresh/re-upload the packaged artifact if testers need a build that includes `de40c78`
 
 ## Phase 2: Documentation Refresh
 
@@ -56,6 +60,7 @@
     - translations included in zip
     - POT generation excludes `ref/`
     - release command path works end-to-end
+    - package output moved to `packaged/`
 - Pending:
   - apply any findings from manual WordPress/Divi runtime verification
 
@@ -77,3 +82,13 @@
   - Implement alt-text sync/override/fallback
   - Decide whether additional appearance compatibility work should stay in the shared layer or split into clearer Divi 4/Divi 5 stylesheets
   - Expand runtime coverage around migrated D4-to-D5 content
+
+## Handover State
+
+- Current upstream draft PR: `#121`
+- Current branch head: `de40c78`
+- Current downloadable test build: `codex-2.1.0-rc1`
+- Immediate handover action:
+  - complete runtime verification
+  - update PR notes with final results
+  - post final runtime summary on `#121`

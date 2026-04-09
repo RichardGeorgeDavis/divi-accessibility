@@ -5,6 +5,8 @@
 - Manual visual pass completed:
   - frontend tabs are working
   - Divi 5 Visual Builder modules show `Accessibility Settings`
+- Additional code-level follow-up completed:
+  - issue `#90` (`tota11y` undefined-variable path) fixed in branch head `de40c78`
 - Still pending:
   - packaged-plugin install/activate verification
   - persistence checks after save/reopen
@@ -19,6 +21,7 @@
 - verify Divi 4 backward compatibility
 - verify one migrated D4-to-D5 content case
 - update PR notes with final runtime results only after the checks above are complete
+- ask a maintainer to close upstream issue `#90` after reviewing the fix already linked from `#121`
 
 ## Static Checks
 
@@ -32,6 +35,7 @@
 ## Package Checks
 
 - build `packaged/divi-accessibility-2.1.0.zip`
+- if external testers are using the fork prerelease asset, confirm whether they need a refreshed asset built from current branch head `de40c78`
 - confirm zip contains:
   - `admin/`
   - `includes/`
@@ -70,3 +74,4 @@
 - verify the package, not just the source checkout
 - test with developer mode off and on
 - include at least one page with menu search/cart, slider, and contact form modules
+- upstream PR context: `#121`
