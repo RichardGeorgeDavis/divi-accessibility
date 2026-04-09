@@ -19,7 +19,7 @@
 ## Phase 1.5: Package And Validate The Plugin
 
 - Completed:
-  - `divi-accessibility-2.1.0.zip` builds successfully.
+  - `packaged/divi-accessibility-2.1.0.zip` builds successfully.
   - Zip contents were checked for the expected plugin files.
   - The package no longer includes `.DS_Store`.
 - Blocked in this environment:

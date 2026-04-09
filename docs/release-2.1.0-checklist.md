@@ -11,7 +11,7 @@
 
 ## Package Checks
 
-- build `divi-accessibility-2.1.0.zip`
+- build `packaged/divi-accessibility-2.1.0.zip`
 - confirm zip contains:
   - `admin/`
   - `includes/`

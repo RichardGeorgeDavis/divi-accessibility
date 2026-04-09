@@ -13,9 +13,11 @@ const whitelist = [
 	'readme.txt',
 	'uninstall.php',
 ];
-const package_file = `${ pkg.name }-${ pkg.version }.zip`;
+const package_dir = 'packaged';
+const package_file = path.join( package_dir, `${ pkg.name }-${ pkg.version }.zip` );
 
 console.log( `--- Packing ${ pkg.name } v${ pkg.version } ---` );
+sh.mkdir( '-p', package_dir );
 if ( sh.test( '-e', package_file ) ) {
 	console.log( `\t- Removing previously existing archive: ${ package_file }` );
 	sh.rm( package_file );

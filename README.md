@@ -37,7 +37,7 @@ To build the minified versions of the js/css snippets, run `npm run build` scrip
 
 While working on snippets, it may be beneficial to have them automatically re-built on file change. This is what the `npm run watch` script does.
 
-To package an intermediate (throwaway) plugin zip archive for testing, use the `npm run package` script.
+To package an intermediate (throwaway) plugin zip archive for testing, use the `npm run package` script. The zip is written to `packaged/`.
 
 To build a releaseable package, use `DA11Y_RELEASE_VERSION=X.X.X DA11Y_ASSUME_YES=true npm run release`. This will normalize version numbers across the plugin bootstrap, package metadata, readme stable tag, and POT metadata, then lint, regenerate the translation catalog, rebuild the assets, and produce a versioned zip archive.
 
