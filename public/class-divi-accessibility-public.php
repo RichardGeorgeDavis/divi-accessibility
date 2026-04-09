@@ -138,10 +138,13 @@ class Divi_Accessibility_Public {
 	 * @return array
 	 */
 	public function get_public_data() {
-		$data     = array(
-			'version'      => $this->version,
-			'divi_version' => $this->get_divi_major_version(),
+		$data         = array(
+			'version' => $this->version,
 		);
+		$divi_version = $this->get_divi_major_version();
+		if ( null !== $divi_version ) {
+			$data['divi_version'] = $divi_version;
+		}
 		$defaults = Divi_Accessibility_Admin::get_options_list();
 		if ( $this->is_in_developer_mode() ) {
 			$data['options'] = array_merge(
@@ -159,6 +162,13 @@ class Divi_Accessibility_Public {
 		if ( $this->can_load( 'skip_navigation_link' ) ) {
 			$data['skip_navigation_link_text'] = __( 'Skip to content', 'divi-accessibility' );
 		}
+		if ( $this->can_load( 'slider_accessibility' ) ) {
+			$data['slider_accessibility_labels'] = array(
+				'previous'    => __( 'Previous slide', 'divi-accessibility' ),
+				'next'        => __( 'Next slide', 'divi-accessibility' ),
+				'go_to_slide' => __( 'Go to slide %d', 'divi-accessibility' ),
+			);
+		}
 		return $data;
 	}
 
@@ -170,6 +180,7 @@ class Divi_Accessibility_Public {
 	public function get_script_resources() {
 		return array(
 			'dropdown_keyboard_navigation',
+			'slider_accessibility',
 			'skip_navigation_link',
 			'keyboard_navigation_outline',
 			'focusable_modules',
@@ -191,6 +202,7 @@ class Divi_Accessibility_Public {
 			'dropdown_keyboard_navigation',
 			'divi_version_compat',
 			'keyboard_navigation_outline',
+			'reduced_motion',
 			'screen_reader_text',
 			'underline_urls',
 			'underline_urls_not_title',
@@ -200,7 +212,7 @@ class Divi_Accessibility_Public {
 	/**
 	 * Detect active Divi major version.
 	 *
-	 * @return int
+	 * @return int|null
 	 */
 	public function get_divi_major_version() {
 		$theme = wp_get_theme();
@@ -210,6 +222,12 @@ class Divi_Accessibility_Public {
 			if ( $parent ) {
 				$theme = $parent;
 			}
+		}
+
+		$name       = strtolower( (string) $theme->get( 'Name' ) );
+		$stylesheet = strtolower( (string) $theme->get_stylesheet() );
+		if ( ! in_array( $name, array( 'divi', 'extra' ), true ) && ! in_array( $stylesheet, array( 'divi', 'extra' ), true ) ) {
+			return null;
 		}
 
 		$version = (string) $theme->get( 'Version' );
@@ -229,7 +247,10 @@ class Divi_Accessibility_Public {
 	 * @return array
 	 */
 	public function add_divi_version_body_class( $classes ) {
-		$classes[] = 'da11y-divi-' . $this->get_divi_major_version();
+		$version = $this->get_divi_major_version();
+		if ( null !== $version ) {
+			$classes[] = 'da11y-divi-' . $version;
+		}
 		return $classes;
 	}
 
@@ -403,6 +424,10 @@ class Divi_Accessibility_Public {
 	 * @return    boolean
 	 */
 	public function can_load( $option ) {
+
+		if ( 'divi_version_compat' === $option ) {
+			return null !== $this->get_divi_major_version();
+		}
 
 		$can_load = false;
 

@@ -234,11 +234,89 @@ jQuery(document).ready(function($) {
 	$('.et_pb_contactform_validate_field').attr('type', 'hidden');
 
 	/**
-	 * Add alert role to error or success contact form message
+	 * Add live region support to error and success contact form messages.
 	 *
 	 * @divi-module  Contact Form
 	 */
-	$('.et-pb-contact-message').attr('role', 'alert');
+	function setContactMessageLiveRegion($scope) {
+		$scope.find('.et-pb-contact-message').addBack('.et-pb-contact-message').attr({
+			'role': 'alert',
+			'aria-live': 'assertive',
+			'aria-atomic': 'true',
+			'tabindex': '-1'
+		});
+	}
+
+	/**
+	 * Keep validation states in sync with Divi's error classes.
+	 *
+	 * @divi-module  Contact Form
+	 */
+	function syncContactFieldValidationState($form) {
+		$form.find('input, textarea, select').not('.et_pb_contactform_validate_field, [type="hidden"]').each(function() {
+			var $field = $(this);
+			var hasError = $field.hasClass('et_contact_error') || $field.closest('.et_pb_contact_field').hasClass('et_contact_error');
+			$field.attr('aria-invalid', hasError ? 'true' : 'false');
+		});
+
+		$form.find('.et_pb_checkbox_handle').each(function() {
+			var $handle = $(this);
+			var hasError = $handle.hasClass('et_contact_error') || $handle.closest('.et_pb_contact_field').hasClass('et_contact_error');
+			$handle.attr('aria-invalid', hasError ? 'true' : 'false');
+		});
+	}
+
+	/**
+	 * Refresh contact form accessibility after Divi updates the DOM.
+	 *
+	 * @divi-module  Contact Form
+	 */
+	function refreshContactFormAccessibility($scope) {
+		$scope.find('.et_pb_contact_form').addBack('.et_pb_contact_form').each(function() {
+			syncContactFieldValidationState($(this));
+		});
+		setContactMessageLiveRegion($scope);
+	}
+
+	/**
+	 * Observe async contact form updates so live regions and invalid states persist.
+	 *
+	 * @divi-module  Contact Form
+	 */
+	function observeContactFormAccessibility($scope) {
+		var scope = $scope.get(0);
+
+		if (!scope || $scope.data('da11y-contact-observed')) {
+			return;
+		}
+
+		new MutationObserver(function(mutations) {
+			var shouldRefresh = false;
+
+			$.each(mutations, function(index, mutation) {
+				if (mutation.type === 'childList' || mutation.attributeName === 'class') {
+					shouldRefresh = true;
+					return false;
+				}
+			});
+
+			if (shouldRefresh) {
+				refreshContactFormAccessibility($scope);
+			}
+		}).observe(scope, {
+			childList: true,
+			subtree: true,
+			attributes: true,
+			attributeFilter: ['class']
+		});
+
+		$scope.data('da11y-contact-observed', true);
+	}
+
+	refreshContactFormAccessibility($(document));
+	$('.et_pb_contact, .et_pb_contact_form_container').each(function() {
+		observeContactFormAccessibility($(this));
+	});
 
 	/**
 	* Add main role to main-content
