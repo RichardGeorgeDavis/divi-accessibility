@@ -4,12 +4,12 @@
 
 - Date checked: 2026-04-24
 - Upstream repository: <https://github.com/campuspress/divi-accessibility>
-- Upstream release-candidate PR: <https://github.com/campuspress/divi-accessibility/pull/121>
+- Upstream ready-for-review PR: <https://github.com/campuspress/divi-accessibility/pull/121>
 - WordPress.org plugin page: <https://wordpress.org/plugins/accessible-divi/>
 - CampusPress public contact page: <https://campuspress.com/contact-us/>
 - CampusPress public contact email: `contact@campuspress.com`
-- Current fork prerelease: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/codex-2.1.0-rc6>
-- Current fork package SHA-256: `4506b9ce5ea62a8f43543e78c36a02fa30ee5451e4cc970076dde3cc26866dea`
+- Current fork release: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/2.1.0>
+- Current fork package SHA-256: `69c25e3bbda5d033dacda63ae4814c263c2afa4583be5ac5635caef36109faef`
 - Upstream issue/PR triage map: `docs/upstream-triage-map.md`
 - WordPress.org status: closed as of 2020-05-12, unavailable for download, closure reason `Author Request`
 - Current strategy: dual track
@@ -26,7 +26,7 @@
 
 ## Current Upstream Activity
 
-- `#121` is open, draft, mergeable, and clean.
+- `#121` is open, ready for review, mergeable, and clean.
 - There are no reviews, no assignees, and no requested reviewers on `#121`.
 - The maintainer follow-up comment was posted on 2026-04-16:
   - <https://github.com/campuspress/divi-accessibility/pull/121#issuecomment-4259477492>
@@ -120,7 +120,7 @@ Reason for the request:
 
 - The plugin addresses Divi-specific accessibility gaps.
 - Users are still reporting active accessibility problems upstream.
-- The GitHub repository has an open release-candidate PR for a 2.1.0 maintenance release:
+- The GitHub repository has an open ready-for-review PR for a 2.1.0 maintenance release:
   https://github.com/campuspress/divi-accessibility/pull/121
 - The branch includes a fix for repeated PHP warnings reported in issue #90:
   https://github.com/campuspress/divi-accessibility/issues/90
@@ -143,8 +143,8 @@ Contact attempts:
 Updated code:
 
 - Public repository/PR: https://github.com/campuspress/divi-accessibility/pull/121
-- Fork release/test build: https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/codex-2.1.0-rc6
-- Final runtime verification notes: [insert final verification notes URL or summary]
+- Fork release/test build: https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/2.1.0
+- Final runtime verification notes: `docs/release-2.1.0-pr-notes.md` and `docs/afk-batch-2026-04-24.md`
 
 I am prepared to address any Plugin Review Team findings and update the code to current WordPress.org plugin guidelines before any official release.
 
@@ -157,7 +157,7 @@ Richard George Davis
 Use this only after runtime verification is complete and only if there has still been no maintainer response.
 
 ```text
-Final release-candidate follow-up for `#121`.
+Final maintained-fork 2.1.0 follow-up for `#121`.
 
 Runtime verification is now complete:
 

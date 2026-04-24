@@ -2,58 +2,59 @@
 
 Prepared: 2026-04-24
 
-Use these comments after publishing the current package as `codex-2.1.0-rc6` or final `2.1.0`.
+Use these comments for final `2.1.0` upstream issue closeout.
 
-Current local package:
+Final maintained-fork release:
 
-- `packaged/divi-accessibility-2.1.0.zip`
-- SHA-256: `4506b9ce5ea62a8f43543e78c36a02fa30ee5451e4cc970076dde3cc26866dea`
+- Release: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/2.1.0>
+- Zip: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/download/2.1.0/divi-accessibility-2.1.0.zip>
+- SHA-256: `69c25e3bbda5d033dacda63ae4814c263c2afa4583be5ac5635caef36109faef`
 
-## Close Now
+## Fixed / Request Maintainer Closure
 
-### Issue #112
+### Issue #90
 
-Action: comment and close.
+Action: comment and close if permission allows; otherwise ask maintainers to close.
 
 ```text
-Closing this as addressed by the 2.1.0 release-candidate work in #121.
+Final 2.1.0 follow-up:
 
-Verified in the current local package:
-- slider arrows expose keyboard-operable controls with meaningful labels
-- slider dots expose button semantics, "Go to slide N" labels, and active-dot state
-- Space/Enter activation works for the slider controls tested on the Divi 5 module page
+This is fixed by #121 and included in the final maintained-fork 2.1.0 release. The `tota11y` setting is now initialized/cast before use, so the undefined-variable path reported here is addressed.
 
-Current package SHA-256: 4506b9ce5ea62a8f43543e78c36a02fa30ee5451e4cc970076dde3cc26866dea
+Release: https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/2.1.0
+Zip SHA-256: 69c25e3bbda5d033dacda63ae4814c263c2afa4583be5ac5635caef36109faef
+
+Maintainers: please close this as fixed by #121 after review.
 ```
 
-### Issue #114
+### Issue #96
 
-Action: comment and close.
+Action: comment and close if permission allows; otherwise ask maintainers to close.
 
 ```text
-Closing this as addressed by the 2.1.0 release-candidate work in #121.
+Final 2.1.0 follow-up:
 
-Verified in the current local package:
-- contact-form invalid submit syncs aria-required and aria-invalid state
-- contact-form feedback uses live-region semantics for assistive-technology announcement
-- async rerender behavior keeps the validation state in sync after Divi updates the form markup
+Divi 5 support is implemented in #121 and included in the final maintained-fork 2.1.0 release. Final runtime gates passed for Divi 5 Visual Builder setting visibility, save/reopen persistence for both module-level accessibility toggles, frontend output for saved toggles, and D4-to-D5 legacy accessibility attribute behavior.
 
-Current package SHA-256: 4506b9ce5ea62a8f43543e78c36a02fa30ee5451e4cc970076dde3cc26866dea
+Release: https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/2.1.0
+Zip SHA-256: 69c25e3bbda5d033dacda63ae4814c263c2afa4583be5ac5635caef36109faef
+
+Maintainers: please close this as fixed by #121 after review.
 ```
 
-### Issue #107
+### Issue #88
 
-Action: comment and close.
+Action: comment and close if permission allows; otherwise ask maintainers to close.
 
 ```text
-Closing this tracking issue as complete from the release-prep side.
+Final 2.1.0 follow-up:
 
-The remaining upstream PR/issue disposition is now documented in the 2.1.0 triage map:
-- #121 remains the canonical release-candidate PR
-- stale/dependency PRs are listed separately from 2.1.0 release blockers
-- older issue closure candidates and validation-needed reports are mapped for maintainer review
+This is fixed by #121 and included in the final maintained-fork 2.1.0 release. The module accessibility toggles were verified in Divi 5 Visual Builder after save/reopen, and frontend output was verified for both saved `Hide From Screen Readers` and `Show For Screen Readers Only` states. Legacy D4-authored `hide_aria_element` and `show_for_screen_readers_only` attributes were also verified in migrated Divi 5 block content.
 
-Remaining cleanup that requires repository maintainer/admin access can continue from that triage map rather than this issue.
+Release: https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/2.1.0
+Zip SHA-256: 69c25e3bbda5d033dacda63ae4814c263c2afa4583be5ac5635caef36109faef
+
+Maintainers: please close this as fixed by #121 after review.
 ```
 
 ## Validation Comments, Do Not Close Yet
@@ -63,7 +64,7 @@ Remaining cleanup that requires repository maintainer/admin access can continue 
 ```text
 Follow-up from the latest 2.1.0 runtime pass:
 
-The current package includes additional navbar/mobile-menu fixes after the earlier RC3 note:
+The final maintained-fork 2.1.0 package includes additional navbar/mobile-menu fixes after the earlier RC notes:
 - submenu focus state keeps visible submenu state and aria-expanded in sync
 - Divi Pixel mobile headers now sync aria-expanded from the actual menu state
 - mobile menu screen-reader isolation is restored on close
@@ -75,7 +76,8 @@ Runtime-tested active plugin context:
 
 Known limit from testing: WooCommerce store-only/coming-soon responses that do not print normal footer scripts cannot run footer-enqueued Divi Accessibility JavaScript on those responses.
 
-Current package SHA-256: 4506b9ce5ea62a8f43543e78c36a02fa30ee5451e4cc970076dde3cc26866dea
+Release: https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/2.1.0
+Zip SHA-256: 69c25e3bbda5d033dacda63ae4814c263c2afa4583be5ac5635caef36109faef
 
 I am keeping this open because the reporter's exact site/header setup may differ. Useful validation would be Divi version, header/menu implementation, active menu-related plugins, and whether submenu visibility plus screen-reader announcement behavior is fixed.
 ```
@@ -83,9 +85,9 @@ I am keeping this open because the reporter's exact site/header setup may differ
 ### Issue #91
 
 ```text
-This should be covered by the current 2.1.0 release-candidate work in #121, but I would like reporter/maintainer validation before closing.
+This should be covered by the final 2.1.0 work in #121, but I would like reporter/maintainer validation before closing.
 
-The current package now:
+The final package now:
 - syncs submenu visibility and aria-expanded for keyboard-opened submenus
 - syncs mobile menu aria-expanded from the actual open menu state
 - observes third-party menu class changes so alternate/mobile headers such as Divi Pixel do not leave stale aria-expanded values
@@ -93,43 +95,47 @@ The current package now:
 
 Verified against Divi Pixel 2.50.0 and 2.50.1 mobile-header setups.
 
-Current package SHA-256: 4506b9ce5ea62a8f43543e78c36a02fa30ee5451e4cc970076dde3cc26866dea
+Release: https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/2.1.0
+Zip SHA-256: 69c25e3bbda5d033dacda63ae4814c263c2afa4583be5ac5635caef36109faef
 ```
 
 ### Issue #51
 
 ```text
-This may be fixed by the current 2.1.0 mobile-menu rewrite in #121, but it needs validation against the original header/setup before closing.
+This may be fixed by the final 2.1.0 mobile-menu rewrite in #121, but it needs validation against the original header/setup before closing.
 
-The current package improves mobile menu keyboard handling by:
+The final package improves mobile menu keyboard handling by:
 - applying button semantics and tabindex to Divi and Divi Pixel menu controls
 - supporting Enter/Space activation on delegated mobile controls
 - syncing from the actual open menu state instead of toggling an internal flag
 - observing third-party class changes when alternate headers update state outside the normal click path
 
-Current package SHA-256: 4506b9ce5ea62a8f43543e78c36a02fa30ee5451e4cc970076dde3cc26866dea
+Release: https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/2.1.0
+Zip SHA-256: 69c25e3bbda5d033dacda63ae4814c263c2afa4583be5ac5635caef36109faef
 ```
 
 ### Issue #71
 
 ```text
-This may be fixed by the current 2.1.0 mobile-menu state rewrite in #121, but it needs reporter-style validation before closing.
+This may be fixed by the final 2.1.0 mobile-menu state rewrite in #121, but it needs reporter-style validation before closing.
 
-The current package no longer relies on an internal "opened" flag that can drift from Divi/third-party menu state. It now syncs aria-expanded and content isolation from the actual open classes, and observes menu class changes made by alternate headers such as Divi Pixel.
+The final package no longer relies on an internal "opened" flag that can drift from Divi/third-party menu state. It now syncs aria-expanded and content isolation from the actual open classes, and observes menu class changes made by alternate headers such as Divi Pixel.
 
 Verified open/close behavior with:
 - Divi Pixel 2.50.0 on one local Divi 5 test site
 - Divi Pixel 2.50.1 on a second local Divi 5 test site
 
-Current package SHA-256: 4506b9ce5ea62a8f43543e78c36a02fa30ee5451e4cc970076dde3cc26866dea
+Release: https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/2.1.0
+Zip SHA-256: 69c25e3bbda5d033dacda63ae4814c263c2afa4583be5ac5635caef36109faef
 ```
 
 ### Issue #69
 
 ```text
-Partial follow-up from the 2.1.0 release-candidate work in #121:
+Partial follow-up from the final 2.1.0 work in #121:
 
-The current package improves accessible names for default header and menu search/cart controls, and this has been included in browser runtime checks. However, I would keep this issue open until more Theme Builder/menu-module variants are tested because the original report is specifically about custom Theme Builder header output.
+The final package improves accessible names for default header and menu search/cart controls, and this has been included in browser runtime checks. However, I would keep this issue open until more Theme Builder/menu-module variants are tested because the original report is specifically about custom Theme Builder header output.
 
-Current package SHA-256: 4506b9ce5ea62a8f43543e78c36a02fa30ee5451e4cc970076dde3cc26866dea
+Release: https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/2.1.0
+Zip SHA-256: 69c25e3bbda5d033dacda63ae4814c263c2afa4583be5ac5635caef36109faef
 ```

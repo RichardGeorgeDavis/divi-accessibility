@@ -91,6 +91,8 @@ This branch prepares Divi Accessibility `2.1.0` as a broad compatibility and mod
 - `npm run lint`: pass
 - `npm run package`: pass
 - zip content inspection: pass
+- final maintained-fork release: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/2.1.0>
+- final zip asset: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/download/2.1.0/divi-accessibility-2.1.0.zip>
 - current package SHA-256: `69c25e3bbda5d033dacda63ae4814c263c2afa4583be5ac5635caef36109faef`
 - Divi 5 Visual Builder save/reopen persistence: pass
 - Divi 5 frontend output for saved module accessibility toggles: pass
@@ -100,10 +102,10 @@ This branch prepares Divi Accessibility `2.1.0` as a broad compatibility and mod
 ## Handover Notes
 
 - draft tester comments are already posted on `#121`
-- current downloadable fork asset is `codex-2.1.0-rc7`: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/codex-2.1.0-rc7>
-- current zip asset: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/download/codex-2.1.0-rc7/divi-accessibility-2.1.0.zip>
+- current downloadable fork asset is final `2.1.0`: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/2.1.0>
+- current zip asset: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/download/2.1.0/divi-accessibility-2.1.0.zip>
 - older `codex-2.1.0-rc1`, `codex-2.1.0-rc2`, `codex-2.1.0-rc3`, `codex-2.1.0-rc4`, and `codex-2.1.0-rc5` builds should be treated as superseded
-- `codex-2.1.0-rc6` is superseded by the Divi 5 frontend render-block follow-up fix
+- `codex-2.1.0-rc6` is superseded by the Divi 5 frontend render-block follow-up fix, and `codex-2.1.0-rc7` is superseded by final `2.1.0`
 - takeover/adoption package is documented in `docs/takeover-adoption-package.md`
 - upstream issue/PR triage map is documented in `docs/upstream-triage-map.md`
 - AFK batch evidence is documented in `docs/afk-batch-2026-04-24.md`

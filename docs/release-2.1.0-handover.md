@@ -13,16 +13,16 @@ Release `2.1.0` is the compatibility and modernization release for Divi Accessib
 - Working branch: `codex/divi4-divi5-style-compat`
 - Upstream base: `origin/master`
 - Current release target: `2.1.0`
-- Upstream PR head at 2026-04-24 status check: `75003ef`
-- Upstream draft PR: `#121` <https://github.com/campuspress/divi-accessibility/pull/121>
+- Upstream PR head at final release: `2ce67b8`
+- Upstream ready-for-review PR: `#121` <https://github.com/campuspress/divi-accessibility/pull/121>
 - Takeover/adoption package: `docs/takeover-adoption-package.md`
 - Upstream issue/PR triage map: `docs/upstream-triage-map.md`
 - AFK batch evidence: `docs/afk-batch-2026-04-24.md`
-- Downloadable packaged test build:
-  - current release page: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/codex-2.1.0-rc6>
-  - current zip asset: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/download/codex-2.1.0-rc6/divi-accessibility-2.1.0.zip>
-  - current zip SHA-256: `4506b9ce5ea62a8f43543e78c36a02fa30ee5451e4cc970076dde3cc26866dea`
-  - previous superseded builds: `codex-2.1.0-rc1`, `codex-2.1.0-rc2`, `codex-2.1.0-rc3`, `codex-2.1.0-rc4`, `codex-2.1.0-rc5`
+- Downloadable maintained-fork release:
+  - current release page: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/2.1.0>
+  - current zip asset: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/download/2.1.0/divi-accessibility-2.1.0.zip>
+  - current zip SHA-256: `69c25e3bbda5d033dacda63ae4814c263c2afa4583be5ac5635caef36109faef`
+  - previous superseded builds: `codex-2.1.0-rc1`, `codex-2.1.0-rc2`, `codex-2.1.0-rc3`, `codex-2.1.0-rc4`, `codex-2.1.0-rc5`, `codex-2.1.0-rc6`, `codex-2.1.0-rc7`
 
 ## Commit Lineage On This Branch
 
@@ -130,23 +130,17 @@ Release `2.1.0` is the compatibility and modernization release for Divi Accessib
 
 ## Next Steps
 
-1. Use `codex-2.1.0-rc6` for the refreshed fork prerelease asset.
-2. Run the remaining runtime checks:
-   - Divi 5 toggle persistence after save/reopen
-   - frontend verification for search/cart controls on alternate header/menu configurations; Divi Pixel mobile-menu isolation is now covered on two local Divi Pixel test sites
-   - Divi 4 backward compatibility
-   - one migrated D4-to-D5 content case
-3. Update `docs/release-2.1.0-pr-notes.md` with final runtime results.
-4. Post the final runtime result summary to upstream PR `#121`.
-5. Ask a maintainer to close issue `#90` if satisfied with the fix now in `#121`.
-6. Decide whether the remaining older open PRs (`#111`, `#108`, `#106`, `#105`, `#99`, `#98`) should be folded into `#121` or kept as follow-up work.
-7. If there is still no upstream response after runtime verification, use `docs/takeover-adoption-package.md` to contact CampusPress and prepare the WordPress.org adoption request.
+1. Use final `2.1.0` as the maintained-fork release asset.
+2. Keep upstream PR `#121` as the canonical CampusPress merge path.
+3. Ask maintainers to close issues `#90`, `#96`, and `#88` after reviewing/merging `#121`.
+4. Keep broader validation issues open until reporters or maintainers confirm their original cases.
+5. Keep older open PRs as follow-up work unless maintainers explicitly ask to fold any into `#121`.
+6. If there is still no upstream response, use `docs/takeover-adoption-package.md` to contact CampusPress and prepare the WordPress.org adoption request.
 
 ## Known Residual Risks
 
-- Full Divi 4/Divi 5 runtime verification still depends on manual WordPress and builder checks.
 - Search/cart control markup varies by theme/header configuration, so runtime validation should still include default header and menu-module variants.
 - WooCommerce store-only/coming-soon Cart, Checkout, and Shop output on the local WooCommerce test site does not print the normal footer scripts; this prevents any footer-enqueued plugin JS from running on those responses.
 - Contact form checkbox behavior should be verified against both checkbox list and boolean checkbox field types.
-- The `codex-2.1.0-rc1` downloadable test build asset was generated before the later `de40c78` tota11y follow-up fix, `codex-2.1.0-rc2` was generated before the issue `#122` submenu state fix, `codex-2.1.0-rc3` was generated before the tabs panel state fix, `codex-2.1.0-rc4` was generated before the maintained-fork metadata cleanup, and `codex-2.1.0-rc5` was generated before the Divi Pixel mobile-menu observer and `#et-main-area` fallback fixes. External testers should use the current local package or the next published fork asset.
+- All `codex-2.1.0-rc*` assets are superseded by final `2.1.0`.
 - WordPress.org lists `accessible-divi` as permanently closed by author request, so official adoption may require CampusPress approval or may be denied by the Plugin Review Team.

@@ -51,10 +51,10 @@
 ## Remaining Tasks To Perform
 
 - verify search/cart controls on alternate header/menu configurations; Divi Pixel mobile-menu isolation has passed on two local Divi Pixel test sites
-- refreshed post-RC6 package asset published as `codex-2.1.0-rc7`
-- post final upstream PR `#121` runtime summary after the refreshed asset is available
-- convert upstream PR `#121` from draft to ready for review after the final summary is posted
-- ask a maintainer to close upstream issue `#90` after reviewing the fix already linked from `#121`
+- final maintained-fork release published as `2.1.0`
+- post final upstream PR `#121` release summary after final `2.1.0` publication
+- upstream PR `#121` is ready for review and remains the canonical CampusPress merge path
+- ask maintainers to close upstream issues `#90`, `#96`, and `#88` after reviewing the fixes linked from `#121`
 
 ## Static Checks
 
@@ -69,9 +69,8 @@
 
 - build `packaged/divi-accessibility-2.1.0.zip`
 - current package SHA-256: `69c25e3bbda5d033dacda63ae4814c263c2afa4583be5ac5635caef36109faef`
-- refreshed fork prerelease asset: `codex-2.1.0-rc7`
-- release page: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/codex-2.1.0-rc7>
-- zip asset: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/download/codex-2.1.0-rc7/divi-accessibility-2.1.0.zip>
+- final release page: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/2.1.0>
+- zip asset: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/download/2.1.0/divi-accessibility-2.1.0.zip>
 - confirm zip contains:
   - `admin/`
   - `includes/`
