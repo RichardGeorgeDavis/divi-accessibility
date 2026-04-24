@@ -58,6 +58,7 @@ Important constraint:
 | 2026-04-09 | GitHub issue | `#90` | Fix linked back to `#121`; issue could not be closed without maintainer permission. |
 | 2026-04-16 | GitHub PR | `#121` | Maintainer follow-up posted with concrete review/merge asks. |
 | 2026-04-24 | GitHub status check | `#121`, `#122` | No maintainer response found. |
+| 2026-04-24 | GitHub PR | `#121` | RC2 package/smoke verification progress posted with remaining runtime gates. |
 | TBD | Direct contact | `contact@campuspress.com` / CampusPress contact page | Request GitHub maintainer access or WordPress.org transfer. |
 | TBD | Email | `plugins@wordpress.org` | Submit adoption request if direct maintainer contact does not resolve access. |
 
@@ -128,6 +129,8 @@ Contact attempts:
 - 2026-04-09: Linked the issue #90 fix to the release-candidate PR.
 - 2026-04-16: Posted a maintainer follow-up on PR #121 with concrete review/merge asks.
 - 2026-04-24: Rechecked PR and issue activity; no maintainer response found.
+- 2026-04-24: Posted RC2 package/smoke verification progress:
+  https://github.com/campuspress/divi-accessibility/pull/121#issuecomment-4311364696
 - Direct maintainer contact attempt: [fill in date/channel/result before sending]
 
 Updated code:

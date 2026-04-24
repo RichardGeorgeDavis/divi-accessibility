@@ -94,6 +94,8 @@ Release `2.1.0` is the compatibility and modernization release for Divi Accessib
   - `#100`
 - issue `#90` is fixed in code and linked to `#121`, but could not be closed directly due upstream permissions
 - maintainer follow-up posted on `#121` on 2026-04-16 with review, merge, and issue-closure asks
+- RC2 verification progress posted on `#121` on 2026-04-24:
+  - <https://github.com/campuspress/divi-accessibility/pull/121#issuecomment-4311364696>
 - upstream issue `#122` opened on 2026-04-14 and should be included in the runtime follow-up matrix
 
 ## Next Steps
