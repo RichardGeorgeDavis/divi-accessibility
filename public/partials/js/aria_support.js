@@ -185,8 +185,8 @@ jQuery(document).ready(function($) {
 			'aria-expanded': 'true',
 			tabindex: 0
 		});
-		// Reset all tabs to be aria-hidden="true".
-		$('#' + namespace + ' .et_pb_tab').attr('aria-hidden', 'true');
+		// Reset all tab panels inside the current tabs module.
+		$('[data-da11y-id="' + namespace + '"] .et_pb_tab').attr('aria-hidden', 'true');
 		// Label active tab panel as aria-hidden="false".
 		$('[aria-labelledby="' + id + '"]').attr('aria-hidden', 'false');
 	});

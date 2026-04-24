@@ -18,10 +18,10 @@ Release `2.1.0` is the compatibility and modernization release for Divi Accessib
 - Takeover/adoption package: `docs/takeover-adoption-package.md`
 - AFK batch evidence: `docs/afk-batch-2026-04-24.md`
 - Downloadable packaged test build:
-  - current release page: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/codex-2.1.0-rc3>
-  - current zip asset: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/download/codex-2.1.0-rc3/divi-accessibility-2.1.0.zip>
-  - current zip SHA-256: `55754a61bf09ca1e576699efa6edfec44f479cca57149af8f191e322c68dbcb4`
-  - previous superseded builds: `codex-2.1.0-rc1`, `codex-2.1.0-rc2`
+  - current release page: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/codex-2.1.0-rc4>
+  - current zip asset: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/download/codex-2.1.0-rc4/divi-accessibility-2.1.0.zip>
+  - current zip SHA-256: `2880f061195bec6cd15dc4873ad977443e6aa3b8c6bd0c310a1c12557aef6253`
+  - previous superseded builds: `codex-2.1.0-rc1`, `codex-2.1.0-rc2`, `codex-2.1.0-rc3`
 
 ## Commit Lineage On This Branch
 
@@ -74,6 +74,11 @@ Release `2.1.0` is the compatibility and modernization release for Divi Accessib
   - parent menu focus opens the submenu and sets `aria-expanded="true"`
   - Escape closes the submenu and restores `aria-expanded="false"`
   - mobile menu screen-reader isolation still opens and restores correctly
+- Divi 5 browser-driven module page follow-up on `https://master.local/divi-draft/`:
+  - slider controls and dots expose keyboard roles, labels, and active-dot state
+  - contact-form invalid submit syncs `aria-required`, `aria-invalid`, and live-region state
+  - toggle/accordion controls expose button semantics and matching expanded state
+  - tabs keyboard navigation keeps panel `aria-hidden` synchronized after the scoped selector fix
 - targeted `php -l` and `node --check`
 - manual visual pass:
   - frontend tabs working
@@ -104,10 +109,10 @@ Release `2.1.0` is the compatibility and modernization release for Divi Accessib
 
 ## Next Steps
 
-1. Publish or share `codex-2.1.0-rc3` as the refreshed fork prerelease asset.
+1. Publish or share `codex-2.1.0-rc4` as the refreshed fork prerelease asset.
 2. Run the remaining runtime checks:
    - Divi 5 toggle persistence after save/reopen
-   - frontend verification for slider, mobile menu, search/cart controls, and contact forms
+   - frontend verification for search/cart controls on alternate header/menu configurations
    - Divi 4 backward compatibility
    - one migrated D4-to-D5 content case
 3. Update `docs/release-2.1.0-pr-notes.md` with final runtime results.
@@ -121,5 +126,5 @@ Release `2.1.0` is the compatibility and modernization release for Divi Accessib
 - Full Divi 4/Divi 5 runtime verification still depends on manual WordPress and builder checks.
 - Search/cart control markup varies by theme/header configuration, so runtime validation should include default header and menu-module variants.
 - Contact form checkbox behavior should be verified against both checkbox list and boolean checkbox field types.
-- The `codex-2.1.0-rc1` downloadable test build asset was generated before the later `de40c78` tota11y follow-up fix, and `codex-2.1.0-rc2` was generated before the issue `#122` submenu state fix. External testers should use `codex-2.1.0-rc3`.
+- The `codex-2.1.0-rc1` downloadable test build asset was generated before the later `de40c78` tota11y follow-up fix, `codex-2.1.0-rc2` was generated before the issue `#122` submenu state fix, and `codex-2.1.0-rc3` was generated before the tabs panel state fix. External testers should use `codex-2.1.0-rc4`.
 - WordPress.org lists `accessible-divi` as permanently closed by author request, so official adoption may require CampusPress approval or may be denied by the Plugin Review Team.

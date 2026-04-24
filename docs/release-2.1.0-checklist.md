@@ -16,6 +16,11 @@
   - focusing a parent menu item now keeps the submenu visible and sets `aria-expanded="true"`
   - Escape restores `aria-expanded="false"` and hides the submenu
   - mobile-menu screen-reader isolation still opens and restores correctly
+- Divi 5 module runtime follow-up completed on `https://master.local/divi-draft/`:
+  - slider controls and dots expose keyboard roles, labels, and active-dot state
+  - contact-form invalid submit syncs required/invalid/live-region state
+  - toggle/accordion controls expose button semantics and matching expanded state
+  - tabs keyboard navigation now keeps selected tab state and panel `aria-hidden` state synchronized
 - Still pending:
   - persistence checks after save/reopen
   - broader module-type coverage across Divi 4, Divi 5, and migrated D4-to-D5 content
@@ -24,7 +29,7 @@
 
 - complete deeper packaged-plugin behavior checks beyond the install/activate smoke pass
 - verify Divi 5 toggle persistence after save/reopen
-- verify slider, search/cart controls, and contact form behaviors on real pages
+- verify search/cart controls on alternate header/menu configurations
 - verify Divi 4 backward compatibility
 - verify one migrated D4-to-D5 content case
 - update PR notes with final runtime results only after the checks above are complete
@@ -78,6 +83,7 @@
   - `hide_aria_element`
   - `show_for_screen_readers_only`
 - navbar/submenu behavior is checked against the issue `#122` complaint pattern: pass on the Divi 5 homepage after the focus/`aria-expanded` fix
+- tabs keyboard navigation keeps tab controls and panels synchronized: pass on the Divi draft module page after the scoped panel-reset fix
 
 ## Reviewer Notes
 
