@@ -15,11 +15,12 @@
  * Plugin Name:       Divi Accessibility
  * Plugin URI:        https://github.com/RichardGeorgeDavis/divi-accessibility
  * Description:       Improve Divi accessibility across Divi 4 and Divi 5 with WCAG-aligned fixes.
- * Version:           2.1.0
+ * Version:           2.1.1
  * Author:            CampusPress, Richard George Davis
  * Author URI:        https://github.com/RichardGeorgeDavis
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ * Update URI:        https://github.com/RichardGeorgeDavis/divi-accessibility
  * Text Domain:       divi-accessibility
  * Domain Path:       /languages
  */
@@ -30,7 +31,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 if ( ! defined( 'DA11Y_VERSION' ) ) {
-	define( 'DA11Y_VERSION', '2.1.0' );
+	define( 'DA11Y_VERSION', '2.1.1' );
 }
 
 // Used for referring to the plugin file or basename.

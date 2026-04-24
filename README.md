@@ -10,6 +10,8 @@ This fork is maintained by Richard George Davis as the practical release path wh
 
 Current fork releases are published at [RichardGeorgeDavis/divi-accessibility](https://github.com/RichardGeorgeDavis/divi-accessibility/releases). The WordPress.org listing for `accessible-divi` is closed by author request, so this fork should not be treated as an official WordPress.org continuation unless CampusPress or WordPress.org grants ownership or committer access.
 
+The plugin includes a native GitHub Releases updater for this maintained fork. Sites must install `2.1.1` or later once; after that, future stable fork releases with a packaged zip asset appear through WordPress' normal Plugins update screen.
+
 ## Community
 
 + Ask questions in [GitHub Discussions Q&A](https://github.com/RichardGeorgeDavis/divi-accessibility/discussions/categories/q-a)
@@ -30,7 +32,12 @@ Current fork releases are published at [RichardGeorgeDavis/divi-accessibility](h
 + Mobile menu screen-reader isolation while the menu is open
 + Skip link, focus outline, and screen-reader-text fixes tuned for Divi markup
 + Plugin-owned compatibility styling for Divi 4 and Divi 5 without importing theme styles wholesale
++ Native GitHub Releases updater for packaged fork releases
 + Tota11y integration for admin-side review
+
+## Release 2.1.1
+
+`2.1.1` adds the maintained fork's native GitHub Releases updater. This is the bootstrap updater release: sites need to install `2.1.1` manually once, then future stable fork releases can appear in WordPress' normal Plugins update screen when the GitHub Release includes an exact packaged zip asset named like `divi-accessibility-2.1.2.zip`.
 
 ## Release 2.1.0
 
@@ -46,7 +53,7 @@ This release line focuses on making Divi 5 a first-class supported target while 
 
 ## Runtime-Tested Integrations
 
-The `2.1.0` release candidate has been browser-tested against these active third-party plugins in local Divi 5 sites:
+The `2.1.0` release line has been browser-tested against these active third-party plugins in local Divi 5 sites:
 
 + Divi Pixel `2.50.0` and `2.50.1`: alternate/mobile header hamburger behavior, menu open/close state, `aria-expanded` sync, and screen-reader isolation while the mobile menu is open
 + WooCommerce `10.7.0`: account/cart/shop page rendering and compatibility with Divi Accessibility frontend payloads where the normal theme footer scripts are printed
@@ -72,6 +79,8 @@ To build a releaseable package, use `DA11Y_RELEASE_VERSION=X.X.X DA11Y_ASSUME_YE
 The release version can either be supplied via `DA11Y_RELEASE_VERSION=x.x.x`, or it will be inferred from the version-bearing files already in the repo. If the version number is inferred, the highest existing version is used.
 
 If the final resolved release version is different from the repo metadata, the prerelease script can update those files automatically. Use `-y` to skip prompts.
+
+GitHub release updates require the packaged zip asset, not GitHub's generated source archive. For each stable release, attach `packaged/divi-accessibility-X.X.X.zip` to the GitHub Release with the asset name `divi-accessibility-X.X.X.zip`; the plugin updater will ignore drafts, prereleases, and releases that do not include a matching packaged zip.
 
 
 ## Resources

@@ -115,6 +115,28 @@ class Divi_Accessibility {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-divi-accessibility-public.php';
 
+		if ( $this->should_load_updater() ) {
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-divi-accessibility-updater.php';
+		}
+
+	}
+
+	/**
+	 * Determine whether the GitHub updater needs to be loaded.
+	 *
+	 * @since 2.1.1
+	 * @return bool True when WordPress may check or apply plugin updates.
+	 */
+	private function should_load_updater() {
+		if ( is_admin() ) {
+			return true;
+		}
+
+		if ( function_exists( 'wp_doing_cron' ) && wp_doing_cron() ) {
+			return true;
+		}
+
+		return defined( 'WP_CLI' ) && WP_CLI;
 	}
 
 	/**
@@ -142,6 +164,11 @@ class Divi_Accessibility {
 		add_filter( 'et_builder_get_child_modules', array( $plugin_admin, 'divi_builder_add_accessibility_group' ), 15, 2 );
 		add_action( 'divi_visual_builder_assets_before_enqueue_scripts', array( $plugin_admin, 'enqueue_divi_5_visual_builder_assets' ) );
 		add_filter( 'divi.conversion.moduleLibrary.conversionMap', array( $plugin_admin, 'register_divi_5_accessibility_conversion_map' ) );
+
+		if ( class_exists( 'Divi_Accessibility_Updater' ) ) {
+			$plugin_updater = new Divi_Accessibility_Updater( DA11Y_FILE, $this->version );
+			$plugin_updater->register_hooks();
+		}
 	}
 
 	/**

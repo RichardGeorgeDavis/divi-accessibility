@@ -3,7 +3,7 @@ Contributors: campuspress, JoeFusco, alexstine, vebailovity
 Tags: divi, accessibility, accessible, navigation, wcag, a11y, section508, focus, labels, aria
 Requires at least: 6.0
 Tested up to: 6.9.4
-Stable tag: 2.1.0
+Stable tag: 2.1.1
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
@@ -18,6 +18,7 @@ A WordPress plugin that improves Divi accessibility across Divi 4 and Divi 5 wit
 * Improves slider controls, search/cart naming, mobile menu behavior, and contact form feedback
 * Adds reduced motion support and version-scoped plugin-owned compatibility styling
 * Fixes Divi screen-reader-text behavior, skip links, focus outlines, duplicate menu IDs, and icon handling
+* Checks this maintained fork's stable GitHub Releases for packaged plugin updates through WordPress' normal Plugins update screen
 * Includes Tota11y integration for admin-side review
 
 = Current Status =
@@ -25,6 +26,8 @@ A WordPress plugin that improves Divi accessibility across Divi 4 and Divi 5 wit
 This fork is maintained by Richard George Davis while official access is unresolved. The original plugin was created by CampusPress, and the upstream release-candidate PR remains available for original-maintainer review.
 
 This fork should not be treated as an official WordPress.org continuation unless CampusPress or WordPress.org grants ownership or committer access.
+
+Sites must install version 2.1.1 or later once. After that, future stable fork releases are checked through WordPress' normal Plugins update screen when the GitHub Release includes a packaged zip asset named like divi-accessibility-2.2.0.zip.
 
 = Community =
 
@@ -71,6 +74,7 @@ Originally created by [CampusPress](https://campuspress.com). This maintained fo
 1. Upload 'divi-accessibility' to the '/wp-content/plugins/' directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. Click on the new menu item "Accessibility" under the Divi menu for settings
+4. Install version 2.1.1 or later once to enable future maintained-fork updates through the normal WordPress Plugins update screen
 
 == Frequently Asked Questions ==
 
@@ -82,6 +86,10 @@ Yes. Version 2.1.0 adds Divi 5 compatibility work while keeping Divi 4 support i
 
 Yes. The plugin keeps the legacy Divi 4 hooks and frontend fixes, and adds compatibility layers only where Divi 5 requires a separate path.
 
+= How do GitHub release updates work? =
+
+Version 2.1.1 is the bootstrap updater release. After a site has 2.1.1 or later installed, the plugin checks the latest stable release at github.com/RichardGeorgeDavis/divi-accessibility and exposes newer packaged releases through WordPress' normal plugin updater. Drafts, prereleases, GitHub source archives, and releases without a packaged divi-accessibility-*.zip asset are ignored.
+
 
 == Screenshots ==
 
@@ -89,6 +97,11 @@ Yes. The plugin keeps the legacy Divi 4 hooks and frontend fixes, and adds compa
 
 
 == Changelog ==
+
+= 2.1.1 =
+* Added native GitHub Releases update integration for future packaged fork releases.
+* Limited updater packages to exact matching packaged release zip assets.
+* Avoided sending site URLs in GitHub updater request headers.
 
 = 2.1.0 =
 * Added Divi 5 module-level Accessibility Settings support while preserving Divi 4 compatibility.
