@@ -31,6 +31,10 @@ This branch prepares Divi Accessibility `2.1.0` as a broad compatibility and mod
 - `npm run i18n`
 - `npm run release`
 - package zip generation and zip content inspection
+- packaged-plugin install, activate, deactivate, and reactivate smoke check on LocalWP:
+  - WordPress `6.9.4`
+  - Divi `5.3.3`
+  - frontend response includes Divi Accessibility `2.1.0` payload
 - targeted `php -l` and `node --check`
 - manual visual pass:
   - frontend tabs working
@@ -40,11 +44,11 @@ This branch prepares Divi Accessibility `2.1.0` as a broad compatibility and mod
 
 ## Still Needs Integration Review
 
-- packaged plugin install/activate check in WordPress
 - Divi 4 frontend smoke test
 - Divi 5 frontend smoke test
 - Divi 5 Visual Builder persistence check for the two module-level toggles
 - migrated D4-to-D5 content check for legacy accessibility attrs
+- navbar/submenu visibility and announcement check related to upstream issue `#122`
 - maintainer closure of upstream issue `#90` after reviewing the now-landed fix in `#121`
 
 ## Final Runtime Results
@@ -54,5 +58,9 @@ Pending manual verification. Update this section only after the packaged-plugin 
 ## Handover Notes
 
 - draft tester comments are already posted on `#121`
-- downloadable prerelease test build is already published on the fork
-- if testers require the latest branch head including `de40c78`, publish a refreshed asset before asking for final packaged-plugin verification
+- refreshed downloadable prerelease test build is prepared for the fork:
+  - <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/codex-2.1.0-rc2>
+  - SHA-256: `b9e550840eb807e5d35e4dfc154c24c084f20caf864baf31280616f52c0ff6fc`
+- older `codex-2.1.0-rc1` build should be treated as superseded
+- takeover/adoption package is documented in `docs/takeover-adoption-package.md`
+- AFK batch evidence is documented in `docs/afk-batch-2026-04-24.md`

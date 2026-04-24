@@ -14,11 +14,14 @@
   - Upstream draft PR `#121` has been updated with current summary, testing requests, and packaged-build download links.
   - A downloadable prerelease test build was published on the fork.
   - The `tota11y` undefined-variable fix was folded into the current branch.
+  - Takeover/adoption package added at `docs/takeover-adoption-package.md`.
+  - Packaged-plugin install/activate/deactivate/reactivate smoke passed on a LocalWP Divi 5 site.
 - Still required before upstream integration:
   - Run manual Divi 4 and Divi 5 runtime checks in WordPress.
   - Use the updated PR notes after runtime verification, not the earlier Cursor notes.
   - Complete persistence checks after save/reopen in Divi 5.
   - Complete packaged-plugin validation rather than relying on source-checkout behavior.
+  - Include upstream issue `#122` navbar/submenu behavior in the runtime matrix.
   - Update PR notes with final runtime results only after verification is complete.
   - Use the finalized PR notes for upstream review once verification is complete.
 
@@ -28,21 +31,41 @@
   - `packaged/divi-accessibility-2.1.0.zip` builds successfully.
   - Zip contents were checked for the expected plugin files.
   - The package no longer includes `.DS_Store`.
-- Blocked in this environment:
-  - Local WordPress package install and activation.
-  - Divi 4/Divi 5 runtime matrix execution.
+- Completed in this environment:
+  - Local WordPress package install and activation smoke check on `Master Licenses`.
+  - Local WordPress deactivate/reactivate smoke check.
+  - Frontend response confirms Divi Accessibility payload is rendered for Divi 5.
+- Still blocked or incomplete in this environment:
+  - Divi 4 runtime matrix execution.
+  - Divi 5 Visual Builder save/reopen persistence automation.
 - Current blocker:
-  - Available Local WordPress sites did not have a live database connection during automation attempts.
+  - Deeper builder/runtime verification still needs manual browser interaction and/or a dedicated Divi 4 test site.
 - Manual progress since that automation attempt:
   - visual pass completed for frontend tabs
   - visual pass completed for Divi 5 Visual Builder `Accessibility Settings` visibility
 - Explicit next runtime tasks:
   - install and activate `packaged/divi-accessibility-2.1.0.zip`
+  - publish/use refreshed `codex-2.1.0-rc2` asset for testers
   - verify Divi 5 toggle persistence after save/reopen
   - verify frontend behavior on slider, mobile menu, search/cart controls, and contact forms
+  - verify navbar/submenu behavior related to upstream issue `#122`
   - verify Divi 4 backward compatibility
   - verify one migrated D4-to-D5 content case
-  - refresh/re-upload the packaged artifact if testers need a build that includes `de40c78`
+  - use refreshed packaged artifact `codex-2.1.0-rc2` for any external tester pass
+
+## Phase 1.75: Upstream Adoption / Fork Continuity
+
+- Current status:
+  - Upstream PR `#121` has no maintainer review, assignee, or requested reviewer as of 2026-04-24.
+  - Maintainer follow-up was posted on `#121` on 2026-04-16.
+  - WordPress.org lists `accessible-divi` as closed since 2020-05-12 with closure reason `Author Request`.
+- Adopted path:
+  - dual track: pursue official adoption or maintainer access while keeping the fork usable as the practical release path.
+- Next actions:
+  - complete runtime verification before posting any final readiness claim
+  - if there is still no upstream response after verification, use `docs/takeover-adoption-package.md` to contact CampusPress/original maintainers
+  - prepare a WordPress.org Plugin Review Team adoption request only after direct contact attempts are documented
+  - maintain a renamed fork if official adoption is denied
 
 ## Phase 2: Documentation Refresh
 
@@ -80,14 +103,24 @@
   - Release/package/docs/tooling are substantially more modernized than the pre-`2.1.0` branch state
 - Next structural work after release validation:
   - Implement alt-text sync/override/fallback
+  - Evaluate Divi-specific cherry-picks inspired by `joedolson/wp-accessibility` ([https://github.com/joedolson/wp-accessibility](https://github.com/joedolson/wp-accessibility)), limited to `aria-current` for active menu links, autoplay-video pause/play controls, and alt-text quality heuristics that feed the planned Divi alt-text sync work
+  - Do not port the generic WordPress utility layer, accessibility toolbar, stats, longdesc UI, title stripping, target stripping, or broad overlay/remediation settings
+  - Keep any adopted behavior scoped to Divi-rendered output and existing Divi Accessibility settings
+  - Evaluate a Divi-focused preview review mode inspired by `campuspress/accessible-content` ([https://github.com/campuspress/accessible-content](https://github.com/campuspress/accessible-content)), limited to admin-only preview scanning, issue navigation, and per-post ignored findings
+  - Do not port `accessible-content` wholesale; keep this plugin focused on Divi-specific rendered-output issues
+  - Defer media-library alt/decorative management and Gutenberg-specific editor extensions unless they become necessary for the Divi alt-text sync work
   - Decide whether additional appearance compatibility work should stay in the shared layer or split into clearer Divi 4/Divi 5 stylesheets
   - Expand runtime coverage around migrated D4-to-D5 content
+- Likely first-pass cherry-picks from `wp-accessibility`:
+  - `aria-current="page"` on active nav links, suspicious/invalid/long alt-text heuristics, and optional controls for autoplaying videos without native controls
+- Likely first-pass checks for that future review mode:
+  - missing `alt`, heading skips/multiple `h1`, unlabeled controls, untitled iframes, and duplicate IDs in preview content
 
 ## Handover State
 
 - Current upstream draft PR: `#121`
-- Current branch head: `de40c78`
-- Current downloadable test build: `codex-2.1.0-rc1`
+- Upstream PR head at 2026-04-24 status check: `75003ef`
+- Current downloadable test build: `codex-2.1.0-rc2`
 - Immediate handover action:
   - complete runtime verification
   - update PR notes with final results
