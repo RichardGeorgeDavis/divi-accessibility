@@ -8,8 +8,9 @@
 - WordPress.org plugin page: <https://wordpress.org/plugins/accessible-divi/>
 - CampusPress public contact page: <https://campuspress.com/contact-us/>
 - CampusPress public contact email: `contact@campuspress.com`
-- Current fork prerelease: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/codex-2.1.0-rc4>
-- Current fork package SHA-256: `2880f061195bec6cd15dc4873ad977443e6aa3b8c6bd0c310a1c12557aef6253`
+- Current fork prerelease: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/codex-2.1.0-rc5>
+- Current fork package SHA-256: `dd58cad636706626d8aa0e85b08901ef3ec4d5b32f2478eee1eb0b330d7b5930`
+- Upstream issue/PR triage map: `docs/upstream-triage-map.md`
 - WordPress.org status: closed as of 2020-05-12, unavailable for download, closure reason `Author Request`
 - Current strategy: dual track
   - pursue official adoption or maintainer access
@@ -61,6 +62,7 @@ Important constraint:
 | 2026-04-24 | GitHub PR | `#121` | RC2 package/smoke verification progress posted with remaining runtime gates. |
 | 2026-04-24 | LocalWP/browser verification | `#122` | Reproduced and fixed Divi 5 submenu focus state mismatch; rebuilt package as RC3 candidate. |
 | 2026-04-24 | LocalWP/browser verification | `divi-draft` module page | Reproduced and fixed tabs panel `aria-hidden` mismatch; rebuilt package as RC4 candidate. |
+| 2026-04-24 | Release metadata | maintained fork | Preserved CampusPress creator credit, added current fork maintainer language, normalized GPL-compatible metadata, and documented issue/PR triage map. |
 | TBD | Direct contact | `contact@campuspress.com` / CampusPress contact page | Request GitHub maintainer access or WordPress.org transfer. |
 | TBD | Email | `plugins@wordpress.org` | Submit adoption request if direct maintainer contact does not resolve access. |
 
@@ -135,12 +137,13 @@ Contact attempts:
   https://github.com/campuspress/divi-accessibility/pull/121#issuecomment-4311364696
 - 2026-04-24: Reproduced and fixed one related submenu state issue from #122 in the refreshed branch/package.
 - 2026-04-24: Reproduced and fixed one tabs panel state issue on the Divi draft module page in the refreshed branch/package.
+- 2026-04-24: Added maintained-fork ownership metadata and issue/PR triage map without claiming official WordPress.org continuity.
 - Direct maintainer contact attempt: [fill in date/channel/result before sending]
 
 Updated code:
 
 - Public repository/PR: https://github.com/campuspress/divi-accessibility/pull/121
-- Fork release/test build: https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/codex-2.1.0-rc4
+- Fork release/test build: https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/codex-2.1.0-rc5
 - Final runtime verification notes: [insert final verification notes URL or summary]
 
 I am prepared to address any Plugin Review Team findings and update the code to current WordPress.org plugin guidelines before any official release.

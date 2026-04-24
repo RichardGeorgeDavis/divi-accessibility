@@ -25,6 +25,7 @@ This branch prepares Divi Accessibility `2.1.0` as a broad compatibility and mod
 - added plugin-owned Divi 4/5 compatibility styling
 - fixed package contents, version metadata sync, and npm lint coverage
 - fixed the undefined `tota11y` default path reported in issue `#90`
+- normalized release metadata for the maintained-fork path without relicensing away from GPL compatibility
 
 ## Verification
 
@@ -43,6 +44,7 @@ This branch prepares Divi Accessibility `2.1.0` as a broad compatibility and mod
   - Divi 5 Visual Builder modules display `Accessibility Settings`
 - focused follow-up verification:
   - `php -l public/class-divi-accessibility-public.php` after the `tota11y` fix
+  - `php -l divi-accessibility.php` and `php -l admin/class-divi-accessibility-admin.php` after metadata cleanup
   - Divi 5 packaged-plugin browser pass for issue `#122`:
     - focused parent menu opens submenu and sets `aria-expanded="true"`
     - Escape closes submenu and restores `aria-expanded="false"`
@@ -70,8 +72,9 @@ Pending manual verification. Update this section only after the packaged-plugin 
 
 - draft tester comments are already posted on `#121`
 - refreshed downloadable prerelease test build is prepared for the fork:
-  - <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/codex-2.1.0-rc4>
-  - SHA-256: `2880f061195bec6cd15dc4873ad977443e6aa3b8c6bd0c310a1c12557aef6253`
-- older `codex-2.1.0-rc1`, `codex-2.1.0-rc2`, and `codex-2.1.0-rc3` builds should be treated as superseded
+  - <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/codex-2.1.0-rc5>
+  - SHA-256: `dd58cad636706626d8aa0e85b08901ef3ec4d5b32f2478eee1eb0b330d7b5930`
+- older `codex-2.1.0-rc1`, `codex-2.1.0-rc2`, `codex-2.1.0-rc3`, and `codex-2.1.0-rc4` builds should be treated as superseded
 - takeover/adoption package is documented in `docs/takeover-adoption-package.md`
+- upstream issue/PR triage map is documented in `docs/upstream-triage-map.md`
 - AFK batch evidence is documented in `docs/afk-batch-2026-04-24.md`

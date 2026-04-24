@@ -7,19 +7,19 @@
  * registers the activation and deactivation functions, and defines a function
  * that starts the plugin.
  *
- * @link              https://campuspress.com
+ * @link              https://github.com/RichardGeorgeDavis/divi-accessibility
  * @since             1.2.0
  * @package           Divi_Accessibility
  *
  * @wordpress-plugin
  * Plugin Name:       Divi Accessibility
- * Plugin URI:        https://wordpress.org/plugins/accessible-divi/
+ * Plugin URI:        https://github.com/RichardGeorgeDavis/divi-accessibility
  * Description:       Improve Divi accessibility across Divi 4 and Divi 5 with WCAG-aligned fixes.
  * Version:           2.1.0
- * Author:            CampusPress
- * Author URI:        https://campuspress.com
- * License:           GPL-2.0+
- * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
+ * Author:            CampusPress, Richard George Davis
+ * Author URI:        https://github.com/RichardGeorgeDavis
+ * License:           GPL-2.0-or-later
+ * License URI:       https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * Text Domain:       divi-accessibility
  * Domain Path:       /languages
  */

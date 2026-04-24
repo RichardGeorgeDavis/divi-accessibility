@@ -27,15 +27,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/campuspress/divi-accessibility.git"
+    "url": "git+https://github.com/RichardGeorgeDavis/divi-accessibility.git"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Richard George Davis",
+  "license": "GPL-2.0-or-later",
   "bugs": {
-    "url": "https://github.com/campuspress/divi-accessibility/issues"
+    "url": "https://github.com/RichardGeorgeDavis/divi-accessibility/issues"
   },
-  "homepage": "https://github.com/campuspress/divi-accessibility#readme",
+  "homepage": "https://github.com/RichardGeorgeDavis/divi-accessibility#readme",
   "devDependencies": {
     "@eslint/js": "^9.7.0",
     "adm-zip": "^0.5.14",

@@ -21,6 +21,11 @@
   - contact-form invalid submit syncs required/invalid/live-region state
   - toggle/accordion controls expose button semantics and matching expanded state
   - tabs keyboard navigation now keeps selected tab state and panel `aria-hidden` state synchronized
+- Ownership and release metadata cleanup completed:
+  - license metadata normalized to `GPL-2.0-or-later`
+  - README/readme now preserve CampusPress credit and state current fork maintenance
+  - fork GitHub links are primary for fork releases while upstream PR `#121` remains canonical for maintainer review
+  - upstream issue/PR triage map added at `docs/upstream-triage-map.md`
 - Still pending:
   - persistence checks after save/reopen
   - broader module-type coverage across Divi 4, Divi 5, and migrated D4-to-D5 content
@@ -92,4 +97,5 @@
 - include at least one page with menu search/cart, slider, and contact form modules
 - upstream PR context: `#121`
 - takeover/adoption package: `docs/takeover-adoption-package.md`
+- upstream issue/PR triage map: `docs/upstream-triage-map.md`
 - AFK batch evidence: `docs/afk-batch-2026-04-24.md`

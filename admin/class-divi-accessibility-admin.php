@@ -137,7 +137,7 @@ class Divi_Accessibility_Admin {
 
 		$links[] = sprintf(
 			'<a href="%s">%s</a>',
-			esc_url( 'https://github.com/campuspress/divi-accessibility' ),
+			esc_url( 'https://github.com/RichardGeorgeDavis/divi-accessibility' ),
 			esc_html__( 'GitHub', 'divi-accessibility' )
 		);
 

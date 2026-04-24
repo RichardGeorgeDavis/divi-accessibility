@@ -16,12 +16,13 @@ Release `2.1.0` is the compatibility and modernization release for Divi Accessib
 - Upstream PR head at 2026-04-24 status check: `75003ef`
 - Upstream draft PR: `#121` <https://github.com/campuspress/divi-accessibility/pull/121>
 - Takeover/adoption package: `docs/takeover-adoption-package.md`
+- Upstream issue/PR triage map: `docs/upstream-triage-map.md`
 - AFK batch evidence: `docs/afk-batch-2026-04-24.md`
 - Downloadable packaged test build:
-  - current release page: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/codex-2.1.0-rc4>
-  - current zip asset: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/download/codex-2.1.0-rc4/divi-accessibility-2.1.0.zip>
-  - current zip SHA-256: `2880f061195bec6cd15dc4873ad977443e6aa3b8c6bd0c310a1c12557aef6253`
-  - previous superseded builds: `codex-2.1.0-rc1`, `codex-2.1.0-rc2`, `codex-2.1.0-rc3`
+  - current release page: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/codex-2.1.0-rc5>
+  - current zip asset: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/download/codex-2.1.0-rc5/divi-accessibility-2.1.0.zip>
+  - current zip SHA-256: `dd58cad636706626d8aa0e85b08901ef3ec4d5b32f2478eee1eb0b330d7b5930`
+  - previous superseded builds: `codex-2.1.0-rc1`, `codex-2.1.0-rc2`, `codex-2.1.0-rc3`, `codex-2.1.0-rc4`
 
 ## Commit Lineage On This Branch
 
@@ -79,6 +80,12 @@ Release `2.1.0` is the compatibility and modernization release for Divi Accessib
   - contact-form invalid submit syncs `aria-required`, `aria-invalid`, and live-region state
   - toggle/accordion controls expose button semantics and matching expanded state
   - tabs keyboard navigation keeps panel `aria-hidden` synchronized after the scoped selector fix
+- ownership/release metadata cleanup:
+  - license metadata normalized to `GPL-2.0-or-later`
+  - README/readme preserve CampusPress creator credit and state Richard George Davis as current fork maintainer
+  - fork GitHub links are primary for fork releases
+  - upstream issue/PR triage map added
+  - rebuilt package installs and remains active on LocalWP `Master Licenses`
 - targeted `php -l` and `node --check`
 - manual visual pass:
   - frontend tabs working
@@ -106,10 +113,11 @@ Release `2.1.0` is the compatibility and modernization release for Divi Accessib
 - RC2 verification progress posted on `#121` on 2026-04-24:
   - <https://github.com/campuspress/divi-accessibility/pull/121#issuecomment-4311364696>
 - upstream issue `#122` opened on 2026-04-14; one related Divi 5 submenu state bug was reproduced and fixed in the refreshed branch/package
+- upstream issue/PR triage map added at `docs/upstream-triage-map.md`
 
 ## Next Steps
 
-1. Publish or share `codex-2.1.0-rc4` as the refreshed fork prerelease asset.
+1. Publish or share `codex-2.1.0-rc5` as the refreshed fork prerelease asset.
 2. Run the remaining runtime checks:
    - Divi 5 toggle persistence after save/reopen
    - frontend verification for search/cart controls on alternate header/menu configurations
@@ -126,5 +134,5 @@ Release `2.1.0` is the compatibility and modernization release for Divi Accessib
 - Full Divi 4/Divi 5 runtime verification still depends on manual WordPress and builder checks.
 - Search/cart control markup varies by theme/header configuration, so runtime validation should include default header and menu-module variants.
 - Contact form checkbox behavior should be verified against both checkbox list and boolean checkbox field types.
-- The `codex-2.1.0-rc1` downloadable test build asset was generated before the later `de40c78` tota11y follow-up fix, `codex-2.1.0-rc2` was generated before the issue `#122` submenu state fix, and `codex-2.1.0-rc3` was generated before the tabs panel state fix. External testers should use `codex-2.1.0-rc4`.
+- The `codex-2.1.0-rc1` downloadable test build asset was generated before the later `de40c78` tota11y follow-up fix, `codex-2.1.0-rc2` was generated before the issue `#122` submenu state fix, `codex-2.1.0-rc3` was generated before the tabs panel state fix, and `codex-2.1.0-rc4` was generated before the maintained-fork metadata cleanup. External testers should use `codex-2.1.0-rc5`.
 - WordPress.org lists `accessible-divi` as permanently closed by author request, so official adoption may require CampusPress approval or may be denied by the Plugin Review Team.

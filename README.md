@@ -4,6 +4,12 @@
 
 A WordPress plugin that improves Divi accessibility across Divi 4 and Divi 5 with WCAG-aligned fixes. While there are many strong accessibility plugins for WordPress generally, this project focuses on issues found specifically in Divi and its builder output.
 
+## Maintenance Status
+
+This fork is maintained by Richard George Davis as the practical release path while official access is unresolved. The original plugin was created by CampusPress, and upstream PR [#121](https://github.com/campuspress/divi-accessibility/pull/121) remains the canonical takeover-compatible patch set for review by the original maintainers.
+
+Current fork releases are published at [RichardGeorgeDavis/divi-accessibility](https://github.com/RichardGeorgeDavis/divi-accessibility/releases). The WordPress.org listing for `accessible-divi` is closed by author request, so this fork should not be treated as an official WordPress.org continuation unless CampusPress or WordPress.org grants ownership or committer access.
+
 ## Features
 
 + Divi 4 and Divi 5 compatibility, including builder-side module accessibility toggles
@@ -23,6 +29,7 @@ This release line focuses on making Divi 5 a first-class supported target while 
 + Improved slider controls and dot target sizing
 + Improved accessible names for search and cart controls
 + Improved contact form announcement, invalid-state, and checkbox keyboard support
++ Navbar submenu and tabs state fixes found during packaged-plugin runtime verification
 + Packaged release fixes for translations, metadata, and npm lint coverage
 
 
@@ -59,4 +66,4 @@ If you would like to make a donation, we encourage you to consider donating to [
 
 ## Credit
 
-Plugin created by [CampusPress](https://campuspress.com). Plugin icon based off of [The Accessible Icon Project](http://accessibleicon.org/).
+Originally created by [CampusPress](https://campuspress.com). This maintained fork is currently maintained by [Richard George Davis](https://github.com/RichardGeorgeDavis) unless official project ownership or committer access is granted. Plugin icon based off of [The Accessible Icon Project](http://accessibleicon.org/).

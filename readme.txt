@@ -4,8 +4,8 @@ Tags: divi, accessibility, accessible, navigation, wcag, a11y, section508, focus
 Requires at least: 6.0
 Tested up to: 6.9.4
 Stable tag: 2.1.0
-License: GPL3
-License URI: http://www.gnu.org/licenses/gpl-3.0.html
+License: GPL-2.0-or-later
+License URI: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
 Improve Divi accessibility across Divi 4 and Divi 5 with WCAG-aligned fixes.
 
@@ -20,9 +20,19 @@ A WordPress plugin that improves Divi accessibility across Divi 4 and Divi 5 wit
 * Fixes Divi screen-reader-text behavior, skip links, focus outlines, duplicate menu IDs, and icon handling
 * Includes Tota11y integration for admin-side review
 
+= Maintenance Status =
+
+This fork is maintained by Richard George Davis while official access is unresolved. The original plugin was created by CampusPress, and the upstream release-candidate PR remains available for original-maintainer review.
+
+This fork should not be treated as an official WordPress.org continuation unless CampusPress or WordPress.org grants ownership or committer access.
+
 = Contribute on GitHub =
 
-[https://github.com/campuspress/divi-accessibility/](https://github.com/campuspress/divi-accessibility/)
+Fork releases and active maintenance:
+[https://github.com/RichardGeorgeDavis/divi-accessibility/](https://github.com/RichardGeorgeDavis/divi-accessibility/)
+
+Canonical upstream PR for maintainer review:
+[https://github.com/campuspress/divi-accessibility/pull/121](https://github.com/campuspress/divi-accessibility/pull/121)
 
 = Support =
 
@@ -30,7 +40,7 @@ If you would like to make a donation, we encourage you to consider donating to [
 
 = Credit =
 
-Plugin created by [CampusPress](https://campuspress.com). Plugin icon based off of [The Accessible Icon Project](http://accessibleicon.org/).
+Originally created by [CampusPress](https://campuspress.com). This maintained fork is currently maintained by Richard George Davis unless official project ownership or committer access is granted. Plugin icon based off of [The Accessible Icon Project](http://accessibleicon.org/).
 
 
 == Installation ==
@@ -66,6 +76,8 @@ Yes. The plugin keeps the legacy Divi 4 hooks and frontend fixes, and adds compa
 * Improved contact form success/error announcements and validation state syncing after async rerenders.
 * Improved contact form checkbox keyboard accessibility.
 * Improved accessible names for default header and menu search/cart controls.
+* Fixed navbar submenu focus state so visible keyboard-opened submenus also report expanded state.
+* Fixed tabs keyboard navigation so inactive panels are hidden from assistive technologies.
 * Added a minimal Divi 4/5 compatibility styling layer owned by the plugin.
 * Fixed npm lint coverage, release metadata syncing, and packaged translation files.
 

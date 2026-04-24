@@ -18,6 +18,8 @@
   - Packaged-plugin install/activate/deactivate/reactivate smoke passed on a LocalWP Divi 5 site.
   - Issue `#122` navbar/submenu follow-up found and fixed a Divi 5 keyboard state mismatch.
   - Divi draft module page follow-up found and fixed a tabs panel `aria-hidden` state mismatch.
+  - Maintained-fork ownership and GPL-compatible release metadata cleanup completed.
+  - Upstream issue/PR triage map added at `docs/upstream-triage-map.md`.
 - Still required before upstream integration:
   - Run manual Divi 4 and Divi 5 runtime checks in WordPress.
   - Use the updated PR notes after runtime verification, not the earlier Cursor notes.
@@ -48,12 +50,12 @@
   - visual pass completed for Divi 5 Visual Builder `Accessibility Settings` visibility
 - Explicit next runtime tasks:
   - install and activate `packaged/divi-accessibility-2.1.0.zip`
-  - publish/use refreshed `codex-2.1.0-rc4` asset for testers
+  - publish/use refreshed `codex-2.1.0-rc5` asset for testers
   - verify Divi 5 toggle persistence after save/reopen
   - verify frontend behavior on search/cart controls across alternate header/menu configurations
   - verify Divi 4 backward compatibility
   - verify one migrated D4-to-D5 content case
-  - use refreshed packaged artifact `codex-2.1.0-rc4` for any external tester pass
+  - use refreshed packaged artifact `codex-2.1.0-rc5` for any external tester pass
 
 ## Phase 1.75: Upstream Adoption / Fork Continuity
 
@@ -122,7 +124,7 @@
 
 - Current upstream draft PR: `#121`
 - Upstream PR head at 2026-04-24 status check: `75003ef`
-- Current downloadable test build: `codex-2.1.0-rc4`
+- Current downloadable test build: `codex-2.1.0-rc5`
 - Immediate handover action:
   - complete runtime verification
   - update PR notes with final results
