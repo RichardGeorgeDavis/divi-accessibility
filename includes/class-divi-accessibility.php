@@ -166,6 +166,7 @@ class Divi_Accessibility {
 		add_filter( 'body_class', array( $plugin_public, 'add_divi_version_body_class' ) );
 
 		add_action( 'et_module_process_display_conditions', array( $plugin_public, 'add_accessibilty_classes' ), PHP_INT_MAX, 3 );
+		add_filter( 'render_block', array( $plugin_public, 'add_divi_5_block_accessibility_classes' ), PHP_INT_MAX, 2 );
 	}
 
 	/**

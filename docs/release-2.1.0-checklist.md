@@ -12,6 +12,7 @@
   - frontend rendered plugin payload with `da11y-divi-5`, `_da11y.version` `2.1.0`, skip-link, slider, submenu, and mobile-menu scripts/styles
 - Additional code-level follow-up completed:
   - issue `#90` (`tota11y` undefined-variable path) fixed in branch head `de40c78`
+  - Divi 5 frontend rendering now applies saved module accessibility classes through the `render_block` path as well as the legacy Divi 4 module hook
 - Divi 5 navbar/submenu runtime follow-up completed against issue `#122`:
   - focusing a parent menu item now keeps the submenu visible and sets `aria-expanded="true"`
   - Escape restores `aria-expanded="false"` and hides the submenu
@@ -40,18 +41,19 @@
   - README/readme now preserve CampusPress credit and state current fork maintenance
   - fork GitHub links are primary for fork releases while upstream PR `#121` remains canonical for maintainer review
   - upstream issue/PR triage map added at `docs/upstream-triage-map.md`
-- Still pending:
-  - persistence checks after save/reopen
-  - broader module-type coverage across Divi 4, Divi 5, and migrated D4-to-D5 content
+- Final release-gate runtime pass completed:
+  - Divi 5 Visual Builder persistence passed after save/reopen for `Hide From Screen Readers` and `Show For Screen Readers Only`
+  - Divi 5 frontend output applies saved accessibility classes after the Visual Builder save
+  - Divi 4 smoke page passed skip-link, keyboard focus outline, mobile-menu keyboard open/close, submenu expanded-state, slider, contact-form, toggle/accordion, and module accessibility-attribute checks
+  - D4-authored legacy module attributes embedded in migrated Divi 5 block content apply the expected frontend output
+  - local duplicate-provider conflict noted on one Divi 4 test site; the packaged plugin passed after disabling the duplicate embedded copy for the smoke test
 
 ## Remaining Tasks To Perform
 
-- complete deeper packaged-plugin behavior checks beyond the install/activate smoke pass
-- verify Divi 5 toggle persistence after save/reopen
 - verify search/cart controls on alternate header/menu configurations; Divi Pixel mobile-menu isolation has passed on two local Divi Pixel test sites
-- verify Divi 4 backward compatibility
-- verify one migrated D4-to-D5 content case
-- update PR notes with final runtime results only after the checks above are complete
+- publish the refreshed post-RC6 package asset
+- post final upstream PR `#121` runtime summary after the refreshed asset is available
+- convert upstream PR `#121` from draft to ready for review after the final summary is posted
 - ask a maintainer to close upstream issue `#90` after reviewing the fix already linked from `#121`
 
 ## Static Checks
@@ -66,7 +68,8 @@
 ## Package Checks
 
 - build `packaged/divi-accessibility-2.1.0.zip`
-- publish refreshed fork prerelease asset if external testers need a build newer than `codex-2.1.0-rc1`
+- current package SHA-256: `69c25e3bbda5d033dacda63ae4814c263c2afa4583be5ac5635caef36109faef`
+- publish refreshed fork prerelease asset because this package supersedes `codex-2.1.0-rc6`
 - confirm zip contains:
   - `admin/`
   - `includes/`
@@ -82,25 +85,26 @@
 
 ## Divi 4 Runtime Matrix
 
-- skip link appears and works with keyboard
-- focus outline appears only for keyboard navigation
-- mobile menu opens and closes with keyboard
-- mobile menu hides page content from screen readers while open
-- navbar submenus remain visible/announced correctly for keyboard and screen-reader users
-- slider arrows and dots have labels and keyboard support
-- slider navigation dots have larger touch targets without obvious visual regression
-- contact form success and error messages announce correctly
-- contact form checkbox fields are keyboard operable
-- module-level Accessibility Settings toggles still work
+- skip link appears, targets `#main-content`, and receives keyboard focus: pass
+- focus outline appears for keyboard navigation: pass
+- mobile menu opens and closes with keyboard Enter and restores plugin-managed `aria-hidden`: pass
+- mobile menu hides page content from screen readers while open: pass
+- navbar submenu parent state updates `aria-expanded` on focus and Escape: pass on the generated submenu smoke case
+- slider arrows and dots have labels, button roles, keyboard focus, and active-dot state: pass
+- contact form invalid submit sets required/invalid field state and announces the error in an assertive live region: pass
+- accordion/toggle controls expose button semantics and sync `aria-expanded` after keyboard interaction: pass
+- legacy module-level accessibility attributes still affect frontend output: pass
 
 ## Divi 5 Runtime Matrix
 
 - frontend checks above still pass
-- Visual Builder shows `Accessibility Settings`
-- both toggles persist after save and reopen
-- migrated D4 content preserves:
-  - `hide_aria_element`
-  - `show_for_screen_readers_only`
+- Visual Builder shows `Accessibility Settings`: pass
+- both toggles persist after save and reopen: pass
+- saved `Hide From Screen Readers` renders an `.aria-hidden` module and receives `aria-hidden="true"` from the existing runtime script: pass
+- saved `Show For Screen Readers Only` renders a `.screen-reader-text` module: pass
+- D4-authored legacy attrs in migrated Divi 5 block content preserve frontend behavior:
+  - `hide_aria_element`: pass
+  - `show_for_screen_readers_only`: pass
 - navbar/submenu behavior is checked against the issue `#122` complaint pattern: pass on the Divi 5 homepage after the focus/`aria-expanded` fix
 - tabs keyboard navigation keeps tab controls and panels synchronized: pass on the Divi draft module page after the scoped panel-reset fix
 

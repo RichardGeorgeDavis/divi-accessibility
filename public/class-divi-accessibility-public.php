@@ -508,6 +508,77 @@ class Divi_Accessibility_Public {
 	}
 
 	/**
+	 * Add accessibility classes to the first class-bearing element in module output.
+	 *
+	 * @param string $output Module output.
+	 * @param string $class_list Space-prefixed class list.
+	 * @return string
+	 */
+	private function add_accessibility_class_list_to_output( $output, $class_list ) {
+		if ( ! $class_list || ! is_string( $output ) ) {
+			return $output;
+		}
+
+		return preg_replace( '/class=\"(.*?)\"/', 'class="$1' . $class_list . '"', $output, 1 );
+	}
+
+	/**
+	 * Build the accessibility class list from D4 or D5 module props.
+	 *
+	 * @param array $props Module props.
+	 * @return string
+	 */
+	private function get_module_accessibility_class_list( array $props ) {
+		$class_list = '';
+
+		if ( $this->module_prop_is_enabled(
+			$props,
+			array(
+				array( 'hide_aria_element' ),
+				array( 'accessibility', 'advanced', 'hideAriaElement', 'desktop', 'value' ),
+			)
+		) ) {
+			$class_list .= ' aria-hidden';
+		}
+		if ( $this->module_prop_is_enabled(
+			$props,
+			array(
+				array( 'show_for_screen_readers_only' ),
+				array( 'accessibility', 'advanced', 'showForScreenReadersOnly', 'desktop', 'value' ),
+			)
+		) ) {
+			$class_list .= ' screen-reader-text';
+		}
+
+		return $class_list;
+	}
+
+	/**
+	 * Add module accessibility classes to Divi 5 block output.
+	 *
+	 * @param string $block_content Rendered block content.
+	 * @param array  $block Block data.
+	 * @return string
+	 */
+	public function add_divi_5_block_accessibility_classes( $block_content, $block ) {
+		if (
+			! is_string( $block_content )
+			|| ! is_array( $block )
+			|| empty( $block['blockName'] )
+			|| 0 !== strpos( $block['blockName'], 'divi/' )
+			|| empty( $block['attrs'] )
+			|| ! is_array( $block['attrs'] )
+		) {
+			return $block_content;
+		}
+
+		return $this->add_accessibility_class_list_to_output(
+			$block_content,
+			$this->get_module_accessibility_class_list( $block['attrs'] )
+		);
+	}
+
+	/**
 	 * @param string $output
 	 * @param string $render_method
 	 * @param ET_Builder_Element $element
@@ -516,30 +587,10 @@ class Divi_Accessibility_Public {
 	 */
 	function add_accessibilty_classes( $output, $render_method, $element ) {
 		if ( is_string( $output ) && isset( $element->props ) && is_array( $element->props ) ) {
-
-			$class_list = '';
-
-			if ( $this->module_prop_is_enabled(
-				$element->props,
-				array(
-					array( 'hide_aria_element' ),
-					array( 'accessibility', 'advanced', 'hideAriaElement', 'desktop', 'value' ),
-				)
-			) ) {
-				$class_list .= ' aria-hidden';
-			}
-			if ( $this->module_prop_is_enabled(
-				$element->props,
-				array(
-					array( 'show_for_screen_readers_only' ),
-					array( 'accessibility', 'advanced', 'showForScreenReadersOnly', 'desktop', 'value' ),
-				)
-			) ) {
-				$class_list .= ' screen-reader-text';
-			}
-			if ( $class_list ) {
-				$output = preg_replace('/class=\"(.*?)\"/', 'class="$1' . $class_list . '"', $output, 1);
-			}
+			$output = $this->add_accessibility_class_list_to_output(
+				$output,
+				$this->get_module_accessibility_class_list( $element->props )
+			);
 		}
 		return $output;
 	}
