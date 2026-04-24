@@ -51,7 +51,7 @@
 ## Remaining Tasks To Perform
 
 - verify search/cart controls on alternate header/menu configurations; Divi Pixel mobile-menu isolation has passed on two local Divi Pixel test sites
-- publish the refreshed post-RC6 package asset
+- refreshed post-RC6 package asset published as `codex-2.1.0-rc7`
 - post final upstream PR `#121` runtime summary after the refreshed asset is available
 - convert upstream PR `#121` from draft to ready for review after the final summary is posted
 - ask a maintainer to close upstream issue `#90` after reviewing the fix already linked from `#121`
@@ -69,7 +69,9 @@
 
 - build `packaged/divi-accessibility-2.1.0.zip`
 - current package SHA-256: `69c25e3bbda5d033dacda63ae4814c263c2afa4583be5ac5635caef36109faef`
-- publish refreshed fork prerelease asset because this package supersedes `codex-2.1.0-rc6`
+- refreshed fork prerelease asset: `codex-2.1.0-rc7`
+- release page: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/codex-2.1.0-rc7>
+- zip asset: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/download/codex-2.1.0-rc7/divi-accessibility-2.1.0.zip>
 - confirm zip contains:
   - `admin/`
   - `includes/`

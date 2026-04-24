@@ -2,7 +2,7 @@
 
 ## Status
 
-Ready for upstream review after the refreshed post-RC6 package asset is published.
+Ready for upstream review.
 
 Current upstream PR:
 - `#121` <https://github.com/campuspress/divi-accessibility/pull/121>
@@ -100,9 +100,10 @@ This branch prepares Divi Accessibility `2.1.0` as a broad compatibility and mod
 ## Handover Notes
 
 - draft tester comments are already posted on `#121`
-- current downloadable fork asset remains `codex-2.1.0-rc6` until the refreshed post-RC6 package is published: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/codex-2.1.0-rc6>
+- current downloadable fork asset is `codex-2.1.0-rc7`: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/codex-2.1.0-rc7>
+- current zip asset: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/download/codex-2.1.0-rc7/divi-accessibility-2.1.0.zip>
 - older `codex-2.1.0-rc1`, `codex-2.1.0-rc2`, `codex-2.1.0-rc3`, `codex-2.1.0-rc4`, and `codex-2.1.0-rc5` builds should be treated as superseded
-- `codex-2.1.0-rc6` is superseded by the Divi 5 frontend render-block follow-up fix once the refreshed asset is published
+- `codex-2.1.0-rc6` is superseded by the Divi 5 frontend render-block follow-up fix
 - takeover/adoption package is documented in `docs/takeover-adoption-package.md`
 - upstream issue/PR triage map is documented in `docs/upstream-triage-map.md`
 - AFK batch evidence is documented in `docs/afk-batch-2026-04-24.md`
