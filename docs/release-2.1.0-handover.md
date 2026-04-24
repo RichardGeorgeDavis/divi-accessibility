@@ -1,27 +1,38 @@
-# Release 2.1.0 Handover
+# Release Handover
 
 Prepared: 2026-04-24
+Last updated: 2026-04-24
 
 ## Current State
 
-`2.1.0` is the final maintained-fork release for the Divi Accessibility compatibility and accessibility maintenance work.
+`2.1.1` is the current maintained-fork release. It builds on the final `2.1.0` compatibility release and adds the fork-only GitHub Releases updater.
 
-- Final release: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/2.1.0>
-- Final zip asset: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/download/2.1.0/divi-accessibility-2.1.0.zip>
-- Final zip SHA-256: `69c25e3bbda5d033dacda63ae4814c263c2afa4583be5ac5635caef36109faef`
-- Final release tag target: `2ce67b8`
+- Current release: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/2.1.1>
+- Current zip asset: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/download/2.1.1/divi-accessibility-2.1.1.zip>
+- Current zip SHA-256: `84fcf2acdd5fcfb0ae00561a1f73be6acf5ead3efeeb048f9218742919f6019f`
+- Current release tag target: `dd14c4f`
+- Current fork `master` head after README badge cleanup: `f2dc852`
+
+`2.1.1` is the bootstrap updater release. Sites already on `2.1.0` need to install `2.1.1` manually once because `2.1.0` did not contain the updater. Future releases after `2.1.1` can then appear in WordPress' normal Plugins update screen when the GitHub Release includes an exact packaged zip asset.
+
+`2.1.0` remains the final upstream-safe compatibility release for CampusPress PR `#121`.
+
+- `2.1.0` release: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/2.1.0>
+- `2.1.0` zip asset: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/download/2.1.0/divi-accessibility-2.1.0.zip>
+- `2.1.0` zip SHA-256: `69c25e3bbda5d033dacda63ae4814c263c2afa4583be5ac5635caef36109faef`
+- `2.1.0` release tag target: `2ce67b8`
 - Final docs closeout commit: `150041f`
 - Upstream PR: <https://github.com/campuspress/divi-accessibility/pull/121>
-- Upstream PR status at closeout: open, ready for review, clean, and mergeable.
+- Upstream PR status after `2.1.1`: open, ready for review, clean, and mergeable at `c27c424`.
 - Upstream repository permission for this account: read-only, so upstream issues cannot be closed directly.
 
-The final `2.1.0` release asset is RC7 promoted unchanged. Do not rebuild or replace the release asset unless a code/package defect is found and a new release is intentionally cut.
+The final `2.1.0` release asset was RC7 promoted unchanged. Do not rebuild or replace the `2.1.0` or `2.1.1` release assets unless a code/package defect is found and a new release is intentionally cut.
 
 ## Release Scope
 
 This release keeps the plugin GPL-compatible and preserves original CampusPress credit while documenting the maintained fork as the practical release path unless CampusPress or WordPress.org grants ownership/committer access.
 
-Included work:
+Included in `2.1.0`:
 
 - Divi 5 module-level Accessibility Settings support.
 - Divi 5 frontend output support for saved module accessibility settings.
@@ -35,6 +46,15 @@ Included work:
 - `tota11y` default handling fix.
 - Release packaging, GPL metadata, README/readme ownership language, and final GitHub release assets.
 
+Included in `2.1.1`:
+
+- Native WordPress plugin updater that checks stable GitHub Releases for `RichardGeorgeDavis/divi-accessibility`.
+- WordPress update transient and plugin information modal integration for newer packaged fork releases.
+- Exact package-asset matching for `divi-accessibility-{version}.zip`.
+- Draft, prerelease, non-semver tag, source archive, and missing-package release rejection.
+- No site URL in GitHub updater request headers.
+- README cleanup removing WordPress.org version/download badges that pointed to the closed listing.
+
 Not included:
 
 - MIT relicensing.
@@ -46,7 +66,7 @@ Not included:
 
 ## Verification Summary
 
-Final gates passed before release:
+Final `2.1.0` gates passed before release:
 
 - `npm run lint`
 - `npm run package`
@@ -60,6 +80,19 @@ Final gates passed before release:
 - D4-authored legacy module attributes preserved after Divi 5 migration
 - Divi 4 smoke checks for skip link, keyboard focus outline, mobile menu, submenus, sliders, contact form, toggle/accordion, and module accessibility attributes
 
+`2.1.1` updater verification:
+
+- `npm run release`
+- `npm run package`
+- `php -l includes/class-divi-accessibility-updater.php`
+- updater normalization checks:
+  - accepts latest stable `2.1.1` release with exact `divi-accessibility-2.1.1.zip`
+  - rejects mismatched packaged zip names
+  - rejects RC-style tags
+- zip content inspection
+- GitHub release asset digest verified as `sha256:84fcf2acdd5fcfb0ae00561a1f73be6acf5ead3efeeb048f9218742919f6019f`
+- live GitHub `/releases/latest` response normalizes to the `2.1.1` package
+
 Known limits:
 
 - Search/cart/header markup varies by Divi header configuration and should keep receiving validation on real user reports.
@@ -67,6 +100,7 @@ Known limits:
 - WooCommerce store-only/coming-soon templates that do not print normal footer scripts cannot run footer-enqueued plugin JavaScript on those responses.
 - Contact form checkbox behavior should still be validated against both checkbox-list and boolean-checkbox field types.
 - Official WordPress.org takeover may be denied because the original listing was closed by author request.
+- Sites on `2.1.0` cannot auto-detect `2.1.1`; the updater starts after `2.1.1` is installed.
 
 ## Upstream And Issue Closeout
 
@@ -129,6 +163,12 @@ Reference documents:
 - `docs/github-issue-closeout-comments.md`
 - `docs/takeover-adoption-package.md`
 
+## License Decision
+
+Do not switch the plugin to MIT.
+
+The existing plugin is a derivative work with original CampusPress/contributor GPL-licensed code. The maintained fork should remain `GPL-2.0-or-later` unless all relevant copyright holders grant relicensing rights. New standalone tooling written entirely by the fork maintainer can be separately licensed later if needed, but the plugin package, `divi-accessibility.php`, `readme.txt`, `package.json`, `LICENSE`, and `license.txt` should stay GPL-compatible.
+
 ## Branch State
 
 Keep:
@@ -138,13 +178,15 @@ Keep:
 
 Do not merge old `codex/*` feature branches into `master`; the verified release branch already contains the release-relevant work.
 
+Do not push `2.1.1` updater changes to `codex/divi4-divi5-style-compat` or upstream PR `#121` unless maintainers explicitly ask for fork-updater behavior. The updater points at the maintained fork and is intentionally fork-only.
+
 Use `docs/branch-cleanup-after-2.1.0.md` for a later explicit branch cleanup batch. Do not delete branches as part of this handover.
 
 ## Next Owner Actions
 
 1. Monitor upstream PR `#121` for maintainer feedback.
 2. If CampusPress responds, keep the merge path focused on `#121`; avoid adding unrelated backlog work to that PR.
-3. If reporters respond on validation issues, triage against `2.1.0` first and open focused follow-up work only when the original repro still fails.
+3. If reporters respond on validation issues, triage against the current maintained-fork release first and open focused follow-up work only when the original repro still fails.
 4. Contact CampusPress/original maintainers for GitHub maintainer access or WordPress.org plugin transfer.
 5. If direct transfer is not available, prepare the WordPress.org adoption request using `docs/takeover-adoption-package.md`.
 6. Keep publishing future maintained-fork releases from `master` unless official ownership is granted.
@@ -156,4 +198,5 @@ Use `docs/branch-cleanup-after-2.1.0.md` for a later explicit branch cleanup bat
 - Preserve original CampusPress creator credit.
 - Do not claim official WordPress.org continuity.
 - Do not include local site URLs, client names, or local filesystem paths in public README, release notes, PR comments, issue comments, or adoption documents.
-- Use the final release URL and SHA-256 above when pointing users at the installable package.
+- Use the current release URL and SHA-256 above when pointing users at the installable package.
+- Explain that `2.1.1` must be installed manually once before future fork updates can appear in WordPress.
