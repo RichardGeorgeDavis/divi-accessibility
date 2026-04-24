@@ -18,10 +18,10 @@ Release `2.1.0` is the compatibility and modernization release for Divi Accessib
 - Takeover/adoption package: `docs/takeover-adoption-package.md`
 - AFK batch evidence: `docs/afk-batch-2026-04-24.md`
 - Downloadable packaged test build:
-  - current release page: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/codex-2.1.0-rc2>
-  - current zip asset: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/download/codex-2.1.0-rc2/divi-accessibility-2.1.0.zip>
-  - current zip SHA-256: `b9e550840eb807e5d35e4dfc154c24c084f20caf864baf31280616f52c0ff6fc`
-  - previous superseded build: `codex-2.1.0-rc1`
+  - current release page: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/codex-2.1.0-rc3>
+  - current zip asset: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/download/codex-2.1.0-rc3/divi-accessibility-2.1.0.zip>
+  - current zip SHA-256: `55754a61bf09ca1e576699efa6edfec44f479cca57149af8f191e322c68dbcb4`
+  - previous superseded builds: `codex-2.1.0-rc1`, `codex-2.1.0-rc2`
 
 ## Commit Lineage On This Branch
 
@@ -70,6 +70,10 @@ Release `2.1.0` is the compatibility and modernization release for Divi Accessib
 - package zip generation and zip content inspection
 - packaged-plugin install, activate, deactivate, and reactivate smoke check on LocalWP `Master Licenses`
 - frontend response from `http://master.local/` includes Divi Accessibility payload for Divi 5
+- Divi 5 browser-driven navbar/submenu follow-up for issue `#122`:
+  - parent menu focus opens the submenu and sets `aria-expanded="true"`
+  - Escape closes the submenu and restores `aria-expanded="false"`
+  - mobile menu screen-reader isolation still opens and restores correctly
 - targeted `php -l` and `node --check`
 - manual visual pass:
   - frontend tabs working
@@ -96,15 +100,14 @@ Release `2.1.0` is the compatibility and modernization release for Divi Accessib
 - maintainer follow-up posted on `#121` on 2026-04-16 with review, merge, and issue-closure asks
 - RC2 verification progress posted on `#121` on 2026-04-24:
   - <https://github.com/campuspress/divi-accessibility/pull/121#issuecomment-4311364696>
-- upstream issue `#122` opened on 2026-04-14 and should be included in the runtime follow-up matrix
+- upstream issue `#122` opened on 2026-04-14; one related Divi 5 submenu state bug was reproduced and fixed in the refreshed branch/package
 
 ## Next Steps
 
-1. Publish or share a refreshed fork prerelease asset if external testers need a package newer than `codex-2.1.0-rc1`.
+1. Publish or share `codex-2.1.0-rc3` as the refreshed fork prerelease asset.
 2. Run the remaining runtime checks:
    - Divi 5 toggle persistence after save/reopen
    - frontend verification for slider, mobile menu, search/cart controls, and contact forms
-   - navbar/submenu visibility and announcements related to issue `#122`
    - Divi 4 backward compatibility
    - one migrated D4-to-D5 content case
 3. Update `docs/release-2.1.0-pr-notes.md` with final runtime results.
@@ -118,5 +121,5 @@ Release `2.1.0` is the compatibility and modernization release for Divi Accessib
 - Full Divi 4/Divi 5 runtime verification still depends on manual WordPress and builder checks.
 - Search/cart control markup varies by theme/header configuration, so runtime validation should include default header and menu-module variants.
 - Contact form checkbox behavior should be verified against both checkbox list and boolean checkbox field types.
-- The `codex-2.1.0-rc1` downloadable test build asset was generated before the later `de40c78` tota11y follow-up fix; external testers should use `codex-2.1.0-rc2`.
+- The `codex-2.1.0-rc1` downloadable test build asset was generated before the later `de40c78` tota11y follow-up fix, and `codex-2.1.0-rc2` was generated before the issue `#122` submenu state fix. External testers should use `codex-2.1.0-rc3`.
 - WordPress.org lists `accessible-divi` as permanently closed by author request, so official adoption may require CampusPress approval or may be denied by the Plugin Review Team.

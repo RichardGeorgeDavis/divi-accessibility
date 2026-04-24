@@ -8,8 +8,8 @@
 - WordPress.org plugin page: <https://wordpress.org/plugins/accessible-divi/>
 - CampusPress public contact page: <https://campuspress.com/contact-us/>
 - CampusPress public contact email: `contact@campuspress.com`
-- Current fork prerelease: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/codex-2.1.0-rc2>
-- Current fork package SHA-256: `b9e550840eb807e5d35e4dfc154c24c084f20caf864baf31280616f52c0ff6fc`
+- Current fork prerelease: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/codex-2.1.0-rc3>
+- Current fork package SHA-256: `55754a61bf09ca1e576699efa6edfec44f479cca57149af8f191e322c68dbcb4`
 - WordPress.org status: closed as of 2020-05-12, unavailable for download, closure reason `Author Request`
 - Current strategy: dual track
   - pursue official adoption or maintainer access
@@ -19,7 +19,7 @@
 
 - `#121` prepares a `2.1.0` compatibility and accessibility maintenance release.
 - `#90` reports repeated PHP warnings from an undefined `$tota11y` path; the fix is included in `#121`.
-- `#122` reports active user impact around Divi navbar submenu visibility and announcement behavior.
+- `#122` reports active user impact around Divi navbar submenu visibility and announcement behavior; one related Divi 5 submenu focus state mismatch was reproduced and fixed in the branch.
 - WordPress.org reviews and GitHub issues show long-standing demand for maintained Divi accessibility fixes.
 - The WordPress.org listing has not been available for download since 2020-05-12.
 
@@ -59,6 +59,7 @@ Important constraint:
 | 2026-04-16 | GitHub PR | `#121` | Maintainer follow-up posted with concrete review/merge asks. |
 | 2026-04-24 | GitHub status check | `#121`, `#122` | No maintainer response found. |
 | 2026-04-24 | GitHub PR | `#121` | RC2 package/smoke verification progress posted with remaining runtime gates. |
+| 2026-04-24 | LocalWP/browser verification | `#122` | Reproduced and fixed Divi 5 submenu focus state mismatch; rebuilt package as RC3 candidate. |
 | TBD | Direct contact | `contact@campuspress.com` / CampusPress contact page | Request GitHub maintainer access or WordPress.org transfer. |
 | TBD | Email | `plugins@wordpress.org` | Submit adoption request if direct maintainer contact does not resolve access. |
 
@@ -131,12 +132,13 @@ Contact attempts:
 - 2026-04-24: Rechecked PR and issue activity; no maintainer response found.
 - 2026-04-24: Posted RC2 package/smoke verification progress:
   https://github.com/campuspress/divi-accessibility/pull/121#issuecomment-4311364696
+- 2026-04-24: Reproduced and fixed one related submenu state issue from #122 in the refreshed branch/package.
 - Direct maintainer contact attempt: [fill in date/channel/result before sending]
 
 Updated code:
 
 - Public repository/PR: https://github.com/campuspress/divi-accessibility/pull/121
-- Fork release/test build: https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/codex-2.1.0-rc2
+- Fork release/test build: https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/codex-2.1.0-rc3
 - Final runtime verification notes: [insert final verification notes URL or summary]
 
 I am prepared to address any Plugin Review Team findings and update the code to current WordPress.org plugin guidelines before any official release.

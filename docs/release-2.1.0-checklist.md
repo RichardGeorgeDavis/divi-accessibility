@@ -12,6 +12,10 @@
   - frontend rendered plugin payload with `da11y-divi-5`, `_da11y.version` `2.1.0`, skip-link, slider, submenu, and mobile-menu scripts/styles
 - Additional code-level follow-up completed:
   - issue `#90` (`tota11y` undefined-variable path) fixed in branch head `de40c78`
+- Divi 5 navbar/submenu runtime follow-up completed against issue `#122`:
+  - focusing a parent menu item now keeps the submenu visible and sets `aria-expanded="true"`
+  - Escape restores `aria-expanded="false"` and hides the submenu
+  - mobile-menu screen-reader isolation still opens and restores correctly
 - Still pending:
   - persistence checks after save/reopen
   - broader module-type coverage across Divi 4, Divi 5, and migrated D4-to-D5 content
@@ -20,8 +24,7 @@
 
 - complete deeper packaged-plugin behavior checks beyond the install/activate smoke pass
 - verify Divi 5 toggle persistence after save/reopen
-- verify slider, mobile menu, search/cart controls, and contact form behaviors on real pages
-- verify navbar/submenu visibility and announcement behavior related to upstream issue `#122`
+- verify slider, search/cart controls, and contact form behaviors on real pages
 - verify Divi 4 backward compatibility
 - verify one migrated D4-to-D5 content case
 - update PR notes with final runtime results only after the checks above are complete
@@ -74,7 +77,7 @@
 - migrated D4 content preserves:
   - `hide_aria_element`
   - `show_for_screen_readers_only`
-- navbar/submenu behavior is checked against the issue `#122` complaint pattern
+- navbar/submenu behavior is checked against the issue `#122` complaint pattern: pass on the Divi 5 homepage after the focus/`aria-expanded` fix
 
 ## Reviewer Notes
 

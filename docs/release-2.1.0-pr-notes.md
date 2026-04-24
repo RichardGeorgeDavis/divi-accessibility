@@ -19,6 +19,7 @@ This branch prepares Divi Accessibility `2.1.0` as a broad compatibility and mod
 - added reduced motion support
 - improved slider arrow/dot accessibility and increased slider dot touch target sizing
 - improved accessible naming for search and cart controls
+- fixed submenu focus state so visible keyboard-opened submenus also report `aria-expanded="true"`
 - improved contact form async announcements and checkbox keyboard accessibility
 - added plugin-owned Divi 4/5 compatibility styling
 - fixed package contents, version metadata sync, and npm lint coverage
@@ -41,6 +42,10 @@ This branch prepares Divi Accessibility `2.1.0` as a broad compatibility and mod
   - Divi 5 Visual Builder modules display `Accessibility Settings`
 - focused follow-up verification:
   - `php -l public/class-divi-accessibility-public.php` after the `tota11y` fix
+  - Divi 5 packaged-plugin browser pass for issue `#122`:
+    - focused parent menu opens submenu and sets `aria-expanded="true"`
+    - Escape closes submenu and restores `aria-expanded="false"`
+    - mobile-menu screen-reader isolation still opens and restores correctly
 
 ## Still Needs Integration Review
 
@@ -48,7 +53,7 @@ This branch prepares Divi Accessibility `2.1.0` as a broad compatibility and mod
 - Divi 5 frontend smoke test
 - Divi 5 Visual Builder persistence check for the two module-level toggles
 - migrated D4-to-D5 content check for legacy accessibility attrs
-- navbar/submenu visibility and announcement check related to upstream issue `#122`
+- slider/contact-form pages and alternate header/menu configurations not present on the checked homepage
 - maintainer closure of upstream issue `#90` after reviewing the now-landed fix in `#121`
 
 ## Final Runtime Results
@@ -59,8 +64,8 @@ Pending manual verification. Update this section only after the packaged-plugin 
 
 - draft tester comments are already posted on `#121`
 - refreshed downloadable prerelease test build is prepared for the fork:
-  - <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/codex-2.1.0-rc2>
-  - SHA-256: `b9e550840eb807e5d35e4dfc154c24c084f20caf864baf31280616f52c0ff6fc`
-- older `codex-2.1.0-rc1` build should be treated as superseded
+  - <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/codex-2.1.0-rc3>
+  - SHA-256: `55754a61bf09ca1e576699efa6edfec44f479cca57149af8f191e322c68dbcb4`
+- older `codex-2.1.0-rc1` and `codex-2.1.0-rc2` builds should be treated as superseded
 - takeover/adoption package is documented in `docs/takeover-adoption-package.md`
 - AFK batch evidence is documented in `docs/afk-batch-2026-04-24.md`

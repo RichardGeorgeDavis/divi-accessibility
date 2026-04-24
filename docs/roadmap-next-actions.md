@@ -16,12 +16,12 @@
   - The `tota11y` undefined-variable fix was folded into the current branch.
   - Takeover/adoption package added at `docs/takeover-adoption-package.md`.
   - Packaged-plugin install/activate/deactivate/reactivate smoke passed on a LocalWP Divi 5 site.
+  - Issue `#122` navbar/submenu follow-up found and fixed a Divi 5 keyboard state mismatch.
 - Still required before upstream integration:
   - Run manual Divi 4 and Divi 5 runtime checks in WordPress.
   - Use the updated PR notes after runtime verification, not the earlier Cursor notes.
   - Complete persistence checks after save/reopen in Divi 5.
   - Complete packaged-plugin validation rather than relying on source-checkout behavior.
-  - Include upstream issue `#122` navbar/submenu behavior in the runtime matrix.
   - Update PR notes with final runtime results only after verification is complete.
   - Use the finalized PR notes for upstream review once verification is complete.
 
@@ -35,6 +35,7 @@
   - Local WordPress package install and activation smoke check on `Master Licenses`.
   - Local WordPress deactivate/reactivate smoke check.
   - Frontend response confirms Divi Accessibility payload is rendered for Divi 5.
+  - Divi 5 navbar/submenu focus behavior related to issue `#122` now keeps visible state and `aria-expanded` synchronized.
 - Still blocked or incomplete in this environment:
   - Divi 4 runtime matrix execution.
   - Divi 5 Visual Builder save/reopen persistence automation.
@@ -45,13 +46,12 @@
   - visual pass completed for Divi 5 Visual Builder `Accessibility Settings` visibility
 - Explicit next runtime tasks:
   - install and activate `packaged/divi-accessibility-2.1.0.zip`
-  - publish/use refreshed `codex-2.1.0-rc2` asset for testers
+  - publish/use refreshed `codex-2.1.0-rc3` asset for testers
   - verify Divi 5 toggle persistence after save/reopen
   - verify frontend behavior on slider, mobile menu, search/cart controls, and contact forms
-  - verify navbar/submenu behavior related to upstream issue `#122`
   - verify Divi 4 backward compatibility
   - verify one migrated D4-to-D5 content case
-  - use refreshed packaged artifact `codex-2.1.0-rc2` for any external tester pass
+  - use refreshed packaged artifact `codex-2.1.0-rc3` for any external tester pass
 
 ## Phase 1.75: Upstream Adoption / Fork Continuity
 
@@ -120,7 +120,7 @@
 
 - Current upstream draft PR: `#121`
 - Upstream PR head at 2026-04-24 status check: `75003ef`
-- Current downloadable test build: `codex-2.1.0-rc2`
+- Current downloadable test build: `codex-2.1.0-rc3`
 - Immediate handover action:
   - complete runtime verification
   - update PR notes with final results
