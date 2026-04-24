@@ -4,11 +4,23 @@
 
 A WordPress plugin that improves Divi accessibility across Divi 4 and Divi 5 with WCAG-aligned fixes. While there are many strong accessibility plugins for WordPress generally, this project focuses on issues found specifically in Divi and its builder output.
 
-## Maintenance Status
+## Current Status
 
 This fork is maintained by Richard George Davis as the practical release path while official access is unresolved. The original plugin was created by CampusPress, and upstream PR [#121](https://github.com/campuspress/divi-accessibility/pull/121) remains the canonical takeover-compatible patch set for review by the original maintainers.
 
 Current fork releases are published at [RichardGeorgeDavis/divi-accessibility](https://github.com/RichardGeorgeDavis/divi-accessibility/releases). The WordPress.org listing for `accessible-divi` is closed by author request, so this fork should not be treated as an official WordPress.org continuation unless CampusPress or WordPress.org grants ownership or committer access.
+
+## Community
+
++ Ask questions in [GitHub Discussions Q&A](https://github.com/RichardGeorgeDavis/divi-accessibility/discussions/categories/q-a)
++ Read the [license](LICENSE)
++ Review [contribution guidelines](CONTRIBUTING.md)
++ See [funding options](.github/FUNDING.yml)
++ Follow the [Code of Conduct](CODE_OF_CONDUCT.md)
++ Report vulnerabilities through the [security policy](SECURITY.md)
++ Use [support guidance](SUPPORT.md)
++ Browse the tracked [wiki landing page](docs/wiki.md)
++ Support the work through [PayPal](https://www.paypal.com/donate/?hosted_button_id=Z9ET7KXE4MMZS)
 
 ## Features
 
@@ -31,6 +43,15 @@ This release line focuses on making Divi 5 a first-class supported target while 
 + Improved contact form announcement, invalid-state, and checkbox keyboard support
 + Navbar submenu and tabs state fixes found during packaged-plugin runtime verification
 + Packaged release fixes for translations, metadata, and npm lint coverage
+
+## Runtime-Tested Integrations
+
+The `2.1.0` release candidate has been browser-tested against these active third-party plugins in local Divi 5 sites:
+
++ Divi Pixel `2.50.0` and `2.50.1`: alternate/mobile header hamburger behavior, menu open/close state, `aria-expanded` sync, and screen-reader isolation while the mobile menu is open
++ WooCommerce `10.7.0`: account/cart/shop page rendering and compatibility with Divi Accessibility frontend payloads where the normal theme footer scripts are printed
+
+These checks are compatibility evidence, not a blanket certification for every module or site configuration. WooCommerce store-only/coming-soon responses that do not print normal footer scripts cannot run footer-enqueued Divi Accessibility JavaScript on those responses.
 
 
 Development
@@ -59,10 +80,6 @@ If the final resolved release version is different from the repo metadata, the p
 + [WAI-ARIA Authoring Practices Guide](https://www.w3.org/WAI/ARIA/apg/)
 + [Tota11y](https://khan.github.io/tota11y/)
 + [Divi](https://www.elegantthemes.com/gallery/divi/)
-
-## Support
-
-If you would like to make a donation, we encourage you to consider donating to [Knowbility](https://knowbility.org/) and help support their mission to provide access to technology for people with disabilities.
 
 ## Credit
 

@@ -5,7 +5,7 @@
 - Manual visual pass completed:
   - frontend tabs are working
   - Divi 5 Visual Builder modules show `Accessibility Settings`
-- Packaged-plugin smoke completed on LocalWP `Master Licenses`:
+- Packaged-plugin smoke completed on a local Divi 5 package-smoke site:
   - WordPress `6.9.4`
   - Divi `5.3.3`
   - install, activate, deactivate, and reactivate passed
@@ -16,11 +16,25 @@
   - focusing a parent menu item now keeps the submenu visible and sets `aria-expanded="true"`
   - Escape restores `aria-expanded="false"` and hides the submenu
   - mobile-menu screen-reader isolation still opens and restores correctly
-- Divi 5 module runtime follow-up completed on `https://master.local/divi-draft/`:
+- Divi 5 module runtime follow-up completed on a local Divi 5 module test page:
   - slider controls and dots expose keyboard roles, labels, and active-dot state
   - contact-form invalid submit syncs required/invalid/live-region state
   - toggle/accordion controls expose button semantics and matching expanded state
   - tabs keyboard navigation now keeps selected tab state and panel `aria-hidden` state synchronized
+- Divi Pixel alternate mobile-header follow-up completed on local Divi Pixel test site A:
+  - active plugins include `divi-accessibility` `2.1.0` and `divi-pixel` `2.50.0`
+  - Divi Pixel hamburger opens with no Divi Accessibility console errors
+  - opened mobile menu sets `aria-expanded="true"` on the menu controls
+  - opened mobile menu sets plugin-managed `aria-hidden="true"` on `#main-content` and `#et-main-area`
+  - closing the menu removes the plugin-managed `aria-hidden` attribute and restores `.mobile_nav.closed`
+- Second local Divi 5 / Divi Pixel / WooCommerce runtime sweep completed:
+  - active target plugins are `divi-accessibility` `2.1.0`, `divi-pixel` `2.50.1`, and `woocommerce` `10.7.0`
+  - `divimenus`, `divimenus-on-media`, `divimenus-sharing`, and `dondivi-builder` are installed but inactive
+  - `advanced-toggle-module-for-divi`, `divi-assistant`, and `divi-modules-table-maker` are not installed on this site
+  - all 17 published pages returned HTTP `200`
+  - 14 normal Divi pages loaded `_da11y.version` `2.1.0`, skip link, `role="main"`, and labelled mobile menu controls
+  - Cart, Checkout, and Shop render WooCommerce store-only/coming-soon output that does not print the normal footer scripts, so no footer-enqueued plugin JS runs on those responses
+  - Divi Pixel mobile-menu open/close passed on the homepage after adding class-change observation for third-party menu state changes
 - Ownership and release metadata cleanup completed:
   - license metadata normalized to `GPL-2.0-or-later`
   - README/readme now preserve CampusPress credit and state current fork maintenance
@@ -34,7 +48,7 @@
 
 - complete deeper packaged-plugin behavior checks beyond the install/activate smoke pass
 - verify Divi 5 toggle persistence after save/reopen
-- verify search/cart controls on alternate header/menu configurations
+- verify search/cart controls on alternate header/menu configurations; Divi Pixel mobile-menu isolation has passed on two local Divi Pixel test sites
 - verify Divi 4 backward compatibility
 - verify one migrated D4-to-D5 content case
 - update PR notes with final runtime results only after the checks above are complete

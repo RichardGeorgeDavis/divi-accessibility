@@ -35,7 +35,7 @@
   - Zip contents were checked for the expected plugin files.
   - The package no longer includes `.DS_Store`.
 - Completed in this environment:
-  - Local WordPress package install and activation smoke check on `Master Licenses`.
+  - Local WordPress package install and activation smoke check on a local Divi 5 package-smoke site.
   - Local WordPress deactivate/reactivate smoke check.
   - Frontend response confirms Divi Accessibility payload is rendered for Divi 5.
   - Divi 5 navbar/submenu focus behavior related to issue `#122` now keeps visible state and `aria-expanded` synchronized.

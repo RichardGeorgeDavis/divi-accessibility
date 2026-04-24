@@ -9,6 +9,46 @@ Status checked: 2026-04-24
 - Use this map to decide what is fixed, what needs reporter validation, what stays backlog, and what should not be folded into `2.1.0`.
 - Leave upstream issues open unless maintainer permissions are granted.
 
+## Runtime-Tested Plugin Evidence
+
+The third-party plugin list is evidence for compatibility triage only. Do not describe inactive or absent plugins as tested.
+
+| Plugin | Tested status | Evidence / issue impact |
+| --- | --- | --- |
+| Divi Pixel `2.50.0` | Active on local Divi Pixel test site A | Mobile/header hamburger open and close now sync `aria-expanded` and screen-reader isolation. Supports issue `#91`, possibly `#51` and `#71`. |
+| Divi Pixel `2.50.1` | Active on local Divi Pixel test site B | 17-page sweep completed; homepage Divi Pixel menu passes after class-change observer. Supports issue `#91`, possibly `#51` and `#71`. |
+| WooCommerce `10.7.0` | Active on local Divi Pixel test site B | Account-like pages that print footer scripts load `_da11y` normally. Cart, Checkout, and Shop currently render WooCommerce store-only/coming-soon output without normal footer scripts, so footer-enqueued plugin JS cannot run there. This is a known remaining template/site limitation, not a `2.1.0` JS regression. |
+| DiviMenus, DiviMenus On Media, DiviMenus Sharing, DonDivi Builder | Installed but inactive on local Divi Pixel test site B | Do not claim tested. Keep menu/mega-menu reports such as `#53`, `#56`, and `#31` open until active runtime pages exist. |
+| Advanced Toggle Module for Divi, Divi Assistant, Divi Modules Table Maker | Not installed on the checked sites | Do not claim tested. Add to follow-up compatibility backlog only if a page/site is provided. |
+
+## Close Now / Comment Queue
+
+These are the safest immediate issue actions after the latest runtime checks:
+
+| Item | Recommended action | Rationale |
+| --- | --- | --- |
+| `#112` Slider labels/keyboard parity | Comment with final RC6/local-package evidence and close. | The scoped acceptance criteria are implemented and verified on the Divi 5 module test page. |
+| `#114` Contact form announcements | Comment with final RC6/local-package evidence and close. | Invalid submit now syncs `aria-required`, `aria-invalid`, and live-region state in runtime verification. |
+| `#107` Stale upstream branches/PR cleanup | Comment with the current PR disposition and close as tracking complete. | The remaining stale PRs are now explicitly classified in this map; further action is maintainer/admin cleanup rather than a release blocker. |
+
+These should not be closed yet, but should get focused validation comments:
+
+| Item | Recommended action | Rationale |
+| --- | --- | --- |
+| `#122` New navbar report | Comment with the current local package hash and plugin-tested context; ask reporter to validate on their actual header/site. | We fixed and verified related submenu/mobile-header behavior, but the reporter's exact site/header remains unknown. |
+| `#91` Mobile submenu expanded state | Comment as probably fixed by the mobile menu observer and submenu state work; ask for validation. | Divi Pixel mobile headers pass, but the original report does not identify the exact header implementation. |
+| `#51` Burger menu does not expand | Comment as possibly fixed by the keyboard/mobile-menu rewrite; ask for validation. | Enter/Space handling is improved, but the original WP 5.7.2/Divi 4-era case needs a direct retest. |
+| `#71` Two clicks to close mobile menu | Comment as possibly fixed by syncing from real menu state; ask for validation. | The open/close stale-state class problem is addressed, but the original site-specific reproduction involved clicks inside the menu/header. |
+| `#69` Theme Builder menu search naming | Comment with current search/cart naming coverage and keep open. | Search/cart labels are improved, but alternate Theme Builder/menu-module variants still need broader runtime coverage. |
+
+Do not close yet:
+
+- `#96`: keep as the Divi 5 umbrella until Divi 4 smoke, Visual Builder persistence, and D4-to-D5 migration checks are complete.
+- `#88`: keep open until Visual Builder save/reopen persistence and hidden-focus behavior for `aria-hidden` content are verified.
+- `#60`: contact checkbox keyboard support is improved, but close only after direct checkbox-list/boolean checkbox validation or reporter confirmation.
+- `#7`: toggle/accordion semantics are improved, but the original request asks for screen-reader state-change notification; keep until manual AT behavior is explicitly validated.
+- `#72`, `#73`, `#31`, `#53`, `#56`: keep open until focus-return, reverse-tab, mega-menu, and hidden-submenu-focus paths are retested against active pages.
+
 ## Fixed In 2.1.0 / Closure Candidates
 
 These items are addressed directly or substantially by `#121` and should be closure candidates after maintainer review or reporter validation:

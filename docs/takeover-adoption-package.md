@@ -8,8 +8,9 @@
 - WordPress.org plugin page: <https://wordpress.org/plugins/accessible-divi/>
 - CampusPress public contact page: <https://campuspress.com/contact-us/>
 - CampusPress public contact email: `contact@campuspress.com`
-- Current fork prerelease: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/codex-2.1.0-rc5>
-- Current fork package SHA-256: `dd58cad636706626d8aa0e85b08901ef3ec4d5b32f2478eee1eb0b330d7b5930`
+- Current local package: `packaged/divi-accessibility-2.1.0.zip`
+- Current local package SHA-256: `4506b9ce5ea62a8f43543e78c36a02fa30ee5451e4cc970076dde3cc26866dea`
+- Next fork prerelease target: `codex-2.1.0-rc6` or final `2.1.0`
 - Upstream issue/PR triage map: `docs/upstream-triage-map.md`
 - WordPress.org status: closed as of 2020-05-12, unavailable for download, closure reason `Author Request`
 - Current strategy: dual track
@@ -143,7 +144,7 @@ Contact attempts:
 Updated code:
 
 - Public repository/PR: https://github.com/campuspress/divi-accessibility/pull/121
-- Fork release/test build: https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/codex-2.1.0-rc5
+- Fork release/test build: [insert `codex-2.1.0-rc6` or final `2.1.0` release URL after publishing the current local package]
 - Final runtime verification notes: [insert final verification notes URL or summary]
 
 I am prepared to address any Plugin Review Team findings and update the code to current WordPress.org plugin guidelines before any official release.

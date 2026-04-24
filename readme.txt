@@ -20,11 +20,38 @@ A WordPress plugin that improves Divi accessibility across Divi 4 and Divi 5 wit
 * Fixes Divi screen-reader-text behavior, skip links, focus outlines, duplicate menu IDs, and icon handling
 * Includes Tota11y integration for admin-side review
 
-= Maintenance Status =
+= Current Status =
 
 This fork is maintained by Richard George Davis while official access is unresolved. The original plugin was created by CampusPress, and the upstream release-candidate PR remains available for original-maintainer review.
 
 This fork should not be treated as an official WordPress.org continuation unless CampusPress or WordPress.org grants ownership or committer access.
+
+= Community =
+
+Ask questions in GitHub Discussions Q&A:
+[https://github.com/RichardGeorgeDavis/divi-accessibility/discussions/categories/q-a](https://github.com/RichardGeorgeDavis/divi-accessibility/discussions/categories/q-a)
+
+Project files:
+
+* LICENSE
+* CONTRIBUTING.md
+* CODE_OF_CONDUCT.md
+* SECURITY.md
+* SUPPORT.md
+* FUNDING.yml
+* docs/wiki.md
+
+Support the work:
+[https://www.paypal.com/donate/?hosted_button_id=Z9ET7KXE4MMZS](https://www.paypal.com/donate/?hosted_button_id=Z9ET7KXE4MMZS)
+
+= Runtime-Tested Integrations =
+
+Version 2.1.0 has been browser-tested against these active third-party plugins in local Divi 5 sites:
+
+* Divi Pixel 2.50.0 and 2.50.1: alternate/mobile header hamburger behavior, menu open/close state, aria-expanded sync, and screen-reader isolation while the mobile menu is open.
+* WooCommerce 10.7.0: account/cart/shop page rendering and compatibility with Divi Accessibility frontend payloads where the normal theme footer scripts are printed.
+
+These checks are compatibility evidence, not a blanket certification for every module or site configuration. WooCommerce store-only/coming-soon responses that do not print normal footer scripts cannot run footer-enqueued Divi Accessibility JavaScript on those responses.
 
 = Contribute on GitHub =
 
@@ -33,10 +60,6 @@ Fork releases and active maintenance:
 
 Canonical upstream PR for maintainer review:
 [https://github.com/campuspress/divi-accessibility/pull/121](https://github.com/campuspress/divi-accessibility/pull/121)
-
-= Support =
-
-If you would like to make a donation, we encourage you to consider donating to [Knowbility](https://knowbility.org/) and help support their mission to provide access to technology for people with disabilities.
 
 = Credit =
 
@@ -76,8 +99,10 @@ Yes. The plugin keeps the legacy Divi 4 hooks and frontend fixes, and adds compa
 * Improved contact form success/error announcements and validation state syncing after async rerenders.
 * Improved contact form checkbox keyboard accessibility.
 * Improved accessible names for default header and menu search/cart controls.
+* Improved compatibility with Divi Pixel mobile header/hamburger state changes.
 * Fixed navbar submenu focus state so visible keyboard-opened submenus also report expanded state.
 * Fixed tabs keyboard navigation so inactive panels are hidden from assistive technologies.
+* Added fallback handling for Divi templates that use #et-main-area without #main-content.
 * Added a minimal Divi 4/5 compatibility styling layer owned by the plugin.
 * Fixed npm lint coverage, release metadata syncing, and packaged translation files.
 

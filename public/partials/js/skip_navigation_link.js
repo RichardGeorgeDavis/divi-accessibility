@@ -5,11 +5,19 @@ jQuery(document).ready(function($) {
 	 * Add skiplink to page.
 	 */
 	function skipTo(target) {
+		const $target = $(target);
+
+		if (!$target.length) {
+			return;
+		}
+
 		const skiplink = '<a href="' + target + '" class="skip-link da11y-screen-reader-text">' + text + '</a>';
-		$(target).attr('tabindex', -1);
+		$target.attr('tabindex', -1);
 		$('body').prepend(skiplink);
 	}
-	skipTo('#main-content');
+
+	const target = $('#main-content').length ? '#main-content' : '#et-main-area';
+	skipTo(target);
 
 	/**
 	 * Use js to focus for internal links.
@@ -20,4 +28,3 @@ jQuery(document).ready(function($) {
 	});
 
 });
-

@@ -1,5 +1,8 @@
 jQuery(document).ready(function($) {
-	var hiddenSelector = '#top-header, #main-content, #main-footer, .et-l--body, .et-l--footer';
+	var hiddenSelector = '#top-header, #main-content, #et-main-area, #main-footer, .et-l--body, .et-l--footer';
+	var menuControlSelector = '.mobile_menu_bar, .mobile_menu_bar_toggle, .dipi_hamburger';
+	var mobileMenuSelector = '#et_mobile_nav_menu, .et_mobile_nav_menu';
+	var openMenuSelector = '.mobile_nav.opened, .dipi_hamburger.is-active';
 
 	function setManagedAriaHidden($elements, hidden) {
 		$elements.each(function() {
@@ -39,24 +42,65 @@ jQuery(document).ready(function($) {
 		setManagedAriaHidden($(hiddenSelector), isOpen);
 	}
 
+	function prepareMenuControls() {
+		$(menuControlSelector).attr({'role': 'button', 'aria-label': 'Menu', 'tabindex': 0});
+	}
+
+	function isMobileMenuOpen() {
+		return $(openMenuSelector).length > 0;
+	}
+
+	function syncMobileMenuState() {
+		var isOpen = isMobileMenuOpen();
+
+		prepareMenuControls();
+
+		$(menuControlSelector)
+			.toggleClass('a11y-mobile-menu-open', isOpen)
+			.attr('aria-expanded', isOpen ? 'true' : 'false');
+
+		setPageContentHidden(isOpen);
+	}
+
+	function syncMobileMenuStateAfterToggle() {
+		window.setTimeout(syncMobileMenuState, 0);
+		window.setTimeout(syncMobileMenuState, 50);
+		window.setTimeout(syncMobileMenuState, 250);
+		window.setTimeout(syncMobileMenuState, 750);
+	}
+
+	function observeMobileMenuStateChanges() {
+		if (!window.MutationObserver || !document.body) {
+			return;
+		}
+
+		new MutationObserver(function(mutations) {
+			var shouldSync = mutations.some(function(mutation) {
+				return $(mutation.target).is('.mobile_nav, .mobile_menu_bar, .dipi_hamburger');
+			});
+
+			if (shouldSync) {
+				window.setTimeout(syncMobileMenuState, 0);
+			}
+		}).observe(document.body, {
+			attributes: true,
+			attributeFilter: ['class'],
+			subtree: true
+		});
+	}
+
 	/**
 	 * Mobile menu Aria support.
 	 */
-	$('.mobile_menu_bar').attr({'role': 'button', 'aria-expanded': 'false', 'aria-label': 'Menu', 'tabindex': 0});
-	$('.mobile_menu_bar').on('click', function() {
-		if($(this).hasClass('a11y-mobile-menu-open') ) {
-			$(this).removeClass('a11y-mobile-menu-open').attr('aria-expanded', 'false');
-			setPageContentHidden(false);
-		} else {
-			$(this).addClass('a11y-mobile-menu-open').attr('aria-expanded', 'true');
-			setPageContentHidden(true);
-		}
-	});
+	prepareMenuControls();
+	$(document).on('click', menuControlSelector, syncMobileMenuStateAfterToggle);
+	$(document).on('click', '.et_mobile_menu a', syncMobileMenuStateAfterToggle);
+	observeMobileMenuStateChanges();
 
 	/**
 	* Allows mobile menu to be opened with keyboard.
 	*/
-	$('.mobile_menu_bar').keyup(function(event) {
+	$(document).on('keyup', menuControlSelector, function(event) {
 		if (event.keyCode === 13 || event.keyCode === 32) {
 			$(this).click();
 		}
@@ -67,8 +111,9 @@ jQuery(document).ready(function($) {
 	*/
 	$(document).keyup(function(event) {
 		if (event.keyCode === 27) {
-			if($('#et_mobile_nav_menu .mobile_nav').hasClass('opened')) {
+			if($(mobileMenuSelector + ' .mobile_nav').hasClass('opened')) {
 				$('.mobile_menu_bar').click();
+				syncMobileMenuStateAfterToggle();
 			}
 		}
 	});
@@ -77,13 +122,14 @@ jQuery(document).ready(function($) {
 	* Closes mobile menu when it loses focus.
 	*/
 	$(this).on('focusin', function () {
-		if($('#et_mobile_nav_menu .mobile_nav').hasClass('opened')) {
-			if(!$('#et_mobile_nav_menu .et_mobile_menu :focus').length) {
-				$('#et_mobile_nav_menu .mobile_menu_bar').click();
+		if($(mobileMenuSelector + ' .mobile_nav').hasClass('opened')) {
+			if(!$(mobileMenuSelector + ' .et_mobile_menu :focus').length) {
+				$(mobileMenuSelector + ' .mobile_menu_bar').click();
+				syncMobileMenuStateAfterToggle();
 			}
 		}
 	});
 
-	setPageContentHidden(false);
+	syncMobileMenuState();
 
 });

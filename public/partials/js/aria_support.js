@@ -387,7 +387,8 @@ jQuery(document).ready(function($) {
 	/**
 	* Add main role to main-content
 	*/
-	$('#main-content').attr('role', 'main');
+	const $mainContent = $('#main-content').length ? $('#main-content') : $('#et-main-area');
+	$mainContent.first().attr('role', 'main');
 
 	/**
 	 * Add aria-label="x".

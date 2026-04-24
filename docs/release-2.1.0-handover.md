@@ -19,10 +19,10 @@ Release `2.1.0` is the compatibility and modernization release for Divi Accessib
 - Upstream issue/PR triage map: `docs/upstream-triage-map.md`
 - AFK batch evidence: `docs/afk-batch-2026-04-24.md`
 - Downloadable packaged test build:
-  - current release page: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/codex-2.1.0-rc5>
-  - current zip asset: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/download/codex-2.1.0-rc5/divi-accessibility-2.1.0.zip>
-  - current zip SHA-256: `dd58cad636706626d8aa0e85b08901ef3ec4d5b32f2478eee1eb0b330d7b5930`
-  - previous superseded builds: `codex-2.1.0-rc1`, `codex-2.1.0-rc2`, `codex-2.1.0-rc3`, `codex-2.1.0-rc4`
+  - current local zip: `packaged/divi-accessibility-2.1.0.zip`
+  - current local zip SHA-256: `4506b9ce5ea62a8f43543e78c36a02fa30ee5451e4cc970076dde3cc26866dea`
+  - next fork prerelease target: `codex-2.1.0-rc6` or final `2.1.0`
+  - previous superseded builds: `codex-2.1.0-rc1`, `codex-2.1.0-rc2`, `codex-2.1.0-rc3`, `codex-2.1.0-rc4`, `codex-2.1.0-rc5`
 
 ## Commit Lineage On This Branch
 
@@ -69,23 +69,36 @@ Release `2.1.0` is the compatibility and modernization release for Divi Accessib
 - `npm run i18n`
 - `npm run release`
 - package zip generation and zip content inspection
-- packaged-plugin install, activate, deactivate, and reactivate smoke check on LocalWP `Master Licenses`
-- frontend response from `http://master.local/` includes Divi Accessibility payload for Divi 5
+- packaged-plugin install, activate, deactivate, and reactivate smoke check on a local Divi 5 package-smoke site
+- frontend response from the local Divi 5 package-smoke site includes Divi Accessibility payload for Divi 5
 - Divi 5 browser-driven navbar/submenu follow-up for issue `#122`:
   - parent menu focus opens the submenu and sets `aria-expanded="true"`
   - Escape closes the submenu and restores `aria-expanded="false"`
   - mobile menu screen-reader isolation still opens and restores correctly
-- Divi 5 browser-driven module page follow-up on `https://master.local/divi-draft/`:
+- Divi 5 browser-driven module page follow-up on a local Divi 5 module test page:
   - slider controls and dots expose keyboard roles, labels, and active-dot state
   - contact-form invalid submit syncs `aria-required`, `aria-invalid`, and live-region state
   - toggle/accordion controls expose button semantics and matching expanded state
   - tabs keyboard navigation keeps panel `aria-hidden` synchronized after the scoped selector fix
+- Divi Pixel alternate mobile-header follow-up on local Divi Pixel test site A:
+  - `divi-accessibility` `2.1.0` and `divi-pixel` `2.50.0` are active
+  - Divi Pixel hamburger opens and closes without Divi Accessibility console errors
+  - opened menu sets `aria-expanded="true"` and hides `#main-content` and `#et-main-area` from screen readers
+  - closed menu removes plugin-managed `aria-hidden` and restores the closed hamburger state
+- Second local Divi 5 / Divi Pixel / WooCommerce runtime sweep:
+  - active target plugins are `divi-accessibility` `2.1.0`, `divi-pixel` `2.50.1`, and `woocommerce` `10.7.0`
+  - `divimenus`, `divimenus-on-media`, `divimenus-sharing`, and `dondivi-builder` are installed but inactive
+  - `advanced-toggle-module-for-divi`, `divi-assistant`, and `divi-modules-table-maker` are not installed
+  - all 17 published pages returned HTTP `200`
+  - 14 normal Divi pages loaded `_da11y.version` `2.1.0`, skip link, `role="main"`, and labelled mobile menu controls
+  - Cart, Checkout, and Shop render WooCommerce store-only/coming-soon output that does not print the normal footer scripts, so no footer-enqueued plugin JS runs there
+  - homepage Divi Pixel mobile-menu open/close passed after adding class-change observation for third-party menu state changes
 - ownership/release metadata cleanup:
   - license metadata normalized to `GPL-2.0-or-later`
   - README/readme preserve CampusPress creator credit and state Richard George Davis as current fork maintainer
   - fork GitHub links are primary for fork releases
   - upstream issue/PR triage map added
-  - rebuilt package installs and remains active on LocalWP `Master Licenses`
+  - rebuilt package installs and remains active on the local Divi 5 package-smoke site
 - targeted `php -l` and `node --check`
 - manual visual pass:
   - frontend tabs working
@@ -117,10 +130,10 @@ Release `2.1.0` is the compatibility and modernization release for Divi Accessib
 
 ## Next Steps
 
-1. Publish or share `codex-2.1.0-rc5` as the refreshed fork prerelease asset.
+1. Publish or share the current local package as `codex-2.1.0-rc6` or final `2.1.0`.
 2. Run the remaining runtime checks:
    - Divi 5 toggle persistence after save/reopen
-   - frontend verification for search/cart controls on alternate header/menu configurations
+   - frontend verification for search/cart controls on alternate header/menu configurations; Divi Pixel mobile-menu isolation is now covered on two local Divi Pixel test sites
    - Divi 4 backward compatibility
    - one migrated D4-to-D5 content case
 3. Update `docs/release-2.1.0-pr-notes.md` with final runtime results.
@@ -132,7 +145,8 @@ Release `2.1.0` is the compatibility and modernization release for Divi Accessib
 ## Known Residual Risks
 
 - Full Divi 4/Divi 5 runtime verification still depends on manual WordPress and builder checks.
-- Search/cart control markup varies by theme/header configuration, so runtime validation should include default header and menu-module variants.
+- Search/cart control markup varies by theme/header configuration, so runtime validation should still include default header and menu-module variants.
+- WooCommerce store-only/coming-soon Cart, Checkout, and Shop output on the local WooCommerce test site does not print the normal footer scripts; this prevents any footer-enqueued plugin JS from running on those responses.
 - Contact form checkbox behavior should be verified against both checkbox list and boolean checkbox field types.
-- The `codex-2.1.0-rc1` downloadable test build asset was generated before the later `de40c78` tota11y follow-up fix, `codex-2.1.0-rc2` was generated before the issue `#122` submenu state fix, `codex-2.1.0-rc3` was generated before the tabs panel state fix, and `codex-2.1.0-rc4` was generated before the maintained-fork metadata cleanup. External testers should use `codex-2.1.0-rc5`.
+- The `codex-2.1.0-rc1` downloadable test build asset was generated before the later `de40c78` tota11y follow-up fix, `codex-2.1.0-rc2` was generated before the issue `#122` submenu state fix, `codex-2.1.0-rc3` was generated before the tabs panel state fix, `codex-2.1.0-rc4` was generated before the maintained-fork metadata cleanup, and `codex-2.1.0-rc5` was generated before the Divi Pixel mobile-menu observer and `#et-main-area` fallback fixes. External testers should use the current local package or the next published fork asset.
 - WordPress.org lists `accessible-divi` as permanently closed by author request, so official adoption may require CampusPress approval or may be denied by the Plugin Review Team.
