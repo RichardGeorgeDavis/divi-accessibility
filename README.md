@@ -1,7 +1,5 @@
 ![divi-accessibility](https://cloud.githubusercontent.com/assets/6676674/26787287/72430f40-49d7-11e7-89ec-a5bf07eb0f97.png)
 
-[![wordpress.org version badge](https://img.shields.io/wordpress/plugin/v/accessible-divi.svg)](https://wordpress.org/plugins/accessible-divi/) [![wordpress.org download count badge](https://img.shields.io/wordpress/plugin/dt/accessible-divi.svg)](https://wordpress.org/plugins/accessible-divi/)
-
 A WordPress plugin that improves Divi accessibility across Divi 4 and Divi 5 with WCAG-aligned fixes. While there are many strong accessibility plugins for WordPress generally, this project focuses on issues found specifically in Divi and its builder output.
 
 ## Current Status
