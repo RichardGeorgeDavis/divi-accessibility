@@ -1,146 +1,159 @@
 # Release 2.1.0 Handover
 
-## Scope
+Prepared: 2026-04-24
 
-Release `2.1.0` is the compatibility and modernization release for Divi Accessibility. The release target is:
+## Current State
 
-- make Divi 5 a first-class supported target
-- preserve Divi 4 behavior and existing module-level settings
-- harden the packaging, lint, metadata, and documentation paths so the release can ship as a real plugin package
+`2.1.0` is the final maintained-fork release for the Divi Accessibility compatibility and accessibility maintenance work.
 
-## Branch Status
+- Final release: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/2.1.0>
+- Final zip asset: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/download/2.1.0/divi-accessibility-2.1.0.zip>
+- Final zip SHA-256: `69c25e3bbda5d033dacda63ae4814c263c2afa4583be5ac5635caef36109faef`
+- Final release tag target: `2ce67b8`
+- Final docs closeout commit: `150041f`
+- Upstream PR: <https://github.com/campuspress/divi-accessibility/pull/121>
+- Upstream PR status at closeout: open, ready for review, clean, and mergeable.
+- Upstream repository permission for this account: read-only, so upstream issues cannot be closed directly.
 
-- Working branch: `codex/divi4-divi5-style-compat`
-- Upstream base: `origin/master`
-- Current release target: `2.1.0`
-- Upstream PR head at final release: `2ce67b8`
-- Upstream ready-for-review PR: `#121` <https://github.com/campuspress/divi-accessibility/pull/121>
-- Takeover/adoption package: `docs/takeover-adoption-package.md`
-- Upstream issue/PR triage map: `docs/upstream-triage-map.md`
-- AFK batch evidence: `docs/afk-batch-2026-04-24.md`
-- Downloadable maintained-fork release:
-  - current release page: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/2.1.0>
-  - current zip asset: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/download/2.1.0/divi-accessibility-2.1.0.zip>
-  - current zip SHA-256: `69c25e3bbda5d033dacda63ae4814c263c2afa4583be5ac5635caef36109faef`
-  - previous superseded builds: `codex-2.1.0-rc1`, `codex-2.1.0-rc2`, `codex-2.1.0-rc3`, `codex-2.1.0-rc4`, `codex-2.1.0-rc5`, `codex-2.1.0-rc6`, `codex-2.1.0-rc7`
+The final `2.1.0` release asset is RC7 promoted unchanged. Do not rebuild or replace the release asset unless a code/package defect is found and a new release is intentionally cut.
 
-## Commit Lineage On This Branch
+## Release Scope
 
-- `395b4b4` Add minimal Divi 4/5 styling compatibility layer.
-- `227c133` Add slider and reduced-motion accessibility support.
-- `3124b7b` Fix npm lint configuration.
-- `e7a384d` Hide page content when mobile menu is open.
-- `a721e9e` Add Divi 5 module accessibility settings support.
-- `7938dc6` Prepare 2.1.0 release candidate.
-- `7a59685` Write packages to packaged directory.
-- `3f4cf7a` Record visual verification progress.
-- `c35a85f` Document remaining verification tasks.
-- `de40c78` Fix tota11y default handling.
-- `75003ef` Refresh release handover docs.
+This release keeps the plugin GPL-compatible and preserves original CampusPress credit while documenting the maintained fork as the practical release path unless CampusPress or WordPress.org grants ownership/committer access.
 
-## Divi 4 vs Divi 5 Notes
+Included work:
 
-### Divi 4
+- Divi 5 module-level Accessibility Settings support.
+- Divi 5 frontend output support for saved module accessibility settings.
+- D4-to-D5 migrated content compatibility for legacy module attributes.
+- Divi 4 runtime compatibility preservation.
+- Mobile menu screen-reader isolation and submenu state synchronization.
+- Slider labels, keyboard parity, and active-dot state.
+- Contact-form invalid-state and live-region updates.
+- Toggle/accordion button semantics and expanded-state synchronization.
+- Tabs keyboard/panel state synchronization.
+- `tota11y` default handling fix.
+- Release packaging, GPL metadata, README/readme ownership language, and final GitHub release assets.
 
-- Keeps the legacy module field hooks for:
-  - `hide_aria_element`
-  - `show_for_screen_readers_only`
-- Frontend behavior continues to read the legacy flat module props.
+Not included:
 
-### Divi 5
+- MIT relicensing.
+- Broad UI refresh work.
+- Alt-text roadmap work.
+- Preview scanner work.
+- Full third-party module compatibility certification.
+- WordPress.org ownership or official continuity claims.
 
-- Uses a Visual Builder asset path to inject the `Accessibility Settings` group.
-- Stores the same two controls in the nested D5 settings shape.
-- Frontend behavior supports both the legacy flat props and the D5 nested props.
-- Migrated D4 content is mapped so legacy accessibility attrs keep working after D5 conversion.
+## Verification Summary
 
-## Release-Blocking Checks
-
-- metadata is aligned across plugin header, `DA11Y_VERSION`, `package.json`, `readme.txt`, and POT metadata
-- plugin package includes `languages/`
-- npm lint covers both public JS and admin-side Divi 5 builder JS
-- release zip installs and activates cleanly in WordPress
-- Divi 4 and Divi 5 runtime checks are both completed
-
-## What Has Been Verified
+Final gates passed before release:
 
 - `npm run lint`
-- `npm run build`
-- `npm run i18n`
-- `npm run release`
-- package zip generation and zip content inspection
-- packaged-plugin install, activate, deactivate, and reactivate smoke check on a local Divi 5 package-smoke site
-- frontend response from the local Divi 5 package-smoke site includes Divi Accessibility payload for Divi 5
-- Divi 5 browser-driven navbar/submenu follow-up for issue `#122`:
-  - parent menu focus opens the submenu and sets `aria-expanded="true"`
-  - Escape closes the submenu and restores `aria-expanded="false"`
-  - mobile menu screen-reader isolation still opens and restores correctly
-- Divi 5 browser-driven module page follow-up on a local Divi 5 module test page:
-  - slider controls and dots expose keyboard roles, labels, and active-dot state
-  - contact-form invalid submit syncs `aria-required`, `aria-invalid`, and live-region state
-  - toggle/accordion controls expose button semantics and matching expanded state
-  - tabs keyboard navigation keeps panel `aria-hidden` synchronized after the scoped selector fix
-- Divi Pixel alternate mobile-header follow-up on local Divi Pixel test site A:
-  - `divi-accessibility` `2.1.0` and `divi-pixel` `2.50.0` are active
-  - Divi Pixel hamburger opens and closes without Divi Accessibility console errors
-  - opened menu sets `aria-expanded="true"` and hides `#main-content` and `#et-main-area` from screen readers
-  - closed menu removes plugin-managed `aria-hidden` and restores the closed hamburger state
-- Second local Divi 5 / Divi Pixel / WooCommerce runtime sweep:
-  - active target plugins are `divi-accessibility` `2.1.0`, `divi-pixel` `2.50.1`, and `woocommerce` `10.7.0`
-  - `divimenus`, `divimenus-on-media`, `divimenus-sharing`, and `dondivi-builder` are installed but inactive
-  - `advanced-toggle-module-for-divi`, `divi-assistant`, and `divi-modules-table-maker` are not installed
-  - all 17 published pages returned HTTP `200`
-  - 14 normal Divi pages loaded `_da11y.version` `2.1.0`, skip link, `role="main"`, and labelled mobile menu controls
-  - Cart, Checkout, and Shop render WooCommerce store-only/coming-soon output that does not print the normal footer scripts, so no footer-enqueued plugin JS runs there
-  - homepage Divi Pixel mobile-menu open/close passed after adding class-change observation for third-party menu state changes
-- ownership/release metadata cleanup:
-  - license metadata normalized to `GPL-2.0-or-later`
-  - README/readme preserve CampusPress creator credit and state Richard George Davis as current fork maintainer
-  - fork GitHub links are primary for fork releases
-  - upstream issue/PR triage map added
-  - rebuilt package installs and remains active on the local Divi 5 package-smoke site
-- targeted `php -l` and `node --check`
-- manual visual pass:
-  - frontend tabs working
-  - Divi 5 Visual Builder modules show `Accessibility Settings`
+- `npm run package`
+- PHP syntax checks on touched PHP files
+- zip content inspection
+- final zip hash verification
+- install/activate/deactivate/reactivate smoke test from packaged zip
+- Divi 5 Visual Builder setting visibility
+- Divi 5 save/reopen persistence for both module accessibility toggles
+- Divi 5 frontend output for saved `Hide From Screen Readers` and `Show For Screen Readers Only`
+- D4-authored legacy module attributes preserved after Divi 5 migration
+- Divi 4 smoke checks for skip link, keyboard focus outline, mobile menu, submenus, sliders, contact form, toggle/accordion, and module accessibility attributes
 
-## Upstream Cleanup Already Done
+Known limits:
 
-- superseded draft PRs closed:
-  - `#119`
-  - `#118`
-  - `#117`
-  - `#116`
-  - `#110`
-  - `#109`
-  - `#97`
-- related issues updated to point at `#121`
-- issues closed as already resolved by `#121`:
-  - `#120`
-  - `#115`
-  - `#113`
-  - `#101`
-  - `#100`
-- issue `#90` is fixed in code and linked to `#121`, but could not be closed directly due upstream permissions
-- maintainer follow-up posted on `#121` on 2026-04-16 with review, merge, and issue-closure asks
-- RC2 verification progress posted on `#121` on 2026-04-24:
-  - <https://github.com/campuspress/divi-accessibility/pull/121#issuecomment-4311364696>
-- upstream issue `#122` opened on 2026-04-14; one related Divi 5 submenu state bug was reproduced and fixed in the refreshed branch/package
-- upstream issue/PR triage map added at `docs/upstream-triage-map.md`
+- Search/cart/header markup varies by Divi header configuration and should keep receiving validation on real user reports.
+- Mega-menu, reverse-tab, iframe, and third-party plugin-specific reports need targeted repro pages before closure.
+- WooCommerce store-only/coming-soon templates that do not print normal footer scripts cannot run footer-enqueued plugin JavaScript on those responses.
+- Contact form checkbox behavior should still be validated against both checkbox-list and boolean-checkbox field types.
+- Official WordPress.org takeover may be denied because the original listing was closed by author request.
 
-## Next Steps
+## Upstream And Issue Closeout
 
-1. Use final `2.1.0` as the maintained-fork release asset.
-2. Keep upstream PR `#121` as the canonical CampusPress merge path.
-3. Ask maintainers to close issues `#90`, `#96`, and `#88` after reviewing/merging `#121`.
-4. Keep broader validation issues open until reporters or maintainers confirm their original cases.
-5. Keep older open PRs as follow-up work unless maintainers explicitly ask to fold any into `#121`.
-6. If there is still no upstream response, use `docs/takeover-adoption-package.md` to contact CampusPress and prepare the WordPress.org adoption request.
+Final upstream PR comment was posted on `#121` with the final release URL, zip URL, SHA-256, and runtime summary:
 
-## Known Residual Risks
+- <https://github.com/campuspress/divi-accessibility/pull/121#issuecomment-4312815885>
 
-- Search/cart control markup varies by theme/header configuration, so runtime validation should still include default header and menu-module variants.
-- WooCommerce store-only/coming-soon Cart, Checkout, and Shop output on the local WooCommerce test site does not print the normal footer scripts; this prevents any footer-enqueued plugin JS from running on those responses.
-- Contact form checkbox behavior should be verified against both checkbox list and boolean checkbox field types.
-- All `codex-2.1.0-rc*` assets are superseded by final `2.1.0`.
-- WordPress.org lists `accessible-divi` as permanently closed by author request, so official adoption may require CampusPress approval or may be denied by the Plugin Review Team.
+Issues already closed during this work:
+
+- `#112` Slider labels/keyboard parity
+- `#114` Contact form announcements
+- `#107` Stale upstream branch/PR cleanup
+
+Direct closure candidates, but only maintainers can close them upstream:
+
+- `#90` Undefined `$tota11y` warning
+- `#96` Divi 5 support
+- `#88` module accessibility toggles
+- `#78` missing module accessibility attribute warnings
+- `#57` installable zip question
+
+Validation-only issues that should remain open until reporter or maintainer confirmation:
+
+- `#122`
+- `#91`
+- `#51`
+- `#71`
+- `#69`
+- `#60`
+- `#94`
+- `#85`
+- `#81`
+- `#76`
+- `#73`
+- `#72`
+- `#56`
+- `#53`
+- `#31`
+- `#25`
+- `#23`
+- `#21`
+- `#7`
+
+Backlog/planning issues should remain open unless maintainers decide otherwise:
+
+- `#104`
+- `#103`
+- `#102`
+- `#75`
+- `#74`
+- `#59`
+- `#58`
+- `#52`
+- `#50`
+- `#19`
+
+Reference documents:
+
+- `docs/upstream-triage-map.md`
+- `docs/github-issue-closeout-comments.md`
+- `docs/takeover-adoption-package.md`
+
+## Branch State
+
+Keep:
+
+- `master` as the maintained-fork release branch.
+- `codex/divi4-divi5-style-compat` until upstream PR `#121` is merged or explicitly abandoned.
+
+Do not merge old `codex/*` feature branches into `master`; the verified release branch already contains the release-relevant work.
+
+Use `docs/branch-cleanup-after-2.1.0.md` for a later explicit branch cleanup batch. Do not delete branches as part of this handover.
+
+## Next Owner Actions
+
+1. Monitor upstream PR `#121` for maintainer feedback.
+2. If CampusPress responds, keep the merge path focused on `#121`; avoid adding unrelated backlog work to that PR.
+3. If reporters respond on validation issues, triage against `2.1.0` first and open focused follow-up work only when the original repro still fails.
+4. Contact CampusPress/original maintainers for GitHub maintainer access or WordPress.org plugin transfer.
+5. If direct transfer is not available, prepare the WordPress.org adoption request using `docs/takeover-adoption-package.md`.
+6. Keep publishing future maintained-fork releases from `master` unless official ownership is granted.
+7. Run branch cleanup only as a separate explicit task after confirming no cached worktrees or unpushed notes are needed.
+
+## Public Messaging Rules
+
+- Refer to this as a maintained fork unless CampusPress or WordPress.org grants official access.
+- Preserve original CampusPress creator credit.
+- Do not claim official WordPress.org continuity.
+- Do not include local site URLs, client names, or local filesystem paths in public README, release notes, PR comments, issue comments, or adoption documents.
+- Use the final release URL and SHA-256 above when pointing users at the installable package.
