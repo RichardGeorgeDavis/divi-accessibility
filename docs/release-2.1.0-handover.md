@@ -19,9 +19,9 @@ Release `2.1.0` is the compatibility and modernization release for Divi Accessib
 - Upstream issue/PR triage map: `docs/upstream-triage-map.md`
 - AFK batch evidence: `docs/afk-batch-2026-04-24.md`
 - Downloadable packaged test build:
-  - current local zip: `packaged/divi-accessibility-2.1.0.zip`
-  - current local zip SHA-256: `4506b9ce5ea62a8f43543e78c36a02fa30ee5451e4cc970076dde3cc26866dea`
-  - next fork prerelease target: `codex-2.1.0-rc6` or final `2.1.0`
+  - current release page: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/codex-2.1.0-rc6>
+  - current zip asset: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/download/codex-2.1.0-rc6/divi-accessibility-2.1.0.zip>
+  - current zip SHA-256: `4506b9ce5ea62a8f43543e78c36a02fa30ee5451e4cc970076dde3cc26866dea`
   - previous superseded builds: `codex-2.1.0-rc1`, `codex-2.1.0-rc2`, `codex-2.1.0-rc3`, `codex-2.1.0-rc4`, `codex-2.1.0-rc5`
 
 ## Commit Lineage On This Branch
@@ -130,7 +130,7 @@ Release `2.1.0` is the compatibility and modernization release for Divi Accessib
 
 ## Next Steps
 
-1. Publish or share the current local package as `codex-2.1.0-rc6` or final `2.1.0`.
+1. Use `codex-2.1.0-rc6` for the refreshed fork prerelease asset.
 2. Run the remaining runtime checks:
    - Divi 5 toggle persistence after save/reopen
    - frontend verification for search/cart controls on alternate header/menu configurations; Divi Pixel mobile-menu isolation is now covered on two local Divi Pixel test sites

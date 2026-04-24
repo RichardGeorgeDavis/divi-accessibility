@@ -84,11 +84,10 @@ Pending manual verification. Update this section only after the packaged-plugin 
 ## Handover Notes
 
 - draft tester comments are already posted on `#121`
-- next downloadable fork asset should be published as `codex-2.1.0-rc6` or final `2.1.0`
+- current downloadable fork asset is `codex-2.1.0-rc6`: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/codex-2.1.0-rc6>
 - older `codex-2.1.0-rc1`, `codex-2.1.0-rc2`, `codex-2.1.0-rc3`, `codex-2.1.0-rc4`, and `codex-2.1.0-rc5` builds should be treated as superseded
 - takeover/adoption package is documented in `docs/takeover-adoption-package.md`
 - upstream issue/PR triage map is documented in `docs/upstream-triage-map.md`
 - AFK batch evidence is documented in `docs/afk-batch-2026-04-24.md`
-- current local package is `packaged/divi-accessibility-2.1.0.zip`
-- current local package SHA-256: `4506b9ce5ea62a8f43543e78c36a02fa30ee5451e4cc970076dde3cc26866dea`
-- the next published fork asset should be `codex-2.1.0-rc6` or final `2.1.0`; `codex-2.1.0-rc5` is superseded by the Divi Pixel follow-up fixes
+- current fork package SHA-256: `4506b9ce5ea62a8f43543e78c36a02fa30ee5451e4cc970076dde3cc26866dea`
+- `codex-2.1.0-rc5` is superseded by the Divi Pixel follow-up fixes
