@@ -2,10 +2,10 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Divi Accessibility 2.1.2\n"
+"Project-Id-Version: Divi Accessibility 2.1.3\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/divi-accessibility\n"
-"POT-Creation-Date: 2026-04-28 17:50:31+00:00\n"
+"POT-Creation-Date: 2026-04-28 18:55:03+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,7 +19,7 @@ msgid "Divi Accessibility"
 msgstr ""
 
 #: admin/class-divi-accessibility-admin.php:143
-#: admin/class-divi-accessibility-admin.php:226
+#: admin/class-divi-accessibility-admin.php:235
 msgid "Accessibility"
 msgstr ""
 
@@ -32,138 +32,232 @@ msgstr ""
 msgid "GitHub"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:227
+#: admin/class-divi-accessibility-admin.php:206
+msgid "Skip to navigation"
+msgstr ""
+
+#: admin/class-divi-accessibility-admin.php:207
+msgid "Skip to content"
+msgstr ""
+
+#: admin/class-divi-accessibility-admin.php:208
+msgid "Skip to footer"
+msgstr ""
+
+#: admin/class-divi-accessibility-admin.php:236
 msgid ""
 "Divi-specific fixes that improve keyboard, screen reader, and validation "
 "behavior."
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:231
+#: admin/class-divi-accessibility-admin.php:240
 msgid "Tools"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:232
+#: admin/class-divi-accessibility-admin.php:241
 msgid "Admin-only helpers for reviewing and debugging accessibility behavior."
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:236
+#: admin/class-divi-accessibility-admin.php:245
 #: admin/partials/divi-accessibility-admin-display.php:78
-#: admin/partials/divi-accessibility-admin-display.php:174
+#: admin/partials/divi-accessibility-admin-display.php:188
 msgid "Resources"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:237
+#: admin/class-divi-accessibility-admin.php:246
 msgid "Reference links and project information."
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:274
+#: admin/class-divi-accessibility-admin.php:283
 msgid "ARIA support"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:275
+#: admin/class-divi-accessibility-admin.php:284
 msgid "Add appropriate ARIA attributes across Divi elements &amp; modules."
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:280
+#: admin/class-divi-accessibility-admin.php:289
 msgid "Dropdown keyboard navigation"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:281
+#: admin/class-divi-accessibility-admin.php:290
 msgid "Allow easier navigation of Divi dropdown menus with the keyboard."
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:286
+#: admin/class-divi-accessibility-admin.php:295
 msgid "Slider accessibility"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:287
+#: admin/class-divi-accessibility-admin.php:296
 msgid "Add labels and keyboard controls to Divi slider arrows and navigation dots."
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:292
+#: admin/class-divi-accessibility-admin.php:301
 msgid "Fix labels"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:293
+#: admin/class-divi-accessibility-admin.php:302
 msgid ""
 "Fix missing labels &amp; incorrect or missing assignments to their "
 "corresponding inputs."
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:298
+#: admin/class-divi-accessibility-admin.php:307
 msgid "Focusable modules"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:299
+#: admin/class-divi-accessibility-admin.php:308
 msgid ""
 "Allow Divi modules such as <em>Toggle</em> &amp; <em>Accordion</em> to be "
 "focusable with keyboard navigation. Hitting enter will open/close when "
 "focused."
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:304
-#: admin/class-divi-accessibility-admin.php:312
+#: admin/class-divi-accessibility-admin.php:313
+#: admin/class-divi-accessibility-admin.php:321
 msgid "Keyboard navigation outline"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:305
+#: admin/class-divi-accessibility-admin.php:314
 msgid "Add an outline to focused elements when navigation with the keyboard."
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:310
+#: admin/class-divi-accessibility-admin.php:319
 msgid "Outline color"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:311
+#: admin/class-divi-accessibility-admin.php:320
 msgid "Choose the color used for the keyboard navigation outline."
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:317
+#: admin/class-divi-accessibility-admin.php:326
 msgid "Screen reader text"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:318
+#: admin/class-divi-accessibility-admin.php:327
 msgid ""
 "Add plugin screen reader class used on certain labels &amp; reverses Divi "
 "incorrectly applying <code>display: none;</code> on its own screen reader "
 "classes."
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:323
+#: admin/class-divi-accessibility-admin.php:332
 msgid "Skip navigation link"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:324
+#: admin/class-divi-accessibility-admin.php:333
 msgid ""
 "Allow user to skip over Divi navigation when using keyboard and go straight "
 "to content."
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:329
+#: admin/class-divi-accessibility-admin.php:338
+msgid "Skip to navigation link"
+msgstr ""
+
+#: admin/class-divi-accessibility-admin.php:339
+msgid ""
+"Add a keyboard-visible link that moves focus directly to the site "
+"navigation."
+msgstr ""
+
+#: admin/class-divi-accessibility-admin.php:344
+msgid "Skip to content link"
+msgstr ""
+
+#: admin/class-divi-accessibility-admin.php:345
+msgid ""
+"Add a keyboard-visible link that moves focus directly to the main content "
+"area."
+msgstr ""
+
+#: admin/class-divi-accessibility-admin.php:350
+msgid "Skip to footer link"
+msgstr ""
+
+#: admin/class-divi-accessibility-admin.php:351
+msgid "Add a keyboard-visible link that moves focus directly to the site footer."
+msgstr ""
+
+#: admin/class-divi-accessibility-admin.php:356
+msgid "Skip to navigation text"
+msgstr ""
+
+#: admin/class-divi-accessibility-admin.php:357
+msgid "Customize the visible text for the skip to navigation link."
+msgstr ""
+
+#: admin/class-divi-accessibility-admin.php:362
+msgid "Skip to content text"
+msgstr ""
+
+#: admin/class-divi-accessibility-admin.php:363
+msgid "Customize the visible text for the skip to content link."
+msgstr ""
+
+#: admin/class-divi-accessibility-admin.php:368
+msgid "Skip to footer text"
+msgstr ""
+
+#: admin/class-divi-accessibility-admin.php:369
+msgid "Customize the visible text for the skip to footer link."
+msgstr ""
+
+#: admin/class-divi-accessibility-admin.php:374
+msgid "Skip to navigation target selectors"
+msgstr ""
+
+#: admin/class-divi-accessibility-admin.php:375
+msgid ""
+"Comma-separated selectors. The first matching element receives focus when "
+"the navigation skip link is used."
+msgstr ""
+
+#: admin/class-divi-accessibility-admin.php:380
+msgid "Skip to content target selectors"
+msgstr ""
+
+#: admin/class-divi-accessibility-admin.php:381
+msgid ""
+"Comma-separated selectors. The first matching element receives focus when "
+"the content skip link is used."
+msgstr ""
+
+#: admin/class-divi-accessibility-admin.php:386
+msgid "Skip to footer target selectors"
+msgstr ""
+
+#: admin/class-divi-accessibility-admin.php:387
+msgid ""
+"Comma-separated selectors. The first matching element receives focus when "
+"the footer skip link is used."
+msgstr ""
+
+#: admin/class-divi-accessibility-admin.php:392
 msgid "Hide icons"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:330
+#: admin/class-divi-accessibility-admin.php:393
 msgid "Hide all icons to screen readers so text is read normally."
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:331
+#: admin/class-divi-accessibility-admin.php:394
 msgid "This may not work for all icons"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:336
+#: admin/class-divi-accessibility-admin.php:399
 msgid "Aria support for mobile menu"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:337
+#: admin/class-divi-accessibility-admin.php:400
 msgid "Apply Aria attributes to the mobile (burger) menu to make it accessible."
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:342
+#: admin/class-divi-accessibility-admin.php:405
 msgid "Fix duplicate menu ids"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:343
+#: admin/class-divi-accessibility-admin.php:406
 msgid ""
 "Because Divi uses the same menu twice (Once for the primary menu and again "
 "for the mobile menu), the unique ID's are duplicated causing validation "
@@ -171,76 +265,159 @@ msgid ""
 "list items."
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:348
+#: admin/class-divi-accessibility-admin.php:411
 msgid "Reduced motion support"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:349
+#: admin/class-divi-accessibility-admin.php:412
 msgid ""
 "Respect user reduced motion preferences by minimizing non-essential Divi "
 "animations."
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:350
+#: admin/class-divi-accessibility-admin.php:413
 msgid ""
 "Applies only when users have reduced motion enabled in their operating "
 "system/browser"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:355
+#: admin/class-divi-accessibility-admin.php:418
 msgid "Underline URLs"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:356
+#: admin/class-divi-accessibility-admin.php:419
 msgid "Easily find out URLs when they are underlined."
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:361
+#: admin/class-divi-accessibility-admin.php:424
 msgid "Exclude underlines from titles and buttons"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:362
+#: admin/class-divi-accessibility-admin.php:425
 msgid "Disable URL underlines on titles, headings, and buttons."
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:369
+#: admin/class-divi-accessibility-admin.php:432
 #: admin/partials/divi-accessibility-admin-display.php:41
 msgid "Tota11y"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:370
+#: admin/class-divi-accessibility-admin.php:433
 msgid ""
 "Add a small button to the bottom corner of site to visualize how your site "
 "performs with assistive technology."
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:371
-#: admin/class-divi-accessibility-admin.php:378
+#: admin/class-divi-accessibility-admin.php:434
+#: admin/class-divi-accessibility-admin.php:441
 msgid "Admin users only"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:376
+#: admin/class-divi-accessibility-admin.php:439
 msgid "Developer mode"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:377
+#: admin/class-divi-accessibility-admin.php:440
 msgid "Log plugin info to console."
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:590
-#: admin/class-divi-accessibility-admin.php:591
+#: admin/class-divi-accessibility-admin.php:615
+#: admin/class-divi-accessibility-admin.php:623
+#: admin/partials/divi-accessibility-admin-display.php:153
+msgid "Enabled"
+msgstr ""
+
+#: admin/class-divi-accessibility-admin.php:616
+#: admin/class-divi-accessibility-admin.php:627
+msgid "Disabled"
+msgstr ""
+
+#: admin/class-divi-accessibility-admin.php:760
+msgid ""
+"Hide this module from assistive technology. Do not use this on modules that "
+"contain links, buttons, form fields, or other focusable content."
+msgstr ""
+
+#: admin/class-divi-accessibility-admin.php:761
 msgid "Hide From Screen Readers"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:605
-msgid "Make element visible for Screen Readers only"
+#: admin/class-divi-accessibility-admin.php:775
+msgid ""
+"Visually hide this module while keeping it available to assistive "
+"technology."
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:606
+#: admin/class-divi-accessibility-admin.php:776
 msgid "Show For Screen Readers Only"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:632
+#: admin/class-divi-accessibility-admin.php:789
+msgid ""
+"Add an allowed role to this module wrapper only when the native markup does "
+"not communicate the right semantics."
+msgstr ""
+
+#: admin/class-divi-accessibility-admin.php:790
+msgid "ARIA Role"
+msgstr ""
+
+#: admin/class-divi-accessibility-admin.php:793
+msgid "None"
+msgstr ""
+
+#: admin/class-divi-accessibility-admin.php:812
+msgid ""
+"Add an accessible name only when the module visible content is not "
+"sufficient. Prefer visible text or ARIA Labelledby when a visible label "
+"exists."
+msgstr ""
+
+#: admin/class-divi-accessibility-admin.php:813
+msgid "ARIA Label"
+msgstr ""
+
+#: admin/class-divi-accessibility-admin.php:821
+msgid ""
+"Add a space-separated list of element IDs that label this module wrapper. "
+"Avoid combining this with ARIA Label unless you have tested the result."
+msgstr ""
+
+#: admin/class-divi-accessibility-admin.php:822
+msgid "ARIA Labelledby"
+msgstr ""
+
+#: admin/class-divi-accessibility-admin.php:830
+msgid ""
+"Add a short accessible description only when the module needs extra context "
+"beyond its visible content."
+msgstr ""
+
+#: admin/class-divi-accessibility-admin.php:831
+msgid "ARIA Description"
+msgstr ""
+
+#: admin/class-divi-accessibility-admin.php:839
+msgid ""
+"Add a space-separated list of element IDs that describe this module "
+"wrapper. Values are treated as ID references."
+msgstr ""
+
+#: admin/class-divi-accessibility-admin.php:840
+msgid "ARIA Describedby"
+msgstr ""
+
+#: admin/class-divi-accessibility-admin.php:848
+msgid ""
+"Add one element ID that provides extended details for this module wrapper. "
+"Values are treated as ID references."
+msgstr ""
+
+#: admin/class-divi-accessibility-admin.php:849
+msgid "ARIA Details"
+msgstr ""
+
+#: admin/class-divi-accessibility-admin.php:870
 msgid "Accessibility Settings"
 msgstr ""
 
@@ -293,19 +470,15 @@ msgstr ""
 msgid "Version %s"
 msgstr ""
 
-#: admin/partials/divi-accessibility-admin-display.php:141
-msgid "Enabled"
-msgstr ""
-
-#: admin/partials/divi-accessibility-admin-display.php:155
+#: admin/partials/divi-accessibility-admin-display.php:167
 msgid "Save Settings"
 msgstr ""
 
-#: admin/partials/divi-accessibility-admin-display.php:173
+#: admin/partials/divi-accessibility-admin-display.php:187
 msgid "Plugin Settings"
 msgstr ""
 
-#: admin/partials/divi-accessibility-admin-display.php:175
+#: admin/partials/divi-accessibility-admin-display.php:189
 msgid "Support"
 msgstr ""
 
@@ -317,39 +490,35 @@ msgstr ""
 msgid "View release notes on GitHub."
 msgstr ""
 
-#: public/class-divi-accessibility-public.php:163
-msgid "Skip to content"
-msgstr ""
-
-#: public/class-divi-accessibility-public.php:167
+#: public/class-divi-accessibility-public.php:192
 msgid "Previous slide"
 msgstr ""
 
-#: public/class-divi-accessibility-public.php:168
+#: public/class-divi-accessibility-public.php:193
 msgid "Next slide"
 msgstr ""
 
-#: public/class-divi-accessibility-public.php:169
+#: public/class-divi-accessibility-public.php:194
 msgid "Go to slide %d"
 msgstr ""
 
-#: public/class-divi-accessibility-public.php:174
+#: public/class-divi-accessibility-public.php:199
 msgid "Close search"
 msgstr ""
 
-#: public/class-divi-accessibility-public.php:175
+#: public/class-divi-accessibility-public.php:200
 msgid "Open search"
 msgstr ""
 
-#: public/class-divi-accessibility-public.php:176
+#: public/class-divi-accessibility-public.php:201
 msgid "Search"
 msgstr ""
 
-#: public/class-divi-accessibility-public.php:177
+#: public/class-divi-accessibility-public.php:202
 msgid "Search for..."
 msgstr ""
 
-#: public/class-divi-accessibility-public.php:178
+#: public/class-divi-accessibility-public.php:203
 msgid "View cart"
 msgstr ""
 

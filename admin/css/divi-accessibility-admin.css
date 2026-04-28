@@ -183,6 +183,10 @@
 	max-width: 100%;
 }
 
+#da11y-dashboard .lc-kit .da11y-setting-control-text {
+	width: 360px;
+}
+
 #da11y-dashboard .lc-kit input[type="text"],
 #da11y-dashboard .lc-kit input[type="number"],
 #da11y-dashboard .lc-kit input[type="password"],
@@ -275,19 +279,13 @@
 }
 
 #da11y-dashboard .da11y-hurkan-switch {
-	display: inline-block;
+	display: block;
+	width: 100%;
 	cursor: pointer;
 }
 
 #da11y-dashboard .hurkanSwitch-switch-plugin.hurkanSwitch-switch-input {
-	position: absolute;
-	width: 1px;
-	height: 1px;
-	margin: -1px;
-	padding: 0;
-	border: 0;
-	clip: rect(0 0 0 0);
-	overflow: hidden;
+	display: none;
 }
 
 #da11y-dashboard .hurkanSwitch {
@@ -296,6 +294,10 @@
 
 #da11y-dashboard .hurkanSwitch.switch-responsive {
 	display: block;
+}
+
+#da11y-dashboard .hurkanSwitch.switch-responsive > .hurkanSwitch-switch-box {
+	display: block !important;
 }
 
 #da11y-dashboard .hurkanSwitch > .hurkanSwitch-switch-box {
@@ -314,11 +316,20 @@
 	display: none;
 	height: 40px;
 	border-radius: 4px;
+	box-shadow: none;
 	font-size: 13px;
 	font-weight: 600;
 	line-height: 40px;
 	opacity: 0;
+	outline: none;
+	text-decoration: none;
 	text-transform: uppercase;
+}
+
+#da11y-dashboard .hurkanSwitch > .hurkanSwitch-switch-box > .hurkanSwitch-switch-item:hover,
+#da11y-dashboard .hurkanSwitch > .hurkanSwitch-switch-box > .hurkanSwitch-switch-item:focus {
+	box-shadow: none;
+	text-decoration: none;
 }
 
 #da11y-dashboard .hurkanSwitch > .hurkanSwitch-switch-box > .hurkanSwitch-switch-item.active {
@@ -326,7 +337,17 @@
 	opacity: 1;
 }
 
-#da11y-dashboard .hurkanSwitch-switch-item-status-on {
+#da11y-dashboard .hurkanSwitch > .hurkanSwitch-switch-box.switch-animated-on > .hurkanSwitch-switch-item.active {
+	opacity: 1;
+}
+
+#da11y-dashboard .hurkanSwitch > .hurkanSwitch-switch-box.switch-animated-on > .hurkanSwitch-switch-item.active .lbl {
+	animation-duration: 0.5s;
+	animation-name: active;
+	opacity: 1;
+}
+
+#da11y-dashboard .hurkanSwitch > .hurkanSwitch-switch-box > .hurkanSwitch-switch-item.active.hurkanSwitch-switch-item-status-on {
 	padding-right: 32px;
 	padding-left: 15px;
 	background-color: #ff5949;
@@ -334,12 +355,21 @@
 	text-align: left;
 }
 
-#da11y-dashboard .hurkanSwitch-switch-item-status-off {
+#da11y-dashboard .hurkanSwitch > .hurkanSwitch-switch-box > .hurkanSwitch-switch-item.active.hurkanSwitch-switch-item-status-off {
 	padding-right: 15px;
 	padding-left: 32px;
 	background: #F5F8FA;
 	color: #8E969E;
 	text-align: right;
+}
+
+#da11y-dashboard .hurkanSwitch > .hurkanSwitch-switch-box > .hurkanSwitch-switch-item.hurkanSwitch-switch-item-color-success {
+	background-color: #ff5949 !important;
+}
+
+#da11y-dashboard .hurkanSwitch > .hurkanSwitch-switch-box > .hurkanSwitch-switch-item.hurkanSwitch-switch-item-color-default {
+	background-color: #fff !important;
+	color: #777 !important;
 }
 
 #da11y-dashboard .hurkanSwitch > .hurkanSwitch-switch-box > .hurkanSwitch-switch-item > .hurkanSwitch-switch-cursor-selector {
@@ -354,29 +384,62 @@
 	content: "";
 }
 
-#da11y-dashboard .hurkanSwitch-switch-item-status-off > .hurkanSwitch-switch-cursor-selector {
+#da11y-dashboard .hurkanSwitch > .hurkanSwitch-switch-box > .hurkanSwitch-switch-item.hurkanSwitch-switch-item-color-default > .hurkanSwitch-switch-cursor-selector {
+	margin-top: -2.2px;
+	border: 1px solid #eee !important;
+}
+
+#da11y-dashboard .hurkanSwitch > .hurkanSwitch-switch-box > .hurkanSwitch-switch-item.hurkanSwitch-switch-item-status-off > .hurkanSwitch-switch-cursor-selector {
 	left: 5px;
 }
 
-#da11y-dashboard .hurkanSwitch-switch-item-status-on > .hurkanSwitch-switch-cursor-selector {
+#da11y-dashboard .hurkanSwitch > .hurkanSwitch-switch-box > .hurkanSwitch-switch-item.hurkanSwitch-switch-item-status-on > .hurkanSwitch-switch-cursor-selector {
 	right: 5px;
 }
 
-#da11y-dashboard .hurkanSwitch-switch-input:not(:checked) + .hurkanSwitch .hurkanSwitch-switch-item-status-on,
-#da11y-dashboard .hurkanSwitch-switch-input:checked + .hurkanSwitch .hurkanSwitch-switch-item-status-off {
-	display: none;
-	opacity: 0;
+#da11y-dashboard .hurkanSwitch > .hurkanSwitch-switch-box.switch-animated-on > .hurkanSwitch-switch-item.hurkanSwitch-switch-item-status-on > .hurkanSwitch-switch-cursor-selector {
+	animation-duration: 0.5s;
+	animation-name: right;
 }
 
-#da11y-dashboard .hurkanSwitch-switch-input:checked + .hurkanSwitch .hurkanSwitch-switch-item-status-on,
-#da11y-dashboard .hurkanSwitch-switch-input:not(:checked) + .hurkanSwitch .hurkanSwitch-switch-item-status-off {
-	display: block;
-	opacity: 1;
+#da11y-dashboard .hurkanSwitch > .hurkanSwitch-switch-box.switch-animated-on > .hurkanSwitch-switch-item.hurkanSwitch-switch-item-status-off > .hurkanSwitch-switch-cursor-selector {
+	animation-duration: 0.5s;
+	animation-name: left;
 }
 
-#da11y-dashboard .hurkanSwitch-switch-input:focus + .hurkanSwitch .hurkanSwitch-switch-box {
+#da11y-dashboard .hurkanSwitch-switch-box:focus {
 	outline: 2px solid #2ea3f2;
 	outline-offset: 3px;
+}
+
+@keyframes left {
+	0% {
+		left: 100%;
+	}
+
+	100% {
+		left: 5px;
+	}
+}
+
+@keyframes right {
+	0% {
+		right: 100%;
+	}
+
+	100% {
+		right: 5px;
+	}
+}
+
+@keyframes active {
+	0% {
+		opacity: 0;
+	}
+
+	100% {
+		opacity: 1;
+	}
 }
 
 #da11y-dashboard #et-epanel-bottom {

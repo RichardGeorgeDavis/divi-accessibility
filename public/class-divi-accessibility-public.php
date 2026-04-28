@@ -160,7 +160,32 @@ class Divi_Accessibility_Public {
 			);
 		}
 		if ( $this->can_load( 'skip_navigation_link' ) ) {
-			$data['skip_navigation_link_text'] = __( 'Skip to content', 'divi-accessibility' );
+			$settings = array_merge(
+				$defaults,
+				(array) $this->settings
+			);
+
+			$data['skip_navigation_link_text'] = sanitize_text_field( $settings['skip_link_content_text'] );
+			$data['skip_links']                = array(
+				array(
+					'name'    => 'navigation',
+					'enabled' => 1 === (int) $settings['skip_link_navigation_enabled'],
+					'text'    => sanitize_text_field( $settings['skip_link_navigation_text'] ),
+					'target'  => sanitize_text_field( $settings['skip_link_navigation_target'] ),
+				),
+				array(
+					'name'    => 'content',
+					'enabled' => 1 === (int) $settings['skip_link_content_enabled'],
+					'text'    => sanitize_text_field( $settings['skip_link_content_text'] ),
+					'target'  => sanitize_text_field( $settings['skip_link_content_target'] ),
+				),
+				array(
+					'name'    => 'footer',
+					'enabled' => 1 === (int) $settings['skip_link_footer_enabled'],
+					'text'    => sanitize_text_field( $settings['skip_link_footer_text'] ),
+					'target'  => sanitize_text_field( $settings['skip_link_footer_target'] ),
+				),
+			);
 		}
 		if ( $this->can_load( 'slider_accessibility' ) ) {
 			$data['slider_accessibility_labels'] = array(
@@ -509,18 +534,209 @@ class Divi_Accessibility_Public {
 	}
 
 	/**
-	 * Add accessibility classes to the first class-bearing element in module output.
+	 * Get the first non-empty string module prop value from D4 or D5 storage formats.
+	 *
+	 * @param array $props Module props.
+	 * @param array $paths Candidate prop paths.
+	 * @return string
+	 */
+	private function get_module_prop_string( array $props, array $paths ) {
+		foreach ( $paths as $path ) {
+			$value = $this->get_nested_module_prop( $props, $path );
+
+			if ( is_scalar( $value ) ) {
+				$value = trim( (string) $value );
+
+				if ( '' !== $value ) {
+					return $value;
+				}
+			}
+		}
+
+		return '';
+	}
+
+	/**
+	 * Return the ARIA roles allowed by module accessibility fields.
+	 *
+	 * @return array
+	 */
+	private function get_allowed_module_aria_roles() {
+		return array(
+			'region',
+			'complementary',
+			'navigation',
+			'list',
+			'listitem',
+			'button',
+			'link',
+			'dialog',
+			'alertdialog',
+			'presentation',
+			'none',
+		);
+	}
+
+	/**
+	 * Sanitize a module role value against the plugin allowlist.
+	 *
+	 * @param string $value Raw value.
+	 * @return string
+	 */
+	private function sanitize_module_aria_role( $value ) {
+		$value = sanitize_key( $value );
+
+		if ( in_array( $value, $this->get_allowed_module_aria_roles(), true ) ) {
+			return $value;
+		}
+
+		return '';
+	}
+
+	/**
+	 * Sanitize a module text attribute value.
+	 *
+	 * @param string $value Raw value.
+	 * @return string
+	 */
+	private function sanitize_module_aria_text( $value ) {
+		return sanitize_text_field( $value );
+	}
+
+	/**
+	 * Sanitize a space-separated ARIA ID reference list.
+	 *
+	 * @param string $value Raw value.
+	 * @return string
+	 */
+	private function sanitize_module_aria_idrefs( $value ) {
+		$ids = preg_split( '/\s+/', $value );
+
+		if ( ! is_array( $ids ) ) {
+			return '';
+		}
+
+		$ids = array_filter(
+			array_map(
+				function( $id ) {
+					return preg_replace( '/[^A-Za-z0-9\-_:.]/', '', $id );
+				},
+				$ids
+			),
+			function( $id ) {
+				return '' !== $id;
+			}
+		);
+
+		return implode( ' ', $ids );
+	}
+
+	/**
+	 * Sanitize a single ARIA ID reference.
+	 *
+	 * @param string $value Raw value.
+	 * @return string
+	 */
+	private function sanitize_module_aria_idref( $value ) {
+		$ids = preg_split( '/\s+/', $this->sanitize_module_aria_idrefs( $value ) );
+
+		return is_array( $ids ) && isset( $ids[0] ) ? $ids[0] : '';
+	}
+
+	/**
+	 * Sanitize a plugin-owned module accessibility attribute.
+	 *
+	 * @param string $name Attribute name.
+	 * @param string $value Raw value.
+	 * @return string
+	 */
+	private function sanitize_module_accessibility_attribute( $name, $value ) {
+		switch ( $name ) {
+			case 'role':
+				return $this->sanitize_module_aria_role( $value );
+
+			case 'aria-label':
+			case 'aria-description':
+				return $this->sanitize_module_aria_text( $value );
+
+			case 'aria-labelledby':
+			case 'aria-describedby':
+				return $this->sanitize_module_aria_idrefs( $value );
+
+			case 'aria-details':
+				return $this->sanitize_module_aria_idref( $value );
+		}
+
+		return '';
+	}
+
+	/**
+	 * Add a sanitized module accessibility attribute when valid.
+	 *
+	 * @param array  $attributes Attribute names and values.
+	 * @param string $name Attribute name.
+	 * @param string $value Raw value.
+	 * @return array
+	 */
+	private function add_module_accessibility_attribute( array $attributes, $name, $value ) {
+		$value = $this->sanitize_module_accessibility_attribute( $name, $value );
+
+		if ( '' !== $value ) {
+			$attributes[ $name ] = $value;
+		}
+
+		return $attributes;
+	}
+
+	/**
+	 * Build escaped HTML attributes.
+	 *
+	 * @param array  $attributes Attribute names and values.
+	 * @param string $tag_attributes Existing attributes on the target tag.
+	 * @return string
+	 */
+	private function build_module_accessibility_attribute_string( array $attributes, $tag_attributes ) {
+		$attribute_string = '';
+
+		foreach ( $attributes as $name => $value ) {
+			if ( '' === $value || preg_match( '/\s' . preg_quote( $name, '/' ) . '\s*=/i', $tag_attributes ) ) {
+				continue;
+			}
+
+			$attribute_string .= ' ' . esc_attr( $name ) . '="' . esc_attr( $value ) . '"';
+		}
+
+		return $attribute_string;
+	}
+
+	/**
+	 * Add accessibility classes and attributes to the first class-bearing element in module output.
 	 *
 	 * @param string $output Module output.
 	 * @param string $class_list Space-prefixed class list.
+	 * @param array  $attributes Attribute names and values.
 	 * @return string
 	 */
-	private function add_accessibility_class_list_to_output( $output, $class_list ) {
-		if ( ! $class_list || ! is_string( $output ) ) {
+	private function add_module_accessibility_to_output( $output, $class_list, array $attributes ) {
+		if ( ( ! $class_list && empty( $attributes ) ) || ! is_string( $output ) ) {
 			return $output;
 		}
 
-		return preg_replace( '/class=\"(.*?)\"/', 'class="$1' . $class_list . '"', $output, 1 );
+		return preg_replace_callback(
+			'/<([A-Za-z][A-Za-z0-9:_-]*)([^>]*\sclass="[^"]*"[^>]*)>/',
+			function( $matches ) use ( $class_list, $attributes ) {
+				$tag_name       = $matches[1];
+				$tag_attributes = $matches[2];
+
+				if ( $class_list ) {
+					$tag_attributes = preg_replace( '/class="([^"]*)"/', 'class="$1' . $class_list . '"', $tag_attributes, 1 );
+				}
+
+				return '<' . $tag_name . $tag_attributes . $this->build_module_accessibility_attribute_string( $attributes, $tag_attributes ) . '>';
+			},
+			$output,
+			1
+		);
 	}
 
 	/**
@@ -555,6 +771,52 @@ class Divi_Accessibility_Public {
 	}
 
 	/**
+	 * Build module accessibility attributes from D4 or D5 module props.
+	 *
+	 * @param array $props Module props.
+	 * @return array
+	 */
+	private function get_module_accessibility_attributes( array $props ) {
+		$attributes    = array();
+		$attribute_map = array(
+			'role'                => array(
+				array( 'da11y_role' ),
+				array( 'accessibility', 'advanced', 'da11yRole', 'desktop', 'value' ),
+			),
+			'aria-label'          => array(
+				array( 'da11y_aria_label' ),
+				array( 'accessibility', 'advanced', 'da11yAriaLabel', 'desktop', 'value' ),
+			),
+			'aria-labelledby'     => array(
+				array( 'da11y_aria_labelledby' ),
+				array( 'accessibility', 'advanced', 'da11yAriaLabelledby', 'desktop', 'value' ),
+			),
+			'aria-description'    => array(
+				array( 'da11y_aria_description' ),
+				array( 'accessibility', 'advanced', 'da11yAriaDescription', 'desktop', 'value' ),
+			),
+			'aria-describedby'    => array(
+				array( 'da11y_aria_describedby' ),
+				array( 'accessibility', 'advanced', 'da11yAriaDescribedby', 'desktop', 'value' ),
+			),
+			'aria-details'        => array(
+				array( 'da11y_aria_details' ),
+				array( 'accessibility', 'advanced', 'da11yAriaDetails', 'desktop', 'value' ),
+			),
+		);
+
+		foreach ( $attribute_map as $attribute_name => $paths ) {
+			$attributes = $this->add_module_accessibility_attribute(
+				$attributes,
+				$attribute_name,
+				$this->get_module_prop_string( $props, $paths )
+			);
+		}
+
+		return $attributes;
+	}
+
+	/**
 	 * Add module accessibility classes to Divi 5 block output.
 	 *
 	 * @param string $block_content Rendered block content.
@@ -573,9 +835,10 @@ class Divi_Accessibility_Public {
 			return $block_content;
 		}
 
-		return $this->add_accessibility_class_list_to_output(
+		return $this->add_module_accessibility_to_output(
 			$block_content,
-			$this->get_module_accessibility_class_list( $block['attrs'] )
+			$this->get_module_accessibility_class_list( $block['attrs'] ),
+			$this->get_module_accessibility_attributes( $block['attrs'] )
 		);
 	}
 
@@ -588,9 +851,10 @@ class Divi_Accessibility_Public {
 	 */
 	function add_accessibilty_classes( $output, $render_method, $element ) {
 		if ( is_string( $output ) && isset( $element->props ) && is_array( $element->props ) ) {
-			$output = $this->add_accessibility_class_list_to_output(
+			$output = $this->add_module_accessibility_to_output(
 				$output,
-				$this->get_module_accessibility_class_list( $element->props )
+				$this->get_module_accessibility_class_list( $element->props ),
+				$this->get_module_accessibility_attributes( $element->props )
 			);
 		}
 		return $output;

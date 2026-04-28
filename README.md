@@ -10,6 +10,10 @@ Current fork releases are published at [RichardGeorgeDavis/divi-accessibility](h
 
 The plugin includes a native GitHub Releases updater for this maintained fork. Sites must install `2.1.1` or later once; after that, future stable fork releases with a packaged zip asset appear through WordPress' normal Plugins update screen.
 
+## Accessibility Scope
+
+Divi Accessibility applies targeted, WCAG-aligned improvements to Divi-generated markup and behavior. It does not guarantee WCAG conformance for a whole website. Final accessibility depends on theme configuration, page content, color contrast, media alternatives, third-party plugins, custom CSS/JS, and editorial practice.
+
 ## Community
 
 + Ask questions in [GitHub Discussions Q&A](https://github.com/RichardGeorgeDavis/divi-accessibility/discussions/categories/q-a)
@@ -24,14 +28,28 @@ The plugin includes a native GitHub Releases updater for this maintained fork. S
 
 ## Features
 
-+ Divi 4 and Divi 5 compatibility, including builder-side module accessibility toggles
++ Divi 4 and Divi 5 compatibility, including builder-side module accessibility toggles and focused Divi 4 module ARIA fields
 + ARIA, labels, and keyboard fixes for core Divi navigation, search, slider, and contact form behaviors
 + Reduced motion support that respects user operating system/browser preferences
 + Mobile menu screen-reader isolation while the menu is open
-+ Skip link, focus outline, and screen-reader-text fixes tuned for Divi markup
++ Configurable skip links for content, navigation, and footer targets, plus focus outline and screen-reader-text fixes tuned for Divi markup
 + Plugin-owned compatibility styling for Divi 4 and Divi 5 without importing theme styles wholesale
 + Native GitHub Releases updater for packaged fork releases
 + Tota11y integration for admin-side review
+
+## Module ARIA Fields
+
+Divi 4 modules include focused Accessibility Settings for wrapper-level `role`, `aria-label`, `aria-labelledby`, `aria-description`, `aria-describedby`, and `aria-details` output. These fields migrate into the plugin's Divi 5 compatibility namespace and continue rendering on the frontend for migrated content.
+
+For new arbitrary attributes in Divi 5, use Divi's native Advanced > Attributes panel. This plugin does not duplicate Divi 5's generic Custom Attributes UI.
+
+## Skip Links
+
+The skip link feature can output keyboard-visible links to navigation, content, and footer landmarks. Only the content skip link is enabled by default for backward compatibility; navigation and footer links can be enabled and pointed at site-specific selectors from the plugin settings.
+
+## Release 2.1.3
+
+`2.1.3` adds configurable navigation/content/footer skip links, focused module ARIA guardrails and guidance, project accessibility testing docs, and pragmatic CI/release metadata checks. It also keeps migrated Divi 4 module accessibility attributes rendering through the Divi 5 compatibility namespace while avoiding a generic Divi 5 Custom Attributes UI.
 
 ## Release 2.1.2
 

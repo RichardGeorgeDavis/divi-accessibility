@@ -15,6 +15,8 @@ const assumeYes = !! process.env.npm_config_yes
 	|| 'true' === process.env.DA11Y_ASSUME_YES
 	|| process.argv.includes( '-y' )
 	|| process.argv.includes( '--yes' );
+const checkOnly = 'true' === process.env.DA11Y_RELEASE_CHECK
+	|| process.argv.includes( '--check' );
 
 const versionRxSrc = '\\d+\\.(?:\\d\.)+\\d(?:(?:-alpha|-beta)-\\d+)?';
 const versionRx = new RegExp( versionRxSrc );
@@ -29,6 +31,7 @@ const potProjectVersionRx = new RegExp(
 
 let finalVersion;
 let filesUpdated = false;
+let hasErrors = false;
 const readmeFile = fs.readFileSync( 'readme.txt', 'utf8' );
 const potFile = sh.test( '-e', 'languages/divi-accessibility.pot' )
 	? fs.readFileSync( 'languages/divi-accessibility.pot', 'utf8' )
@@ -62,6 +65,10 @@ if ( process.env.DA11Y_RELEASE_VERSION || process.env.npm_config_release ) {
 }
 
 function confirmOrUpdate( prompt, callback ) {
+	if ( checkOnly ) {
+		return;
+	}
+
 	if ( assumeYes ) {
 		callback();
 		return;
@@ -70,78 +77,116 @@ function confirmOrUpdate( prompt, callback ) {
 	rs.question( prompt ).match( /y/i ) && callback();
 }
 
+function addError( message ) {
+	hasErrors = true;
+	console.error( `[ERROR] ${ message }` );
+}
+
 if ( compare( '' + versionCandidates.package, '' + finalVersion ) !== 0 ) {
-	confirmOrUpdate(
-		`\t* Version in package.json (${ pkg.version }) is different. Update? [y/N]`,
-		() => {
-			filesUpdated = true;
-			console.log( `\t- Updating package.json version` );
-			pkg.version = finalVersion;
-			fs.writeFileSync( 'package.json', JSON.stringify( pkg, null, 2 ) );
-		}
-	);
+	if ( checkOnly ) {
+		addError( `Version in package.json (${ pkg.version }) differs from ${ finalVersion }.` );
+	} else {
+		confirmOrUpdate(
+			`\t* Version in package.json (${ pkg.version }) is different. Update? [y/N]`,
+			() => {
+				filesUpdated = true;
+				console.log( `\t- Updating package.json version` );
+				pkg.version = finalVersion;
+				fs.writeFileSync( 'package.json', JSON.stringify( pkg, null, 2 ) );
+			}
+		);
+	}
 }
 
 if (
 	compare( '' + versionCandidates.fileheader, '' + finalVersion ) !== 0 ||
 	compare( '' + versionCandidates.define, '' + finalVersion ) !== 0
 ) {
-	confirmOrUpdate(
-		`\t* Versions in divi-accessibility.php differ from ${ finalVersion }. Update? [y/N]`,
-		() => {
-			filesUpdated = true;
-			console.log( `\t- Updating main file versions` );
-			fs.writeFileSync( 'divi-accessibility.php', mainFile.map( line => {
-				if ( ( line || '' ).match( fileHeaderRx ) ) {
-					return line.replace( versionRx, finalVersion );
-			}
-			if ( ( line || '' ).match( defineRx ) ) {
-				return line.replace( versionRx, finalVersion );
-			}
+	if ( checkOnly ) {
+		addError( `Versions in divi-accessibility.php differ from ${ finalVersion }.` );
+	} else {
+		confirmOrUpdate(
+			`\t* Versions in divi-accessibility.php differ from ${ finalVersion }. Update? [y/N]`,
+			() => {
+				filesUpdated = true;
+				console.log( `\t- Updating main file versions` );
+				fs.writeFileSync( 'divi-accessibility.php', mainFile.map( line => {
+					if ( ( line || '' ).match( fileHeaderRx ) ) {
+						return line.replace( versionRx, finalVersion );
+					}
+					if ( ( line || '' ).match( defineRx ) ) {
+						return line.replace( versionRx, finalVersion );
+					}
 
-				return line;
+					return line;
 
-			} ).join( "\n" ) );
-		}
-	);
+				} ).join( "\n" ) );
+			}
+		);
+	}
 }
 
 if ( compare( '' + ( versionCandidates.readme || '0.0.0' ), '' + finalVersion ) !== 0 ) {
-	confirmOrUpdate(
-		`\t* Stable tag in readme.txt differs from ${ finalVersion }. Update? [y/N]`,
-		() => {
-			filesUpdated = true;
-			console.log( `\t- Updating readme.txt stable tag` );
-			fs.writeFileSync(
-				'readme.txt',
-				readmeFile.replace( readmeStableTagRx, `Stable tag: ${ finalVersion }` )
-			);
-		}
-	);
+	if ( checkOnly ) {
+		addError( `Stable tag in readme.txt differs from ${ finalVersion }.` );
+	} else {
+		confirmOrUpdate(
+			`\t* Stable tag in readme.txt differs from ${ finalVersion }. Update? [y/N]`,
+			() => {
+				filesUpdated = true;
+				console.log( `\t- Updating readme.txt stable tag` );
+				fs.writeFileSync(
+					'readme.txt',
+					readmeFile.replace( readmeStableTagRx, `Stable tag: ${ finalVersion }` )
+				);
+			}
+		);
+	}
 }
 
 if ( potFile && compare( '' + ( versionCandidates.pot || '0.0.0' ), '' + finalVersion ) !== 0 ) {
-	confirmOrUpdate(
-		`\t* Project-Id-Version in languages/divi-accessibility.pot differs from ${ finalVersion }. Update? [y/N]`,
-		() => {
-			filesUpdated = true;
-			console.log( `\t- Updating POT metadata` );
-			fs.writeFileSync(
-				'languages/divi-accessibility.pot',
-				potFile.replace(
-					potProjectVersionRx,
-					`Project-Id-Version: Divi Accessibility ${ finalVersion }\\n`
-				)
-			);
-		}
-	);
+	if ( checkOnly ) {
+		addError( `Project-Id-Version in languages/divi-accessibility.pot differs from ${ finalVersion }.` );
+	} else {
+		confirmOrUpdate(
+			`\t* Project-Id-Version in languages/divi-accessibility.pot differs from ${ finalVersion }. Update? [y/N]`,
+			() => {
+				filesUpdated = true;
+				console.log( `\t- Updating POT metadata` );
+				fs.writeFileSync(
+					'languages/divi-accessibility.pot',
+					potFile.replace(
+						potProjectVersionRx,
+						`Project-Id-Version: Divi Accessibility ${ finalVersion }\\n`
+					)
+				);
+			}
+		);
+	}
 }
 
 if ( ! sh.grep( `^= ${ finalVersion } =$`, 'readme.txt' ).split( /\n/ )[0] ) {
-	console.error( `[ERROR] Unable to find changelog entry in readme.txt matching the new version number (${ finalVersion })` );
-	process.exitCode = 1;
+	addError( `Unable to find changelog entry in readme.txt matching the new version number (${ finalVersion }).` );
+}
+
+if ( 'divi-accessibility' !== pkg.name ) {
+	addError( `Package name must remain divi-accessibility for release zip naming; found ${ pkg.name }.` );
+}
+
+if ( ! fs.readFileSync( 'scripts/package.js', 'utf8' ).includes( '${ pkg.name }-${ pkg.version }.zip' ) ) {
+	addError( 'scripts/package.js must continue naming release zips as ${pkg.name}-${pkg.version}.zip.' );
+}
+
+if ( ! fs.readFileSync( 'includes/class-divi-accessibility-updater.php', 'utf8' ).includes( "'divi-accessibility-' . $version . '.zip'" ) ) {
+	addError( 'Updater must continue requiring exact divi-accessibility-{version}.zip release assets.' );
 }
 
 if ( filesUpdated ) {
 	console.log( `[NOTE] Some files were updated to match your new version number (${ finalVersion }), make sure to commit and tag the changes if needed` );
+}
+
+if ( hasErrors ) {
+	process.exitCode = 1;
+} else if ( checkOnly ) {
+	console.log( `[OK] Release metadata is consistent for ${ finalVersion }.` );
 }

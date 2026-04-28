@@ -124,7 +124,7 @@ $resources         = array(
 										</div>
 									<?php endif; ?>
 								</div>
-								<div class="box-content minibox da11y-setting-control <?php echo 'color' === $type ? 'da11y-setting-control-color' : ''; ?>">
+								<div class="box-content minibox da11y-setting-control <?php echo 'color' === $type ? 'da11y-setting-control-color' : ''; ?> <?php echo in_array( $type, array( 'text', 'textarea' ), true ) ? 'da11y-setting-control-text' : ''; ?>">
 									<?php
 									if ( 'color' === $type ) {
 										$this->divi_accessibility_color_picker_cb(
@@ -133,6 +133,16 @@ $resources         = array(
 												'label_for'     => $label_for,
 												'label_subtext' => $subtext,
 												'labelledby'    => $title_id,
+											)
+										);
+									} elseif ( in_array( $type, array( 'text', 'textarea' ), true ) ) {
+										$this->divi_accessibility_text_cb(
+											array(
+												'name'          => $name,
+												'label_for'     => $label_for,
+												'label_subtext' => $subtext,
+												'labelledby'    => $title_id,
+												'type'          => $type,
 											)
 										);
 									} else {
@@ -154,7 +164,7 @@ $resources         = array(
 					</div>
 
 					<div id="et-epanel-bottom" class="da11y-save-bar">
-						<?php submit_button( __( 'Save Settings', 'divi-accessibility' ), 'et-save-button da11y-save-button', 'submit', false, array( 'id' => 'da11y-epanel-save' ) ); ?>
+						<button type="submit" id="da11y-epanel-save" class="button et-save-button da11y-save-button"><?php esc_html_e( 'Save Settings', 'divi-accessibility' ); ?></button>
 					</div>
 				</form>
 			<?php else : ?>

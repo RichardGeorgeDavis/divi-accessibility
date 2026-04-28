@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  checks:
+    name: PHP and asset checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          coverage: none
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: PHP syntax lint
+        run: git ls-files '*.php' | xargs -n 1 php -l
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint JavaScript and CSS
+        run: npm run lint
+
+      - name: Build generated assets
+        run: npm run build
+
+      - name: Regenerate translation catalog
+        run: npm run i18n
+
+      - name: Validate release metadata
+        run: npm run release:check
+
+      - name: Ensure generated files are committed
+        run: git diff --exit-code -- public/partials/js public/partials/css languages/divi-accessibility.pot

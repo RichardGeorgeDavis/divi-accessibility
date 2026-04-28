@@ -200,6 +200,15 @@ class Divi_Accessibility_Admin {
 			'outline_color'                => '#2ea3f2',
 			'screen_reader_text'           => 1,
 			'skip_navigation_link'         => 1,
+			'skip_link_navigation_enabled' => 0,
+			'skip_link_content_enabled'    => 1,
+			'skip_link_footer_enabled'     => 0,
+			'skip_link_navigation_text'    => __( 'Skip to navigation', 'divi-accessibility' ),
+			'skip_link_content_text'       => __( 'Skip to content', 'divi-accessibility' ),
+			'skip_link_footer_text'        => __( 'Skip to footer', 'divi-accessibility' ),
+			'skip_link_navigation_target'  => '#main-header nav, #top-menu-nav, #et-top-navigation, .et_pb_menu__menu, nav[role="navigation"], nav',
+			'skip_link_content_target'     => '#main-content, #et-main-area, main, [role="main"]',
+			'skip_link_footer_target'      => '#main-footer, .et-l--footer, footer',
 			'aria_hidden_icons'            => 1,
 			'aria_mobile_menu'             => 1,
 			'fix_duplicate_menu_ids'       => 1,
@@ -325,6 +334,60 @@ class Divi_Accessibility_Admin {
 					'type'        => 'checkbox',
 				),
 				array(
+					'name'        => 'skip_link_navigation_enabled',
+					'title'       => __( 'Skip to navigation link', 'divi-accessibility' ),
+					'description' => __( 'Add a keyboard-visible link that moves focus directly to the site navigation.', 'divi-accessibility' ),
+					'type'        => 'checkbox',
+				),
+				array(
+					'name'        => 'skip_link_content_enabled',
+					'title'       => __( 'Skip to content link', 'divi-accessibility' ),
+					'description' => __( 'Add a keyboard-visible link that moves focus directly to the main content area.', 'divi-accessibility' ),
+					'type'        => 'checkbox',
+				),
+				array(
+					'name'        => 'skip_link_footer_enabled',
+					'title'       => __( 'Skip to footer link', 'divi-accessibility' ),
+					'description' => __( 'Add a keyboard-visible link that moves focus directly to the site footer.', 'divi-accessibility' ),
+					'type'        => 'checkbox',
+				),
+				array(
+					'name'        => 'skip_link_navigation_text',
+					'title'       => __( 'Skip to navigation text', 'divi-accessibility' ),
+					'description' => __( 'Customize the visible text for the skip to navigation link.', 'divi-accessibility' ),
+					'type'        => 'text',
+				),
+				array(
+					'name'        => 'skip_link_content_text',
+					'title'       => __( 'Skip to content text', 'divi-accessibility' ),
+					'description' => __( 'Customize the visible text for the skip to content link.', 'divi-accessibility' ),
+					'type'        => 'text',
+				),
+				array(
+					'name'        => 'skip_link_footer_text',
+					'title'       => __( 'Skip to footer text', 'divi-accessibility' ),
+					'description' => __( 'Customize the visible text for the skip to footer link.', 'divi-accessibility' ),
+					'type'        => 'text',
+				),
+				array(
+					'name'        => 'skip_link_navigation_target',
+					'title'       => __( 'Skip to navigation target selectors', 'divi-accessibility' ),
+					'description' => __( 'Comma-separated selectors. The first matching element receives focus when the navigation skip link is used.', 'divi-accessibility' ),
+					'type'        => 'text',
+				),
+				array(
+					'name'        => 'skip_link_content_target',
+					'title'       => __( 'Skip to content target selectors', 'divi-accessibility' ),
+					'description' => __( 'Comma-separated selectors. The first matching element receives focus when the content skip link is used.', 'divi-accessibility' ),
+					'type'        => 'text',
+				),
+				array(
+					'name'        => 'skip_link_footer_target',
+					'title'       => __( 'Skip to footer target selectors', 'divi-accessibility' ),
+					'description' => __( 'Comma-separated selectors. The first matching element receives focus when the footer skip link is used.', 'divi-accessibility' ),
+					'type'        => 'text',
+				),
+				array(
 					'name'        => 'aria_hidden_icons',
 					'title'       => __( 'Hide icons', 'divi-accessibility' ),
 					'description' => __( 'Hide all icons to screen readers so text is read normally.', 'divi-accessibility' ),
@@ -419,6 +482,13 @@ class Divi_Accessibility_Admin {
 		$active_tab        = isset( $input['__active_tab'] ) ? sanitize_key( $input['__active_tab'] ) : 'accessibility';
 		$active_tab        = isset( $dashboard_tabs[ $active_tab ] ) ? $active_tab : 'accessibility';
 		$active_field_keys = array();
+		$field_types       = array();
+
+		foreach ( $dashboard_fields as $tab_fields ) {
+			foreach ( $tab_fields as $field ) {
+				$field_types[ $field['name'] ] = isset( $field['type'] ) ? $field['type'] : 'checkbox';
+			}
+		}
 
 		if ( ! empty( $dashboard_fields[ $active_tab ] ) ) {
 			foreach ( $dashboard_fields[ $active_tab ] as $field ) {
@@ -429,6 +499,7 @@ class Divi_Accessibility_Admin {
 		// Loop through all available options.
 		foreach ( $option_list as $key => $option ) {
 			$is_active_field = in_array( $key, $active_field_keys, true );
+			$field_type      = isset( $field_types[ $key ] ) ? $field_types[ $key ] : 'checkbox';
 
 			// If color-picker.
 			if ( 'outline_color' == $key ) {
@@ -449,6 +520,23 @@ class Divi_Accessibility_Admin {
 					$valid_options[ $key ] = $default_color;
 
 				}
+			} elseif ( in_array( $field_type, array( 'text', 'textarea' ), true ) ) {
+
+				$default_text = (string) $option;
+				$text         = isset( $current_settings[ $key ] ) ? (string) $current_settings[ $key ] : $default_text;
+
+				if ( $is_active_field ) {
+					$text = isset( $input[ $key ] ) ? (string) $input[ $key ] : $default_text;
+				}
+
+				$text = sanitize_text_field( $text );
+
+				if ( '' === $text && '' !== $default_text ) {
+					$text = $default_text;
+				}
+
+				$valid_options[ $key ] = $text;
+
 			} elseif ( ! $is_active_field ) {
 
 				$valid_options[ $key ] = isset( $current_settings[ $key ] )
@@ -503,9 +591,12 @@ class Divi_Accessibility_Admin {
 		$label_subtext = ! empty( $arg['label_subtext'] ) ? $arg['label_subtext'] : '';
 		$label_class   = ! empty( $arg['label_class'] ) ? $arg['label_class'] : 'widefat';
 		$labelledby    = ! empty( $arg['labelledby'] ) ? $arg['labelledby'] : '';
+		$option_list   = $this->get_options_list();
 
 		if ( isset( $this->settings[ $name ] ) ) {
 			$checked = $this->settings[ $name ];
+		} elseif ( isset( $option_list[ $name ] ) ) {
+			$checked = $option_list[ $name ];
 		} else {
 			$checked = 0;
 		}
@@ -515,29 +606,31 @@ class Divi_Accessibility_Admin {
 		<fieldset>
 
 			<?php if ( 'da11y-hurkan-switch' === $label_class ) { ?>
-				<label class="<?php echo esc_attr( $label_class ); ?>">
+				<span class="checkbox <?php echo esc_attr( $label_class ); ?>">
 					<input type="checkbox"
 					<?php checked( $checked, 1 ); ?>
 					name="<?php echo esc_attr( $this->da11y_options ) . '[' . esc_attr( $name ) . ']'; ?>"
 					id="<?php echo esc_attr( $label_for ); ?>"
 					class="hurkanSwitch-switch-plugin hurkanSwitch-switch-input"
+					data-on-title="<?php esc_attr_e( 'Enabled', 'divi-accessibility' ); ?>"
+					data-off-title="<?php esc_attr_e( 'Disabled', 'divi-accessibility' ); ?>"
 					aria-describedby="<?php echo esc_attr( $label_for ); ?>-desc"
 					<?php echo '' !== $labelledby ? 'aria-labelledby="' . esc_attr( $labelledby ) . '"' : ''; ?>
 					value="1" />
-					<span class="hurkanSwitch switch-responsive" aria-hidden="true">
-						<span class="hurkanSwitch-switch-box">
-							<span class="hurkanSwitch-switch-item hurkanSwitch-switch-item-status-on hurkanSwitch-switch-item-color-success active">
-								<span class="lbl"><?php esc_html_e( 'On', 'divi-accessibility' ); ?></span>
+					<span class="hurkanSwitch switch-responsive hurkanSwitch-switch-plugin-box">
+						<span class="hurkanSwitch-switch-box switch-animated-on" role="switch" tabindex="0" aria-checked="<?php echo esc_attr( 1 === (int) $checked ? 'true' : 'false' ); ?>" <?php echo '' !== $labelledby ? 'aria-labelledby="' . esc_attr( $labelledby ) . '"' : ''; ?>>
+							<a class="hurkanSwitch-switch-item <?php echo 1 === (int) $checked ? 'active ' : ''; ?>hurkanSwitch-switch-item-color-success hurkanSwitch-switch-item-status-on" href="#" tabindex="-1">
+								<span class="lbl"><?php esc_html_e( 'Enabled', 'divi-accessibility' ); ?></span>
 								<span class="hurkanSwitch-switch-cursor-selector"></span>
-							</span>
-							<span class="hurkanSwitch-switch-item hurkanSwitch-switch-item-status-off hurkanSwitch-switch-item-color-default active">
-								<span class="lbl"><?php esc_html_e( 'Off', 'divi-accessibility' ); ?></span>
+							</a>
+							<a class="hurkanSwitch-switch-item <?php echo 1 === (int) $checked ? '' : 'active '; ?>hurkanSwitch-switch-item-color-default hurkanSwitch-switch-item-status-off" href="#" tabindex="-1">
+								<span class="lbl"><?php esc_html_e( 'Disabled', 'divi-accessibility' ); ?></span>
 								<span class="hurkanSwitch-switch-cursor-selector"></span>
-							</span>
+							</a>
 						</span>
 					</span>
 					<span class="screen-reader-text"><?php echo esc_html( $label_text ); ?></span>
-				</label>
+				</span>
 			<?php } else { ?>
 				<label class="<?php echo esc_attr( $label_class ); ?>">
 					<input type="checkbox"
@@ -605,6 +698,57 @@ class Divi_Accessibility_Admin {
 	}
 
 	/**
+	 * Callback for text settings.
+	 *
+	 * @since    2.1.3
+	 * @param    array $arg Input args.
+	 */
+	public function divi_accessibility_text_cb( $arg ) {
+
+		$name          = $arg['name'];
+		$label_for     = $arg['label_for'];
+		$label_subtext = $arg['label_subtext'];
+		$labelledby    = ! empty( $arg['labelledby'] ) ? $arg['labelledby'] : '';
+		$type          = ! empty( $arg['type'] ) && 'textarea' === $arg['type'] ? 'textarea' : 'text';
+
+		$option_list = $this->get_options_list();
+		$value       = isset( $option_list[ $name ] ) ? $option_list[ $name ] : '';
+
+		if ( isset( $this->settings[ $name ] ) ) {
+			$value = $this->settings[ $name ];
+		}
+
+		?>
+
+		<fieldset>
+			<label class="widefat">
+				<?php if ( 'textarea' === $type ) { ?>
+					<textarea
+						name="<?php echo esc_attr( $this->da11y_options ) . '[' . esc_attr( $name ) . ']'; ?>"
+						id="<?php echo esc_attr( $label_for ); ?>"
+						rows="3"
+						<?php echo '' !== $labelledby ? 'aria-labelledby="' . esc_attr( $labelledby ) . '"' : ''; ?>
+					><?php echo esc_textarea( $value ); ?></textarea>
+				<?php } else { ?>
+					<input type="text"
+						name="<?php echo esc_attr( $this->da11y_options ) . '[' . esc_attr( $name ) . ']'; ?>"
+						id="<?php echo esc_attr( $label_for ); ?>"
+						value="<?php echo esc_attr( $value ); ?>"
+						<?php echo '' !== $labelledby ? 'aria-labelledby="' . esc_attr( $labelledby ) . '"' : ''; ?>
+					/>
+				<?php } ?>
+			</label>
+
+			<?php if ( '' != $label_subtext ) { ?>
+				<p class="description">(<em><?php echo esc_html( $label_subtext ); ?></em>)</p>
+			<?php } ?>
+
+		</fieldset>
+
+		<?php
+	}
+
+	/**
 	 * Register DIVI builder accessibility settings
 	 *
 	 * @param array $fields
@@ -613,7 +757,7 @@ class Divi_Accessibility_Admin {
 	function divi_builder_register_accessibilty_settings( $fields ) {
 		$hide_aria_setting = array(
 				'type'              => 'yes_no_button',
-				'description'       => __( 'Hide From Screen Readers', 'divi-accessibility' ),
+				'description'       => __( 'Hide this module from assistive technology. Do not use this on modules that contain links, buttons, form fields, or other focusable content.', 'divi-accessibility' ),
 				'label'             => __( 'Hide From Screen Readers', 'divi-accessibility' ),
 				'option_category'   => 'configuration',
 				'options' => array(
@@ -628,7 +772,7 @@ class Divi_Accessibility_Admin {
 
 		$show_for_screen_readers_only = array(
 			'type'              => 'yes_no_button',
-			'description'       => __( 'Make element visible for Screen Readers only', 'divi-accessibility' ),
+			'description'       => __( 'Visually hide this module while keeping it available to assistive technology.', 'divi-accessibility' ),
 			'label'             => __( 'Show For Screen Readers Only', 'divi-accessibility' ),
 			'option_category'   => 'configuration',
 			'options' => array(
@@ -639,6 +783,74 @@ class Divi_Accessibility_Admin {
 			'toggle_slug' => 'accessibility'
 		);
 		$fields['show_for_screen_readers_only'] = $show_for_screen_readers_only;
+
+		$fields['da11y_role'] = array(
+			'type'            => 'select',
+			'description'     => __( 'Add an allowed role to this module wrapper only when the native markup does not communicate the right semantics.', 'divi-accessibility' ),
+			'label'           => __( 'ARIA Role', 'divi-accessibility' ),
+			'option_category' => 'configuration',
+			'options'         => array(
+				''              => __( 'None', 'divi-accessibility' ),
+				'region'        => 'region',
+				'complementary' => 'complementary',
+				'navigation'    => 'navigation',
+				'list'          => 'list',
+				'listitem'      => 'listitem',
+				'button'        => 'button',
+				'link'          => 'link',
+				'dialog'        => 'dialog',
+				'alertdialog'   => 'alertdialog',
+				'presentation'  => 'presentation',
+				'none'          => 'none',
+			),
+			'default'         => '',
+			'toggle_slug'     => 'accessibility',
+		);
+
+		$fields['da11y_aria_label'] = array(
+			'type'            => 'text',
+			'description'     => __( 'Add an accessible name only when the module visible content is not sufficient. Prefer visible text or ARIA Labelledby when a visible label exists.', 'divi-accessibility' ),
+			'label'           => __( 'ARIA Label', 'divi-accessibility' ),
+			'option_category' => 'configuration',
+			'default'         => '',
+			'toggle_slug'     => 'accessibility',
+		);
+
+		$fields['da11y_aria_labelledby'] = array(
+			'type'            => 'text',
+			'description'     => __( 'Add a space-separated list of element IDs that label this module wrapper. Avoid combining this with ARIA Label unless you have tested the result.', 'divi-accessibility' ),
+			'label'           => __( 'ARIA Labelledby', 'divi-accessibility' ),
+			'option_category' => 'configuration',
+			'default'         => '',
+			'toggle_slug'     => 'accessibility',
+		);
+
+		$fields['da11y_aria_description'] = array(
+			'type'            => 'textarea',
+			'description'     => __( 'Add a short accessible description only when the module needs extra context beyond its visible content.', 'divi-accessibility' ),
+			'label'           => __( 'ARIA Description', 'divi-accessibility' ),
+			'option_category' => 'configuration',
+			'default'         => '',
+			'toggle_slug'     => 'accessibility',
+		);
+
+		$fields['da11y_aria_describedby'] = array(
+			'type'            => 'text',
+			'description'     => __( 'Add a space-separated list of element IDs that describe this module wrapper. Values are treated as ID references.', 'divi-accessibility' ),
+			'label'           => __( 'ARIA Describedby', 'divi-accessibility' ),
+			'option_category' => 'configuration',
+			'default'         => '',
+			'toggle_slug'     => 'accessibility',
+		);
+
+		$fields['da11y_aria_details'] = array(
+			'type'            => 'text',
+			'description'     => __( 'Add one element ID that provides extended details for this module wrapper. Values are treated as ID references.', 'divi-accessibility' ),
+			'label'           => __( 'ARIA Details', 'divi-accessibility' ),
+			'option_category' => 'configuration',
+			'default'         => '',
+			'toggle_slug'     => 'accessibility',
+		);
 
 		return $fields;
 	}
@@ -714,6 +926,12 @@ class Divi_Accessibility_Admin {
 		$attribute_map = array(
 			'hide_aria_element'            => 'accessibility.advanced.hideAriaElement.*',
 			'show_for_screen_readers_only' => 'accessibility.advanced.showForScreenReadersOnly.*',
+			'da11y_role'                   => 'accessibility.advanced.da11yRole.*',
+			'da11y_aria_label'             => 'accessibility.advanced.da11yAriaLabel.*',
+			'da11y_aria_labelledby'        => 'accessibility.advanced.da11yAriaLabelledby.*',
+			'da11y_aria_description'       => 'accessibility.advanced.da11yAriaDescription.*',
+			'da11y_aria_describedby'       => 'accessibility.advanced.da11yAriaDescribedby.*',
+			'da11y_aria_details'           => 'accessibility.advanced.da11yAriaDetails.*',
 		);
 
 		foreach ( array_keys( $core_modules ) as $module_slug ) {

@@ -3,7 +3,7 @@ Contributors: campuspress, JoeFusco, alexstine, vebailovity
 Tags: divi, accessibility, accessible, navigation, wcag, a11y, section508, focus, labels, aria
 Requires at least: 6.0
 Tested up to: 6.9.4
-Stable tag: 2.1.2
+Stable tag: 2.1.3
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
@@ -15,9 +15,10 @@ A WordPress plugin that improves Divi accessibility across Divi 4 and Divi 5 wit
 
 * Adds ARIA, labels, and keyboard improvements across Divi 4 and Divi 5
 * Supports Divi 5 builder-side Accessibility Settings while preserving Divi 4 behavior
+* Adds focused Divi 4 module ARIA fields for wrapper-level role, labels, descriptions, and details, with Divi 5 migrated-content render parity
 * Improves slider controls, search/cart naming, mobile menu behavior, and contact form feedback
 * Adds reduced motion support and version-scoped plugin-owned compatibility styling
-* Fixes Divi screen-reader-text behavior, skip links, focus outlines, duplicate menu IDs, and icon handling
+* Fixes Divi screen-reader-text behavior, configurable skip links, focus outlines, duplicate menu IDs, and icon handling
 * Checks this maintained fork's stable GitHub Releases for packaged plugin updates through WordPress' normal Plugins update screen
 * Includes Tota11y integration for admin-side review
 
@@ -28,6 +29,20 @@ This fork is maintained by Richard George Davis while official access is unresol
 This fork should not be treated as an official WordPress.org continuation unless CampusPress or WordPress.org grants ownership or committer access.
 
 Sites must install version 2.1.1 or later once. After that, future stable fork releases are checked through WordPress' normal Plugins update screen when the GitHub Release includes a packaged zip asset named like divi-accessibility-2.2.0.zip.
+
+= Accessibility Scope =
+
+Divi Accessibility applies targeted, WCAG-aligned improvements to Divi-generated markup and behavior. It does not guarantee WCAG conformance for a whole website. Final accessibility depends on theme configuration, page content, color contrast, media alternatives, third-party plugins, custom CSS/JS, and editorial practice.
+
+= Module ARIA Fields =
+
+Divi 4 modules include focused Accessibility Settings for wrapper-level role, aria-label, aria-labelledby, aria-description, aria-describedby, and aria-details output. These fields migrate into the plugin's Divi 5 compatibility namespace and continue rendering on the frontend for migrated content.
+
+For new arbitrary attributes in Divi 5, use Divi's native Advanced > Attributes panel. This plugin does not duplicate Divi 5's generic Custom Attributes UI.
+
+= Skip Links =
+
+The skip link feature can output keyboard-visible links to navigation, content, and footer landmarks. Only the content skip link is enabled by default for backward compatibility; navigation and footer links can be enabled and pointed at site-specific selectors from the plugin settings.
 
 = Community =
 
@@ -97,6 +112,13 @@ Version 2.1.1 is the bootstrap updater release. After a site has 2.1.1 or later 
 
 
 == Changelog ==
+
+= 2.1.3 =
+* Added configurable skip links for navigation, content, and footer targets while preserving the existing content-only default behavior.
+* Added focused module ARIA fields for Divi 4 with Divi 5 migrated-content render parity.
+* Added guardrails and admin guidance for plugin-owned module ARIA fields.
+* Added module support matrix and manual accessibility checklist documentation.
+* Added pragmatic CI and non-mutating release metadata validation.
 
 = 2.1.2 =
 * Fixed skip navigation link styling so it remains visually hidden until focused even when the broader screen reader text option is disabled.
