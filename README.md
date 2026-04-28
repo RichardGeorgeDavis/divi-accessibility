@@ -16,7 +16,7 @@ Divi Accessibility applies targeted, WCAG-aligned improvements to Divi-generated
 
 ## License
 
-Divi Accessibility is licensed under `GPL-2.0-or-later`. The repository keeps the full GNU General Public License version 2 text in `LICENSE` and `license.txt` for GitHub and WordPress plugin compatibility.
+Divi Accessibility is licensed under `GPL-2.0-or-later`. The repository keeps the full GNU General Public License version 2 text in `LICENSE` for GitHub and WordPress plugin compatibility.
 
 ## Community
 

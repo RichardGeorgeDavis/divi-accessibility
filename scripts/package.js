@@ -8,7 +8,7 @@ const whitelist = [
 	'divi-accessibility.php',
 	'includes',
 	'languages',
-	'license.txt',
+	'LICENSE',
 	'public',
 	'readme.txt',
 	'uninstall.php',
