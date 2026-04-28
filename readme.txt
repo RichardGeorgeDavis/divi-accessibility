@@ -3,7 +3,7 @@ Contributors: campuspress, JoeFusco, alexstine, vebailovity
 Tags: divi, accessibility, accessible, navigation, wcag, a11y, section508, focus, labels, aria
 Requires at least: 6.0
 Tested up to: 6.9.4
-Stable tag: 2.1.3
+Stable tag: 2.1.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
@@ -64,7 +64,7 @@ Support the work:
 
 = Last Recorded Runtime-Tested Integrations =
 
-The latest recorded manual browser integration evidence is from version 2.1.0. No new Divi 4 or Divi 5 browser runtime pass has been recorded for 2.1.3 yet.
+The latest recorded manual browser integration evidence is from version 2.1.0. No new Divi 4 or Divi 5 browser runtime pass has been recorded for 2.1.4 yet.
 
 * Divi Pixel 2.50.0 and 2.50.1: alternate/mobile header hamburger behavior, menu open/close state, aria-expanded sync, and screen-reader isolation while the mobile menu is open.
 * WooCommerce 10.7.0: account/cart/shop page rendering and compatibility with Divi Accessibility frontend payloads where the normal theme footer scripts are printed.
@@ -112,6 +112,10 @@ Version 2.1.1 is the bootstrap updater release. After a site has 2.1.1 or later 
 
 
 == Changelog ==
+
+= 2.1.4 =
+* Fixed JavaScript-inserted skip links so their hidden-until-focused styling is preserved even when page optimization removes unused CSS.
+* Prevented duplicate skip links and duplicate hash-link focus handlers if the skip-link script runs more than once.
 
 = 2.1.3 =
 * Added configurable skip links for navigation, content, and footer targets while preserving the existing content-only default behavior.

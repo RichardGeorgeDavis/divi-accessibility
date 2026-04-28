@@ -47,6 +47,10 @@ For new arbitrary attributes in Divi 5, use Divi's native Advanced > Attributes 
 
 The skip link feature can output keyboard-visible links to navigation, content, and footer landmarks. Only the content skip link is enabled by default for backward compatibility; navigation and footer links can be enabled and pointed at site-specific selectors from the plugin settings.
 
+## Release 2.1.4
+
+`2.1.4` fixes JavaScript-inserted skip links so they remain visually hidden until focused even when page optimization removes unused CSS. It also prevents duplicate skip links and duplicate hash-link focus handlers if the skip-link script runs more than once.
+
 ## Release 2.1.3
 
 `2.1.3` adds configurable navigation/content/footer skip links, focused module ARIA guardrails and guidance, project accessibility testing docs, and pragmatic CI/release metadata checks. It also keeps migrated Divi 4 module accessibility attributes rendering through the Divi 5 compatibility namespace while avoiding a generic Divi 5 Custom Attributes UI.
@@ -73,7 +77,7 @@ This release line focuses on making Divi 5 a first-class supported target while 
 
 ## Last Recorded Runtime-Tested Integrations
 
-The latest recorded manual browser integration evidence is from the `2.1.0` release line. No new Divi 4 or Divi 5 browser runtime pass has been recorded for `2.1.3` yet.
+The latest recorded manual browser integration evidence is from the `2.1.0` release line. No new Divi 4 or Divi 5 browser runtime pass has been recorded for `2.1.4` yet.
 
 + Divi Pixel `2.50.0` and `2.50.1`: alternate/mobile header hamburger behavior, menu open/close state, `aria-expanded` sync, and screen-reader isolation while the mobile menu is open
 + WooCommerce `10.7.0`: account/cart/shop page rendering and compatibility with Divi Accessibility frontend payloads where the normal theme footer scripts are printed
