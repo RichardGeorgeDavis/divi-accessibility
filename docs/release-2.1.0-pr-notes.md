@@ -102,8 +102,9 @@ This branch prepares Divi Accessibility `2.1.0` as a broad compatibility and mod
 ## Handover Notes
 
 - draft tester comments are already posted on `#121`
-- current downloadable fork asset is final `2.1.0`: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/2.1.0>
-- current zip asset: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/download/2.1.0/divi-accessibility-2.1.0.zip>
+- these are historical `2.1.0` upstream PR notes; the current maintained-fork release is `2.1.3`
+- historical final `2.1.0` asset: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/2.1.0>
+- historical `2.1.0` zip asset: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/download/2.1.0/divi-accessibility-2.1.0.zip>
 - older `codex-2.1.0-rc1`, `codex-2.1.0-rc2`, `codex-2.1.0-rc3`, `codex-2.1.0-rc4`, and `codex-2.1.0-rc5` builds should be treated as superseded
 - `codex-2.1.0-rc6` is superseded by the Divi 5 frontend render-block follow-up fix, and `codex-2.1.0-rc7` is superseded by final `2.1.0`
 - takeover/adoption package is documented in `docs/takeover-adoption-package.md`

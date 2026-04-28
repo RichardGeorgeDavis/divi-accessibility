@@ -1,4 +1,6 @@
-# Release 2.1.0 Checklist
+# Historical Release 2.1.0 Checklist
+
+This checklist records the final `2.1.0` upstream-ready compatibility release. It is historical and should not be used as the current maintained-fork release checklist. For current manual checks, use `docs/testing/manual-accessibility-checklist.md`; the current maintained-fork release is `2.1.3`.
 
 ## Current Verification Status
 
@@ -48,13 +50,12 @@
   - D4-authored legacy module attributes embedded in migrated Divi 5 block content apply the expected frontend output
   - local duplicate-provider conflict noted on one Divi 4 test site; the packaged plugin passed after disabling the duplicate embedded copy for the smoke test
 
-## Remaining Tasks To Perform
+## Remaining Follow-Up
 
-- verify search/cart controls on alternate header/menu configurations; Divi Pixel mobile-menu isolation has passed on two local Divi Pixel test sites
-- final maintained-fork release published as `2.1.0`
-- post final upstream PR `#121` release summary after final `2.1.0` publication
-- upstream PR `#121` is ready for review and remains the canonical CampusPress merge path
-- ask maintainers to close upstream issues `#90`, `#96`, and `#88` after reviewing the fixes linked from `#121`
+- Continue reporter validation for search/cart controls on alternate header/menu configurations.
+- Upstream PR `#121` remains the canonical CampusPress merge path for the historical `2.1.0` compatibility work.
+- Ask maintainers to close upstream issues `#90`, `#96`, and `#88` after reviewing the fixes linked from `#121`.
+- For new release validation, test the current maintained-fork package, not the historical `2.1.0` package.
 
 ## Static Checks
 
@@ -65,10 +66,10 @@
 - release/package dry run
 - zip content inspection
 
-## Package Checks
+## Historical Package Checks
 
 - build `packaged/divi-accessibility-2.1.0.zip`
-- for future GitHub-updated releases, attach the packaged zip to the stable GitHub Release with the exact asset name `divi-accessibility-X.X.X.zip`
+- for GitHub-updated releases, attach the packaged zip to the stable GitHub Release with the exact asset name `divi-accessibility-X.X.X.zip`
 - current package SHA-256: `69c25e3bbda5d033dacda63ae4814c263c2afa4583be5ac5635caef36109faef`
 - final release page: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/2.1.0>
 - zip asset: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/download/2.1.0/divi-accessibility-2.1.0.zip>

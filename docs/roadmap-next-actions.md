@@ -1,13 +1,34 @@
 # Roadmap / Next Actions
 
-## Phase 1: Close Out Current Work
+## Current 2.1.3 State
+
+- Current maintained-fork release: `2.1.3`
+- Current release URL: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/2.1.3>
+- Current updater-compatible package: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/download/2.1.3/divi-accessibility-2.1.3.zip>
+- Current release commit: `0680c0a`
+- `2.1.3` added expanded skip links, focused module ARIA fields, ARIA guardrails/guidance, module support/testing docs, GitHub Actions CI, and `npm run release:check`.
+- No manual Divi 4 or Divi 5 browser runtime checks were run specifically for `2.1.3`; use `docs/testing/manual-accessibility-checklist.md` before updating runtime-tested claims.
+
+## Current Next Actions
+
+- Run the new manual checklist against `2.1.3` on Divi 4 and Divi 5 test sites.
+- Update `docs/module-support-matrix.md` with exact Divi, WordPress, PHP, browser, WooCommerce, and Divi Pixel versions only after completing those checks.
+- Triage any reporter feedback against `2.1.3` first, then open focused follow-up work only when the original repro still fails.
+- Monitor CI on `fork/master` and keep `npm run release:check` green before the next release.
+- Continue the official-access track with CampusPress/WordPress.org while treating the fork release as the practical user install path.
+
+## Historical 2.1.0 Closeout Notes
+
+The sections below preserve the `2.1.0` release and upstream PR history. They are not the current release checklist and should not be used to select a downloadable artifact.
+
+## Phase 1: Close Out 2.1.0 Work
 
 - Completed:
   - Divi 5 module-level `Accessibility Settings` support is in place.
   - Mobile menu screen-reader isolation is in place.
   - Slider accessibility and reduced motion support are in place.
   - Contact form live-region and invalid-state syncing are in place.
-  - Release metadata is aligned on `2.1.0`.
+  - Release metadata was aligned on `2.1.0`.
   - Package output now includes `languages/`.
   - npm lint now covers both public JS and admin-side Divi 5 builder JS.
   - Release docs, handover notes, and PR notes were added under `docs/`.
@@ -20,13 +41,7 @@
   - Divi draft module page follow-up found and fixed a tabs panel `aria-hidden` state mismatch.
   - Maintained-fork ownership and GPL-compatible release metadata cleanup completed.
   - Upstream issue/PR triage map added at `docs/upstream-triage-map.md`.
-- Still required before upstream integration:
-  - Run manual Divi 4 and Divi 5 runtime checks in WordPress.
-  - Use the updated PR notes after runtime verification, not the earlier Cursor notes.
-  - Complete persistence checks after save/reopen in Divi 5.
-  - Complete packaged-plugin validation rather than relying on source-checkout behavior.
-  - Update PR notes with final runtime results only after verification is complete.
-  - Use the finalized PR notes for upstream review once verification is complete.
+- Historical remaining items were completed before the final `2.1.0` upstream-ready summary was posted, except for broader reporter validation on site-specific menu/header variants.
 
 ## Phase 1.5: Package And Validate The Plugin
 
@@ -48,14 +63,7 @@
 - Manual progress since that automation attempt:
   - visual pass completed for frontend tabs
   - visual pass completed for Divi 5 Visual Builder `Accessibility Settings` visibility
-- Explicit next runtime tasks:
-  - install and activate `packaged/divi-accessibility-2.1.0.zip`
-  - publish/use refreshed `codex-2.1.0-rc5` asset for testers
-  - verify Divi 5 toggle persistence after save/reopen
-  - verify frontend behavior on search/cart controls across alternate header/menu configurations
-  - verify Divi 4 backward compatibility
-  - verify one migrated D4-to-D5 content case
-  - use refreshed packaged artifact `codex-2.1.0-rc5` for any external tester pass
+- Historical `2.1.0` runtime tasks are complete or superseded by the final `2.1.0` release. Do not use old `codex-2.1.0-rc*` prerelease assets for new testing.
 
 ## Phase 1.75: Upstream Adoption / Fork Continuity
 
@@ -66,17 +74,16 @@
 - Adopted path:
   - dual track: pursue official adoption or maintainer access while keeping the fork usable as the practical release path.
 - Next actions:
-  - complete runtime verification before posting any final readiness claim
-  - if there is still no upstream response after verification, use `docs/takeover-adoption-package.md` to contact CampusPress/original maintainers
+  - use `docs/takeover-adoption-package.md` to contact CampusPress/original maintainers
   - prepare a WordPress.org Plugin Review Team adoption request only after direct contact attempts are documented
   - maintain a renamed fork if official adoption is denied
 
 ## Phase 2: Documentation Refresh
 
 - Completed:
-  - `README.md` updated for Divi 4/5 support and the `2.1.0` release path.
+  - `README.md` updated for Divi 4/5 support and the maintained-fork release path.
   - `readme.txt` updated for release metadata, FAQ, and changelog.
-  - POT metadata regenerated at `2.1.0`.
+  - POT metadata regenerated through `2.1.3`.
   - Admin resources updated to current WCAG/WAI references.
   - Internal release checklist, handover, and PR notes added.
 
@@ -89,7 +96,7 @@
     - release command path works end-to-end
     - package output moved to `packaged/`
 - Pending:
-  - apply any findings from manual WordPress/Divi runtime verification
+  - apply findings from fresh `2.1.3` manual WordPress/Divi runtime verification.
 
 ## Phase 3: Quick Wins
 
@@ -124,8 +131,9 @@
 
 - Current upstream draft PR: `#121`
 - Upstream PR head at 2026-04-24 status check: `75003ef`
-- Current downloadable test build: `codex-2.1.0-rc5`
+- Current maintained-fork release: `2.1.3`
+- Historical `2.1.0` RC builds are superseded.
 - Immediate handover action:
-  - complete runtime verification
-  - update PR notes with final results
-  - post final runtime summary on `#121`
+  - run the `2.1.3` manual accessibility checklist on Divi 4 and Divi 5
+  - update the support matrix with exact tested versions
+  - continue monitoring upstream PR `#121`

@@ -57,7 +57,7 @@ The skip link feature can output keyboard-visible links to navigation, content, 
 
 ## Release 2.1.1
 
-`2.1.1` adds the maintained fork's native GitHub Releases updater. This is the bootstrap updater release: sites need to install `2.1.1` manually once, then future stable fork releases can appear in WordPress' normal Plugins update screen when the GitHub Release includes an exact packaged zip asset named like `divi-accessibility-2.1.2.zip`.
+`2.1.1` adds the maintained fork's native GitHub Releases updater. This is the bootstrap updater release: sites need to install `2.1.1` manually once, then future stable fork releases can appear in WordPress' normal Plugins update screen when the GitHub Release includes an exact packaged zip asset named like `divi-accessibility-X.X.X.zip`.
 
 ## Release 2.1.0
 
@@ -71,9 +71,9 @@ This release line focuses on making Divi 5 a first-class supported target while 
 + Navbar submenu and tabs state fixes found during packaged-plugin runtime verification
 + Packaged release fixes for translations, metadata, and npm lint coverage
 
-## Runtime-Tested Integrations
+## Last Recorded Runtime-Tested Integrations
 
-The `2.1.0` release line has been browser-tested against these active third-party plugins in local Divi 5 sites:
+The latest recorded manual browser integration evidence is from the `2.1.0` release line. No new Divi 4 or Divi 5 browser runtime pass has been recorded for `2.1.3` yet.
 
 + Divi Pixel `2.50.0` and `2.50.1`: alternate/mobile header hamburger behavior, menu open/close state, `aria-expanded` sync, and screen-reader isolation while the mobile menu is open
 + WooCommerce `10.7.0`: account/cart/shop page rendering and compatibility with Divi Accessibility frontend payloads where the normal theme footer scripts are printed

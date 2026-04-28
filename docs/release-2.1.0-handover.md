@@ -5,13 +5,13 @@ Last updated: 2026-04-28
 
 ## Current State
 
-`2.1.2` is the current maintained-fork release. It builds on the final `2.1.0` compatibility release, keeps the `2.1.1` fork-only GitHub Releases updater, and fixes skip-link visibility when the broader screen-reader-text option is disabled.
+`2.1.3` is the current maintained-fork release. It builds on the final `2.1.0` compatibility release, keeps the `2.1.1` fork-only GitHub Releases updater, includes the `2.1.2` skip-link visibility fix, and adds expanded skip links, focused module ARIA fields, guardrails, docs, and pragmatic CI/release checks.
 
-- Current release: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/2.1.2>
-- Current zip asset: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/download/2.1.2/divi-accessibility-2.1.2.zip>
-- Current zip SHA-256: `d46b8be539c0e3abac4920c86be110903bfe34033062f5a1ddbb68512ff8fb22`
-- Current release tag target: pending until the `2.1.2` release tag is created.
-- Current fork `master` head after README badge cleanup: `f2dc852`
+- Current release: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/2.1.3>
+- Current zip asset: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/download/2.1.3/divi-accessibility-2.1.3.zip>
+- Current zip SHA-256: `9f20f1881d039f9f110e72b6b06950ed9575fac052ecfedfff6c55cc4c747a69`
+- Current release tag target: `0680c0a`
+- Current `2.1.3` release commit: `0680c0a`
 
 `2.1.1` is the bootstrap updater release. Sites already on `2.1.0` need to install `2.1.1` manually once because `2.1.0` did not contain the updater. Future releases after `2.1.1` can then appear in WordPress' normal Plugins update screen when the GitHub Release includes an exact packaged zip asset.
 
@@ -26,7 +26,7 @@ Last updated: 2026-04-28
 - Upstream PR status after `2.1.1`: open, ready for review, clean, and mergeable at `c27c424`.
 - Upstream repository permission for this account: read-only, so upstream issues cannot be closed directly.
 
-The final `2.1.0` release asset was RC7 promoted unchanged. Do not rebuild or replace the historical `2.1.0` or `2.1.1` release assets unless a code/package defect is found and a new release is intentionally cut.
+The final `2.1.0` release asset was RC7 promoted unchanged. Do not rebuild or replace the historical `2.1.0`, `2.1.1`, or `2.1.2` release assets unless a code/package defect is found and a new release is intentionally cut.
 
 ## Release Scope
 
@@ -59,6 +59,14 @@ Included in `2.1.2`:
 
 - Dedicated skip-link CSS that keeps the plugin-inserted skip link visually hidden until focus/activation even when the broader screen-reader-text option is disabled.
 - Admin copy cleanup removing the outdated note that the skip navigation link requires the screen reader text option.
+
+Included in `2.1.3`:
+
+- Configurable skip links for navigation, content, and footer targets while preserving the existing content-only default behavior.
+- Focused Divi 4 module ARIA fields for wrapper-level role, labels, descriptions, and details, with Divi 5 migrated-content render parity.
+- Guardrails and admin guidance for plugin-owned module ARIA fields.
+- Module support matrix and manual accessibility checklist documentation.
+- Pragmatic GitHub Actions CI and non-mutating release metadata validation.
 
 Not included:
 
@@ -103,6 +111,20 @@ Final `2.1.0` gates passed before release:
 - `DA11Y_RELEASE_VERSION=2.1.2 DA11Y_ASSUME_YES=true npm run release`
 - generated package: `packaged/divi-accessibility-2.1.2.zip`
 - generated package SHA-256: `d46b8be539c0e3abac4920c86be110903bfe34033062f5a1ddbb68512ff8fb22`
+
+`2.1.3` maintenance release verification:
+
+- `git ls-files '*.php' | xargs -n 1 php -l`
+- `npm ci`
+- `npm run lint`
+- `npm run build`
+- `npm run i18n`
+- `npm run release:check`
+- `DA11Y_RELEASE_VERSION=2.1.3 DA11Y_ASSUME_YES=true npm run release`
+- generated package: `packaged/divi-accessibility-2.1.3.zip`
+- GitHub release asset digest verified as `sha256:9f20f1881d039f9f110e72b6b06950ed9575fac052ecfedfff6c55cc4c747a69`
+
+No manual Divi 4 or Divi 5 browser runtime checks were run specifically for `2.1.3`; use `docs/testing/manual-accessibility-checklist.md` before claiming new runtime coverage for this release.
 
 Known limits:
 

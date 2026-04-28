@@ -62,9 +62,9 @@ Project files:
 Support the work:
 [https://www.paypal.com/donate/?hosted_button_id=Z9ET7KXE4MMZS](https://www.paypal.com/donate/?hosted_button_id=Z9ET7KXE4MMZS)
 
-= Runtime-Tested Integrations =
+= Last Recorded Runtime-Tested Integrations =
 
-Version 2.1.0 has been browser-tested against these active third-party plugins in local Divi 5 sites:
+The latest recorded manual browser integration evidence is from version 2.1.0. No new Divi 4 or Divi 5 browser runtime pass has been recorded for 2.1.3 yet.
 
 * Divi Pixel 2.50.0 and 2.50.1: alternate/mobile header hamburger behavior, menu open/close state, aria-expanded sync, and screen-reader isolation while the mobile menu is open.
 * WooCommerce 10.7.0: account/cart/shop page rendering and compatibility with Divi Accessibility frontend payloads where the normal theme footer scripts are printed.
@@ -95,7 +95,7 @@ Originally created by [CampusPress](https://campuspress.com). This maintained fo
 
 = Does this work with Divi 5? =
 
-Yes. Version 2.1.0 adds Divi 5 compatibility work while keeping Divi 4 support in place.
+Yes. Version 2.1.0 added foundational Divi 5 compatibility work while keeping Divi 4 support in place, and later maintained-fork releases preserve that compatibility path.
 
 = Does this still support Divi 4? =
 
