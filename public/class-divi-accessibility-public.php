@@ -213,6 +213,7 @@ class Divi_Accessibility_Public {
 			'keyboard_navigation_outline',
 			'reduced_motion',
 			'screen_reader_text',
+			'skip_navigation_link',
 			'slider_accessibility',
 			'underline_urls',
 			'underline_urls_not_title',

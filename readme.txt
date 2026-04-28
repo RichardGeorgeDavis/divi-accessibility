@@ -3,7 +3,7 @@ Contributors: campuspress, JoeFusco, alexstine, vebailovity
 Tags: divi, accessibility, accessible, navigation, wcag, a11y, section508, focus, labels, aria
 Requires at least: 6.0
 Tested up to: 6.9.4
-Stable tag: 2.1.1
+Stable tag: 2.1.2
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
@@ -97,6 +97,10 @@ Version 2.1.1 is the bootstrap updater release. After a site has 2.1.1 or later 
 
 
 == Changelog ==
+
+= 2.1.2 =
+* Fixed skip navigation link styling so it remains visually hidden until focused even when the broader screen reader text option is disabled.
+* Removed outdated admin copy that said the skip navigation link requires the screen reader text option.
 
 = 2.1.1 =
 * Added native GitHub Releases update integration for future packaged fork releases.

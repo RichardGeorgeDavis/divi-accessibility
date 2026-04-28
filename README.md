@@ -33,6 +33,10 @@ The plugin includes a native GitHub Releases updater for this maintained fork. S
 + Native GitHub Releases updater for packaged fork releases
 + Tota11y integration for admin-side review
 
+## Release 2.1.2
+
+`2.1.2` fixes the skip navigation link so it stays visually hidden until focused even when the broader screen-reader-text option is disabled. It also removes the outdated admin note that implied the skip link depends on that separate option.
+
 ## Release 2.1.1
 
 `2.1.1` adds the maintained fork's native GitHub Releases updater. This is the bootstrap updater release: sites need to install `2.1.1` manually once, then future stable fork releases can appear in WordPress' normal Plugins update screen when the GitHub Release includes an exact packaged zip asset named like `divi-accessibility-2.1.2.zip`.

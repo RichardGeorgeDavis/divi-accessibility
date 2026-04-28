@@ -87,6 +87,10 @@ class Divi_Accessibility_Admin {
 	 * @since    1.0.0
 	 */
 	public function enqueue_styles( $hook ) {
+		if ( ! $this->is_settings_page( $hook ) ) {
+			return;
+		}
+
 		wp_enqueue_style( 'wp-color-picker' );
 		wp_enqueue_style( 'divi-accessibility-admin-style', plugin_dir_url( __FILE__ ) . 'css/divi-accessibility-admin.css', array(), $this->version, 'all' );
 	}
@@ -99,7 +103,31 @@ class Divi_Accessibility_Admin {
 	 * @since    1.0.0
 	 */
 	public function enqueue_scripts( $hook ) {
+		if ( ! $this->is_settings_page( $hook ) ) {
+			return;
+		}
+
 		wp_enqueue_script( 'divi-accessibility-admin-script', plugin_dir_url( __FILE__ ) . 'js/divi-accessibility-admin.js', array( 'wp-color-picker' ), $this->version, true );
+	}
+
+	/**
+	 * Check whether the current admin page is this plugin settings page.
+	 *
+	 * @since 2.1.1
+	 * @param string $hook Page hook.
+	 * @return bool
+	 */
+	private function is_settings_page( $hook ) {
+		if ( is_string( $hook ) && false !== strpos( $hook, $this->da11y ) ) {
+			return true;
+		}
+
+		if ( isset( $_GET['page'] ) ) {
+			$page = sanitize_key( wp_unslash( $_GET['page'] ) );
+			return $this->da11y === $page;
+		}
+
+		return false;
 	}
 
 	/**
@@ -176,7 +204,7 @@ class Divi_Accessibility_Admin {
 			'aria_mobile_menu'             => 1,
 			'fix_duplicate_menu_ids'       => 1,
 			'reduced_motion'               => 0,
-			'underline_urls'			   => 0,
+			'underline_urls'               => 0,
 			'underline_urls_not_title'     => 0,
 			'tota11y'                      => 0,
 			'developer_mode'               => 0,
@@ -187,290 +215,185 @@ class Divi_Accessibility_Admin {
 	}
 
 	/**
+	 * Return dashboard tabs.
+	 *
+	 * @since 2.1.1
+	 * @return array
+	 */
+	public function get_dashboard_tabs() {
+		return array(
+			'accessibility' => array(
+				'label'       => __( 'Accessibility', 'divi-accessibility' ),
+				'description' => __( 'Divi-specific fixes that improve keyboard, screen reader, and validation behavior.', 'divi-accessibility' ),
+				'has_form'    => true,
+			),
+			'tools'         => array(
+				'label'       => __( 'Tools', 'divi-accessibility' ),
+				'description' => __( 'Admin-only helpers for reviewing and debugging accessibility behavior.', 'divi-accessibility' ),
+				'has_form'    => true,
+			),
+			'resources'     => array(
+				'label'       => __( 'Resources', 'divi-accessibility' ),
+				'description' => __( 'Reference links and project information.', 'divi-accessibility' ),
+				'has_form'    => false,
+			),
+		);
+	}
+
+	/**
+	 * Return the active dashboard tab.
+	 *
+	 * @since 2.1.1
+	 * @return string
+	 */
+	public function get_active_dashboard_tab() {
+		$active_tab = 'accessibility';
+		$tabs       = $this->get_dashboard_tabs();
+
+		if ( isset( $_GET['tab'] ) ) {
+			$requested_tab = sanitize_key( wp_unslash( $_GET['tab'] ) );
+			if ( isset( $tabs[ $requested_tab ] ) ) {
+				$active_tab = $requested_tab;
+			}
+		}
+
+		return $active_tab;
+	}
+
+	/**
+	 * Return settings metadata grouped by dashboard tab.
+	 *
+	 * @since 2.1.1
+	 * @return array
+	 */
+	public function get_dashboard_settings() {
+		return array(
+			'accessibility' => array(
+				array(
+					'name'        => 'aria_support',
+					'title'       => __( 'ARIA support', 'divi-accessibility' ),
+					'description' => __( 'Add appropriate ARIA attributes across Divi elements &amp; modules.', 'divi-accessibility' ),
+					'type'        => 'checkbox',
+				),
+				array(
+					'name'        => 'dropdown_keyboard_navigation',
+					'title'       => __( 'Dropdown keyboard navigation', 'divi-accessibility' ),
+					'description' => __( 'Allow easier navigation of Divi dropdown menus with the keyboard.', 'divi-accessibility' ),
+					'type'        => 'checkbox',
+				),
+				array(
+					'name'        => 'slider_accessibility',
+					'title'       => __( 'Slider accessibility', 'divi-accessibility' ),
+					'description' => __( 'Add labels and keyboard controls to Divi slider arrows and navigation dots.', 'divi-accessibility' ),
+					'type'        => 'checkbox',
+				),
+				array(
+					'name'        => 'fix_labels',
+					'title'       => __( 'Fix labels', 'divi-accessibility' ),
+					'description' => __( 'Fix missing labels &amp; incorrect or missing assignments to their corresponding inputs.', 'divi-accessibility' ),
+					'type'        => 'checkbox',
+				),
+				array(
+					'name'        => 'focusable_modules',
+					'title'       => __( 'Focusable modules', 'divi-accessibility' ),
+					'description' => __( 'Allow Divi modules such as <em>Toggle</em> &amp; <em>Accordion</em> to be focusable with keyboard navigation. Hitting enter will open/close when focused.', 'divi-accessibility' ),
+					'type'        => 'checkbox',
+				),
+				array(
+					'name'        => 'keyboard_navigation_outline',
+					'title'       => __( 'Keyboard navigation outline', 'divi-accessibility' ),
+					'description' => __( 'Add an outline to focused elements when navigation with the keyboard.', 'divi-accessibility' ),
+					'type'        => 'checkbox',
+				),
+				array(
+					'name'        => 'outline_color',
+					'title'       => __( 'Outline color', 'divi-accessibility' ),
+					'description' => __( 'Choose the color used for the keyboard navigation outline.', 'divi-accessibility' ),
+					'subtext'     => __( 'Keyboard navigation outline', 'divi-accessibility' ),
+					'type'        => 'color',
+				),
+				array(
+					'name'        => 'screen_reader_text',
+					'title'       => __( 'Screen reader text', 'divi-accessibility' ),
+					'description' => __( 'Add plugin screen reader class used on certain labels &amp; reverses Divi incorrectly applying <code>display: none;</code> on its own screen reader classes.', 'divi-accessibility' ),
+					'type'        => 'checkbox',
+				),
+				array(
+					'name'        => 'skip_navigation_link',
+					'title'       => __( 'Skip navigation link', 'divi-accessibility' ),
+					'description' => __( 'Allow user to skip over Divi navigation when using keyboard and go straight to content.', 'divi-accessibility' ),
+					'type'        => 'checkbox',
+				),
+				array(
+					'name'        => 'aria_hidden_icons',
+					'title'       => __( 'Hide icons', 'divi-accessibility' ),
+					'description' => __( 'Hide all icons to screen readers so text is read normally.', 'divi-accessibility' ),
+					'subtext'     => __( 'This may not work for all icons', 'divi-accessibility' ),
+					'type'        => 'checkbox',
+				),
+				array(
+					'name'        => 'aria_mobile_menu',
+					'title'       => __( 'Aria support for mobile menu', 'divi-accessibility' ),
+					'description' => __( 'Apply Aria attributes to the mobile (burger) menu to make it accessible.', 'divi-accessibility' ),
+					'type'        => 'checkbox',
+				),
+				array(
+					'name'        => 'fix_duplicate_menu_ids',
+					'title'       => __( 'Fix duplicate menu ids', 'divi-accessibility' ),
+					'description' => __( 'Because Divi uses the same menu twice (Once for the primary menu and again for the mobile menu), the unique ID\'s are duplicated causing validation issues. This option prevents WordPress from adding a unique ID to the menu list items.', 'divi-accessibility' ),
+					'type'        => 'checkbox',
+				),
+				array(
+					'name'        => 'reduced_motion',
+					'title'       => __( 'Reduced motion support', 'divi-accessibility' ),
+					'description' => __( 'Respect user reduced motion preferences by minimizing non-essential Divi animations.', 'divi-accessibility' ),
+					'subtext'     => __( 'Applies only when users have reduced motion enabled in their operating system/browser', 'divi-accessibility' ),
+					'type'        => 'checkbox',
+				),
+				array(
+					'name'        => 'underline_urls',
+					'title'       => __( 'Underline URLs', 'divi-accessibility' ),
+					'description' => __( 'Easily find out URLs when they are underlined.', 'divi-accessibility' ),
+					'type'        => 'checkbox',
+				),
+				array(
+					'name'        => 'underline_urls_not_title',
+					'title'       => __( 'Exclude underlines from titles and buttons', 'divi-accessibility' ),
+					'description' => __( 'Disable URL underlines on titles, headings, and buttons.', 'divi-accessibility' ),
+					'type'        => 'checkbox',
+				),
+			),
+			'tools'         => array(
+				array(
+					'name'        => 'tota11y',
+					'title'       => __( 'Tota11y', 'divi-accessibility' ),
+					'description' => __( 'Add a small button to the bottom corner of site to visualize how your site performs with assistive technology.', 'divi-accessibility' ),
+					'subtext'     => __( 'Admin users only', 'divi-accessibility' ),
+					'type'        => 'checkbox',
+				),
+				array(
+					'name'        => 'developer_mode',
+					'title'       => __( 'Developer mode', 'divi-accessibility' ),
+					'description' => __( 'Log plugin info to console.', 'divi-accessibility' ),
+					'subtext'     => __( 'Admin users only', 'divi-accessibility' ),
+					'type'        => 'checkbox',
+				),
+			),
+			'resources'     => array(),
+		);
+	}
+
+	/**
 	 * Register all related settings of this plugin.
 	 *
 	 * @since    1.1.0
 	 */
 	public function register_settings() {
 
-		$general_section = $this->da11y_options . '_general_section';
-		$tools_section   = $this->da11y_options . '_tools_section';
-
 		register_setting(
 			$this->da11y,
 			$this->da11y_options,
 			array( $this, 'divi_accessibility_validate_options' )
-		);
-
-		// Add general section.
-		add_settings_section(
-			$general_section,
-			'General',
-			null, // Don't use section callback.
-			$this->da11y
-		);
-
-		// ARIA support.
-		add_settings_field(
-			$this->da11y . '_aria_support',
-			__( 'ARIA support', 'divi-accessibility' ),
-			array( $this, 'divi_accessibility_checkbox_cb' ),
-			$this->da11y,
-			$general_section,
-			array(
-				'name'          => 'aria_support',
-				'label_for'     => $this->da11y . '_aria_support',
-				'label_text'    => __( 'Add appropriate ARIA attributes across Divi elements &amp; modules.', 'divi-accessibility' ),
-				'label_subtext' => '',
-			)
-		);
-
-		// Dropdown keyboard navigation.
-		add_settings_field(
-			$this->da11y . '_dropdown_keyboard_navigation',
-			__( 'Dropdown keyboard navigation', 'divi-accessibility' ),
-			array( $this, 'divi_accessibility_checkbox_cb' ),
-			$this->da11y,
-			$general_section,
-			array(
-				'name'          => 'dropdown_keyboard_navigation',
-				'label_for'     => $this->da11y . '_dropdown_keyboard_navigation',
-				'label_text'    => __( 'Allow easier navigation of Divi dropdown menus with the keyboard.', 'divi-accessibility' ),
-				'label_subtext' => '',
-			)
-		);
-
-		// Slider accessibility.
-		add_settings_field(
-			$this->da11y . '_slider_accessibility',
-			__( 'Slider accessibility', 'divi-accessibility' ),
-			array( $this, 'divi_accessibility_checkbox_cb' ),
-			$this->da11y,
-			$general_section,
-			array(
-				'name'          => 'slider_accessibility',
-				'label_for'     => $this->da11y . '_slider_accessibility',
-				'label_text'    => __( 'Add labels and keyboard controls to Divi slider arrows and navigation dots.', 'divi-accessibility' ),
-				'label_subtext' => '',
-			)
-		);
-
-		// Fix labels.
-		add_settings_field(
-			$this->da11y . '_fix_labels',
-			__( 'Fix labels', 'divi-accessibility' ),
-			array( $this, 'divi_accessibility_checkbox_cb' ),
-			$this->da11y,
-			$general_section,
-			array(
-				'name'          => 'fix_labels',
-				'label_for'     => $this->da11y . '_fix_labels',
-				'label_text'    => __( 'Fix missing labels &amp; incorrect or missing assignments to their corresponding inputs.', 'divi-accessibility' ),
-				'label_subtext' => '',
-			)
-		);
-
-		// Focusable modules.
-		add_settings_field(
-			$this->da11y . '_focusable_modules',
-			__( 'Focusable modules', 'divi-accessibility' ),
-			array( $this, 'divi_accessibility_checkbox_cb' ),
-			$this->da11y,
-			$general_section,
-			array(
-				'name'          => 'focusable_modules',
-				'label_for'     => $this->da11y . '_focusable_modules',
-				'label_text'    => __( 'Allow Divi modules such as <em>Toggle</em> &amp; <em>Accordion</em> to be focusable with keyboard navigation. Hitting enter will open/close when focused.', 'divi-accessibility' ),
-				'label_subtext' => '',
-			)
-		);
-
-		// Keyboard navigation outline.
-		add_settings_field(
-			$this->da11y . '_keyboard_navigation_outline',
-			__( 'Keyboard navigation outline', 'divi-accessibility' ),
-			array( $this, 'divi_accessibility_checkbox_cb' ),
-			$this->da11y,
-			$general_section,
-			array(
-				'name'          => 'keyboard_navigation_outline',
-				'label_for'     => $this->da11y . '_keyboard_navigation_outline',
-				'label_text'    => __( 'Add an outline to focused elements when navigation with the keyboard.', 'divi-accessibility' ),
-				'label_subtext' => '',
-			)
-		);
-
-		// Outline color.
-		add_settings_field(
-			$this->da11y . '_outline_color',
-			__( 'Outline color', 'divi-accessibility' ),
-			array( $this, 'divi_accessibility_color_picker_cb' ),
-			$this->da11y,
-			$general_section,
-			array(
-				'name'          => 'outline_color',
-				'label_for'     => $this->da11y . '_outline_color',
-				'label_text'    => '',
-				'label_subtext' => __( 'Keyboard navigation outline', 'divi-accessibility' ),
-			)
-		);
-
-		// Screen reader text.
-		add_settings_field(
-			$this->da11y . '_screen_reader_text',
-			__( 'Screen reader text', 'divi-accessibility' ),
-			array( $this, 'divi_accessibility_checkbox_cb' ),
-			$this->da11y,
-			$general_section,
-			array(
-				'name'          => 'screen_reader_text',
-				'label_for'     => $this->da11y . '_screen_reader_text',
-				'label_text'    => __( 'Add plugin screen reader class used on certain labels &amp; reverses Divi incorrectly applying <code>display: none;</code> on its own screen reader classes.', 'divi-accessibility' ),
-				'label_subtext' => '',
-			)
-		);
-
-		// Skip navigation link.
-		add_settings_field(
-			$this->da11y . '_skip_navigation_link',
-			__( 'Skip navigation link', 'divi-accessibility' ),
-			array( $this, 'divi_accessibility_checkbox_cb' ),
-			$this->da11y,
-			$general_section,
-			array(
-				'name'          => 'skip_navigation_link',
-				'label_for'     => $this->da11y . '_skip_navigation_link',
-				'label_text'    => __( 'Allow user to skip over Divi navigation when using keyboard and go straight to content.', 'divi-accessibility' ),
-				'label_subtext' => __( 'Requires screen reader text option to be on', 'divi-accessibility' ),
-			)
-		);
-
-		// Aria-hidden on icons.
-		add_settings_field(
-			$this->da11y . '_aria_hidden_icons',
-			__( 'Hide icons', 'divi-accessibility' ),
-			array( $this, 'divi_accessibility_checkbox_cb' ),
-			$this->da11y,
-			$general_section,
-			array(
-				'name'          => 'aria_hidden_icons',
-				'label_for'     => $this->da11y . '_aria_hidden_icons',
-				'label_text'    => __( 'Hide all icons to screen readers so text is read normally.', 'divi-accessibility' ),
-				'label_subtext' => __( 'This may not work for all icons', 'divi-accessibility' ),
-			)
-		);
-
-		// Aria support for mobile menu.
-		add_settings_field(
-			$this->da11y . '_aria_mobile_menu',
-			__( 'Aria support for mobile menu', 'divi-accessibility' ),
-			array( $this, 'divi_accessibility_checkbox_cb' ),
-			$this->da11y,
-			$general_section,
-			array(
-				'name'       => 'aria_mobile_menu',
-				'label_for'  => $this->da11y . '_aria_mobile_menu',
-				'label_text' => __( 'Apply Aria attributes to the mobile (burger) menu to make it accessible.', 'divi-accessibility' ),
-				'label_subtext' => '',
-			)
-		);
-
-		// Fix duplicate menu ids.
-		add_settings_field(
-			$this->da11y . '_fix_duplicate_menu_ids',
-			__( 'Fix duplicate menu ids', 'divi-accessibility' ),
-			array( $this, 'divi_accessibility_checkbox_cb' ),
-			$this->da11y,
-			$general_section,
-			array(
-				'name'          => 'fix_duplicate_menu_ids',
-				'label_for'     => $this->da11y . '_fix_duplicate_menu_ids',
-				'label_text'    => __( 'Because Divi uses the same menu twice (Once for the primary menu and again for the mobile menu), the unique ID\'s are duplicated causing validation issues. This option prevents WordPress from adding a unique ID to the menu list items.', 'divi-accessibility' ),
-				'label_subtext' => '',
-			)
-		);
-
-		// Reduced motion support.
-		add_settings_field(
-			$this->da11y . '_reduced_motion',
-			__( 'Reduced motion support', 'divi-accessibility' ),
-			array( $this, 'divi_accessibility_checkbox_cb' ),
-			$this->da11y,
-			$general_section,
-			array(
-				'name'          => 'reduced_motion',
-				'label_for'     => $this->da11y . '_reduced_motion',
-				'label_text'    => __( 'Respect user reduced motion preferences by minimizing non-essential Divi animations.', 'divi-accessibility' ),
-				'label_subtext' => __( 'Applies only when users have reduced motion enabled in their operating system/browser', 'divi-accessibility' ),
-			)
-		);
-
-		// Add underline to all links in #et-main-area
-		add_settings_field(
-			$this->da11y . '_underline_urls',
-			__( 'Underline URLs', 'divi-accessibility' ),
-			array( $this, 'divi_accessibility_checkbox_cb' ),
-			$this->da11y,
-			$general_section,
-			array(
-				'name'          => 'underline_urls',
-				'label_for'     => $this->da11y . '_underline_urls',
-				'label_text'    => __( 'Easily find out URLs when they are underlined' ),
-				'label_subtext' => '',
-			)
-		);
-
-		// Remove underline from .entry-title
-		add_settings_field(
-			$this->da11y . '_underline_urls_not_title',
-			__( 'Exclude underlines from titles and buttons', 'divi-accessibility' ),
-			array( $this, 'divi_accessibility_checkbox_cb' ),
-			$this->da11y,
-			$general_section,
-			array(
-				'name'          => 'underline_urls_not_title',
-				'label_for'     => $this->da11y . '_underline_urls_not_title',
-				'label_text'    => __( 'If you don\'t like title, headings or buttons to be underlined you can disable it from here' ),
-				'label_subtext' => '',
-			)
-		);
-
-		// Add tools section.
-		add_settings_section(
-			$tools_section,
-			__( 'Tools', 'divi-accessibility' ),
-			null, // Don't use section callback.
-			$this->da11y
-		);
-
-		// Tota11y.
-		add_settings_field(
-			$this->da11y . '_tota11y',
-			__( 'Tota11y', 'divi-accessibility' ),
-			array( $this, 'divi_accessibility_checkbox_cb' ),
-			$this->da11y,
-			$tools_section,
-			array(
-				'name'          => 'tota11y',
-				'label_for'     => $this->da11y . '_tota11y',
-				'label_text'    => __( 'Add a small button to the bottom corner of site to visualize how your site performs with assistive technology.', 'divi-accessibility' ),
-				'label_subtext' => __( 'Admin users only', 'divi-accessibility' ),
-			)
-		);
-
-		// Developer mode.
-		add_settings_field(
-			$this->da11y . '_developer_mode',
-			__( 'Developer mode', 'divi-accessibility' ),
-			array( $this, 'divi_accessibility_checkbox_cb' ),
-			$this->da11y,
-			$tools_section,
-			array(
-				'name'          => 'developer_mode',
-				'label_for'     => $this->da11y . '_developer_mode',
-				'label_text'    => __( 'Log plugin info to console.', 'divi-accessibility' ),
-				'label_subtext' => __( 'Admin users only', 'divi-accessibility' ),
-			)
 		);
 
 	}
@@ -483,26 +406,55 @@ class Divi_Accessibility_Admin {
 	 */
 	public function divi_accessibility_validate_options( $input ) {
 
-		$valid_options = array();
-		$option_list   = $this->get_options_list();
+		if ( ! is_array( $input ) ) {
+			$input = array();
+		}
+
+		$valid_options     = array();
+		$option_list       = $this->get_options_list();
+		$current_settings  = get_option( $this->da11y_options );
+		$current_settings  = is_array( $current_settings ) ? $current_settings : array();
+		$dashboard_tabs    = $this->get_dashboard_tabs();
+		$dashboard_fields  = $this->get_dashboard_settings();
+		$active_tab        = isset( $input['__active_tab'] ) ? sanitize_key( $input['__active_tab'] ) : 'accessibility';
+		$active_tab        = isset( $dashboard_tabs[ $active_tab ] ) ? $active_tab : 'accessibility';
+		$active_field_keys = array();
+
+		if ( ! empty( $dashboard_fields[ $active_tab ] ) ) {
+			foreach ( $dashboard_fields[ $active_tab ] as $field ) {
+				$active_field_keys[] = $field['name'];
+			}
+		}
 
 		// Loop through all available options.
 		foreach ( $option_list as $key => $option ) {
+			$is_active_field = in_array( $key, $active_field_keys, true );
 
 			// If color-picker.
 			if ( 'outline_color' == $key ) {
 
 				$default_color = $option;
+				$color         = isset( $current_settings[ $key ] ) ? $current_settings[ $key ] : $default_color;
 
-				if ( $this->is_valid_color( $input[ $key ] ) ) {
+				if ( $is_active_field ) {
+					$color = isset( $input[ $key ] ) ? $input[ $key ] : $default_color;
+				}
 
-					$valid_options[ $key ] = sanitize_text_field( $input[ $key ] );
+				if ( $this->is_valid_color( $color ) ) {
+
+					$valid_options[ $key ] = sanitize_text_field( $color );
 
 				} else {
 
 					$valid_options[ $key ] = $default_color;
 
 				}
+			} elseif ( ! $is_active_field ) {
+
+				$valid_options[ $key ] = isset( $current_settings[ $key ] )
+					? ( 1 == $current_settings[ $key ] ? 1 : 0 )
+					: ( 1 == $option ? 1 : 0 );
+
 			} elseif ( isset( $input[ $key ] ) && 1 == $input[ $key ] ) {
 
 				$valid_options[ $key ] = 1;
@@ -549,6 +501,8 @@ class Divi_Accessibility_Admin {
 		$label_for     = $arg['label_for'];
 		$label_text    = $arg['label_text'];
 		$label_subtext = ! empty( $arg['label_subtext'] ) ? $arg['label_subtext'] : '';
+		$label_class   = ! empty( $arg['label_class'] ) ? $arg['label_class'] : 'widefat';
+		$labelledby    = ! empty( $arg['labelledby'] ) ? $arg['labelledby'] : '';
 
 		if ( isset( $this->settings[ $name ] ) ) {
 			$checked = $this->settings[ $name ];
@@ -560,15 +514,42 @@ class Divi_Accessibility_Admin {
 
 		<fieldset>
 
-			<label class="widefat">
-				<input type="checkbox"
-				<?php checked( $checked, 1 ); ?>
-				name="<?php echo esc_attr( $this->da11y_options ) . '[' . esc_attr( $name ) . ']'; ?>"
-				id="<?php echo esc_attr( $label_for ); ?>"
-				aria-describedby="<?php echo esc_attr( $label_for ); ?>-desc"
-				value="1" />
-				<?php echo wp_kses_post( $label_text ); ?>
-			</label>
+			<?php if ( 'da11y-hurkan-switch' === $label_class ) { ?>
+				<label class="<?php echo esc_attr( $label_class ); ?>">
+					<input type="checkbox"
+					<?php checked( $checked, 1 ); ?>
+					name="<?php echo esc_attr( $this->da11y_options ) . '[' . esc_attr( $name ) . ']'; ?>"
+					id="<?php echo esc_attr( $label_for ); ?>"
+					class="hurkanSwitch-switch-plugin hurkanSwitch-switch-input"
+					aria-describedby="<?php echo esc_attr( $label_for ); ?>-desc"
+					<?php echo '' !== $labelledby ? 'aria-labelledby="' . esc_attr( $labelledby ) . '"' : ''; ?>
+					value="1" />
+					<span class="hurkanSwitch switch-responsive" aria-hidden="true">
+						<span class="hurkanSwitch-switch-box">
+							<span class="hurkanSwitch-switch-item hurkanSwitch-switch-item-status-on hurkanSwitch-switch-item-color-success active">
+								<span class="lbl"><?php esc_html_e( 'On', 'divi-accessibility' ); ?></span>
+								<span class="hurkanSwitch-switch-cursor-selector"></span>
+							</span>
+							<span class="hurkanSwitch-switch-item hurkanSwitch-switch-item-status-off hurkanSwitch-switch-item-color-default active">
+								<span class="lbl"><?php esc_html_e( 'Off', 'divi-accessibility' ); ?></span>
+								<span class="hurkanSwitch-switch-cursor-selector"></span>
+							</span>
+						</span>
+					</span>
+					<span class="screen-reader-text"><?php echo esc_html( $label_text ); ?></span>
+				</label>
+			<?php } else { ?>
+				<label class="<?php echo esc_attr( $label_class ); ?>">
+					<input type="checkbox"
+					<?php checked( $checked, 1 ); ?>
+					name="<?php echo esc_attr( $this->da11y_options ) . '[' . esc_attr( $name ) . ']'; ?>"
+					id="<?php echo esc_attr( $label_for ); ?>"
+					aria-describedby="<?php echo esc_attr( $label_for ); ?>-desc"
+					<?php echo '' !== $labelledby ? 'aria-labelledby="' . esc_attr( $labelledby ) . '"' : ''; ?>
+					value="1" />
+					<?php echo wp_kses_post( $label_text ); ?>
+				</label>
+			<?php } ?>
 
 			<?php if ( '' != $label_subtext ) { ?>
 				<p id="<?php echo esc_attr( $label_for ); ?>-desc" class="description">(<em><?php echo esc_html( $label_subtext ); ?></em>)</p>
@@ -589,11 +570,12 @@ class Divi_Accessibility_Admin {
 
 		$name          = $arg['name'];
 		$label_for     = $arg['label_for'];
-		$label_text    = $arg['label_text'];
 		$label_subtext = $arg['label_subtext'];
+		$labelledby    = ! empty( $arg['labelledby'] ) ? $arg['labelledby'] : '';
 
 		$option_list   = $this->get_options_list();
 		$default_color = $option_list['outline_color'];
+		$color         = $default_color;
 
 		if ( isset( $this->settings['outline_color'] ) ) {
 			$color = $this->settings['outline_color'];
@@ -605,11 +587,12 @@ class Divi_Accessibility_Admin {
 			<label class="widefat">
 				<input type="text"
 				name="<?php echo esc_attr( $this->da11y_options ) . '[' . esc_attr( $name ) . ']'; ?>"
-				id="<?php echo esc_attr( $label_for ); ?>"
-				value="<?php echo esc_attr( $color ); ?>"
-				class="da11y-color-picker"
-				data-default-color="<?php echo esc_attr( $default_color ); ?>"
-				/>
+					id="<?php echo esc_attr( $label_for ); ?>"
+					value="<?php echo esc_attr( $color ); ?>"
+					class="da11y-color-picker"
+					data-default-color="<?php echo esc_attr( $default_color ); ?>"
+					<?php echo '' !== $labelledby ? 'aria-labelledby="' . esc_attr( $labelledby ) . '"' : ''; ?>
+					/>
 			</label>
 
 			<?php if ( '' != $label_subtext ) { ?>

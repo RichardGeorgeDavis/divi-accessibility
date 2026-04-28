@@ -68,6 +68,7 @@
 ## Package Checks
 
 - build `packaged/divi-accessibility-2.1.0.zip`
+- for future GitHub-updated releases, attach the packaged zip to the stable GitHub Release with the exact asset name `divi-accessibility-X.X.X.zip`
 - current package SHA-256: `69c25e3bbda5d033dacda63ae4814c263c2afa4583be5ac5635caef36109faef`
 - final release page: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/2.1.0>
 - zip asset: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/download/2.1.0/divi-accessibility-2.1.0.zip>

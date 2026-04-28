@@ -1,16 +1,16 @@
 # Release Handover
 
 Prepared: 2026-04-24
-Last updated: 2026-04-24
+Last updated: 2026-04-28
 
 ## Current State
 
-`2.1.1` is the current maintained-fork release. It builds on the final `2.1.0` compatibility release and adds the fork-only GitHub Releases updater.
+`2.1.2` is the current maintained-fork release. It builds on the final `2.1.0` compatibility release, keeps the `2.1.1` fork-only GitHub Releases updater, and fixes skip-link visibility when the broader screen-reader-text option is disabled.
 
-- Current release: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/2.1.1>
-- Current zip asset: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/download/2.1.1/divi-accessibility-2.1.1.zip>
-- Current zip SHA-256: `84fcf2acdd5fcfb0ae00561a1f73be6acf5ead3efeeb048f9218742919f6019f`
-- Current release tag target: `dd14c4f`
+- Current release: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/2.1.2>
+- Current zip asset: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/download/2.1.2/divi-accessibility-2.1.2.zip>
+- Current zip SHA-256: `5425b929d4c79b7d8e0f09cd8f77eafd5f73607268fa62160ad92204ee2a995d`
+- Current release tag target: pending until the `2.1.2` release tag is created.
 - Current fork `master` head after README badge cleanup: `f2dc852`
 
 `2.1.1` is the bootstrap updater release. Sites already on `2.1.0` need to install `2.1.1` manually once because `2.1.0` did not contain the updater. Future releases after `2.1.1` can then appear in WordPress' normal Plugins update screen when the GitHub Release includes an exact packaged zip asset.
@@ -26,7 +26,7 @@ Last updated: 2026-04-24
 - Upstream PR status after `2.1.1`: open, ready for review, clean, and mergeable at `c27c424`.
 - Upstream repository permission for this account: read-only, so upstream issues cannot be closed directly.
 
-The final `2.1.0` release asset was RC7 promoted unchanged. Do not rebuild or replace the `2.1.0` or `2.1.1` release assets unless a code/package defect is found and a new release is intentionally cut.
+The final `2.1.0` release asset was RC7 promoted unchanged. Do not rebuild or replace the historical `2.1.0` or `2.1.1` release assets unless a code/package defect is found and a new release is intentionally cut.
 
 ## Release Scope
 
@@ -54,6 +54,11 @@ Included in `2.1.1`:
 - Draft, prerelease, non-semver tag, source archive, and missing-package release rejection.
 - No site URL in GitHub updater request headers.
 - README cleanup removing WordPress.org version/download badges that pointed to the closed listing.
+
+Included in `2.1.2`:
+
+- Dedicated skip-link CSS that keeps the plugin-inserted skip link visually hidden until focus/activation even when the broader screen-reader-text option is disabled.
+- Admin copy cleanup removing the outdated note that the skip navigation link requires the screen reader text option.
 
 Not included:
 
@@ -92,6 +97,12 @@ Final `2.1.0` gates passed before release:
 - zip content inspection
 - GitHub release asset digest verified as `sha256:84fcf2acdd5fcfb0ae00561a1f73be6acf5ead3efeeb048f9218742919f6019f`
 - live GitHub `/releases/latest` response normalizes to the `2.1.1` package
+
+`2.1.2` skip-link release verification:
+
+- `DA11Y_RELEASE_VERSION=2.1.2 DA11Y_ASSUME_YES=true npm run release`
+- generated package: `packaged/divi-accessibility-2.1.2.zip`
+- generated package SHA-256: `5425b929d4c79b7d8e0f09cd8f77eafd5f73607268fa62160ad92204ee2a995d`
 
 Known limits:
 

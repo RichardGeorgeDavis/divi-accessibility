@@ -1,6 +1,6 @@
 {
   "name": "divi-accessibility",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "A WordPress plugin that improves Divi accessibility across Divi 4 and Divi 5",
   "watch": {
     "build": {
