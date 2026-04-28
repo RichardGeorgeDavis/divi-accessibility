@@ -9,7 +9,7 @@ Last updated: 2026-04-28
 
 - Current release: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/2.1.2>
 - Current zip asset: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/download/2.1.2/divi-accessibility-2.1.2.zip>
-- Current zip SHA-256: `5425b929d4c79b7d8e0f09cd8f77eafd5f73607268fa62160ad92204ee2a995d`
+- Current zip SHA-256: `d46b8be539c0e3abac4920c86be110903bfe34033062f5a1ddbb68512ff8fb22`
 - Current release tag target: pending until the `2.1.2` release tag is created.
 - Current fork `master` head after README badge cleanup: `f2dc852`
 
@@ -102,7 +102,7 @@ Final `2.1.0` gates passed before release:
 
 - `DA11Y_RELEASE_VERSION=2.1.2 DA11Y_ASSUME_YES=true npm run release`
 - generated package: `packaged/divi-accessibility-2.1.2.zip`
-- generated package SHA-256: `5425b929d4c79b7d8e0f09cd8f77eafd5f73607268fa62160ad92204ee2a995d`
+- generated package SHA-256: `d46b8be539c0e3abac4920c86be110903bfe34033062f5a1ddbb68512ff8fb22`
 
 Known limits:
 
