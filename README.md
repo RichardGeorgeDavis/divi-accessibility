@@ -14,6 +14,10 @@ The plugin includes a native GitHub Releases updater for this maintained fork. S
 
 Divi Accessibility applies targeted, WCAG-aligned improvements to Divi-generated markup and behavior. It does not guarantee WCAG conformance for a whole website. Final accessibility depends on theme configuration, page content, color contrast, media alternatives, third-party plugins, custom CSS/JS, and editorial practice.
 
+## License
+
+Divi Accessibility is licensed under `GPL-2.0-or-later`. The repository keeps the full GNU General Public License version 2 text in `LICENSE` and `license.txt` for GitHub and WordPress plugin compatibility.
+
 ## Community
 
 + Ask questions in [GitHub Discussions Q&A](https://github.com/RichardGeorgeDavis/divi-accessibility/discussions/categories/q-a)
