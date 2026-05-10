@@ -1,5 +1,5 @@
 === Divi Accessibility ===
-Contributors: campuspress, JoeFusco, alexstine, vebailovity
+Contributors: RichardGeorgeDavis, campuspress, JoeFusco, alexstine, vebailovity
 Tags: divi, accessibility, accessible, navigation, wcag, a11y, section508, focus, labels, aria
 Requires at least: 6.0
 Tested up to: 6.9.4
@@ -30,12 +30,12 @@ specifically found within Divi.
 
 = Current Status =
 
-This fork is maintained by Richard George Davis while official access is
-unresolved. The original plugin was created by CampusPress, and the upstream
-release-candidate PR is closed as historical takeover/adoption context.
+Richard George Davis maintains this fork while official access is unresolved.
+The historical upstream plugin was created by CampusPress, and the upstream
+release-candidate PR is closed as takeover/adoption context.
 
 This fork should not be treated as an official WordPress.org continuation unless
-CampusPress or WordPress.org grants ownership or committer access.
+upstream or WordPress.org grants ownership or committer access.
 
 Sites must install version 2.1.1 or later once. After that, future stable fork
 releases are checked through WordPress' normal Plugins update screen when the
@@ -114,9 +114,8 @@ Historical upstream PR:
 
 = Credit =
 
-Originally created by [CampusPress](https://campuspress.com). This maintained
-fork is currently maintained by Richard George Davis unless official project
-ownership or committer access is granted. Plugin icon based off of
+Maintained by Richard George Davis. Original project by
+[CampusPress](https://campuspress.com). Plugin icon based off of
 [The Accessible Icon Project](http://accessibleicon.org/).
 
 

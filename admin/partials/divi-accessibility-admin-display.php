@@ -5,7 +5,7 @@
  *
  * This file is used to markup the admin-facing aspects of the plugin.
  *
- * @link       https://campuspress.com
+ * @link       https://github.com/RichardGeorgeDavis/divi-accessibility
  * @since      1.0.0
  *
  * @package    Divi_Accessibility
@@ -46,11 +46,6 @@ $resources         = array(
 		'title'       => __( 'Divi Accessibility on GitHub', 'divi-accessibility' ),
 		'description' => __( 'Source code, releases, and issue tracking for this maintained fork.', 'divi-accessibility' ),
 		'url'         => $github_url,
-	),
-	array(
-		'title'       => __( 'CampusPress', 'divi-accessibility' ),
-		'description' => __( 'Original creator credit is preserved while this fork is maintained independently.', 'divi-accessibility' ),
-		'url'         => 'https://campuspress.com',
 	),
 );
 ?>

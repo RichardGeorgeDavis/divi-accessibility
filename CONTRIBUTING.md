@@ -4,10 +4,10 @@ Thanks for helping improve Divi Accessibility.
 
 ## Current Project Status
 
-This repository is a maintained fork release path while official upstream and
-WordPress.org ownership are unresolved. The original plugin was created by
-CampusPress. Keep original contributor credit intact and avoid language that
-claims official continuity unless ownership or committer access is granted.
+This repository is Richard George Davis's maintained fork release path while
+official upstream and WordPress.org ownership are unresolved. Keep original
+project and contributor credit intact, and avoid language that claims official
+continuity unless ownership or committer access is granted.
 
 ## Before Opening Work
 
@@ -51,7 +51,7 @@ The package and `.sha256` checksum file are written to `packaged/`.
 
 - Keep GPL-compatible licensing.
 - Do not relicense existing plugin code to MIT.
-- Preserve CampusPress and existing contributor credit.
+- Preserve original project and existing contributor credit.
 - Update `README.md`, `readme.txt`, and release notes when behavior changes.
 - Regenerate minified assets when editing files under `public/partials/js` or
   `public/partials/css`.

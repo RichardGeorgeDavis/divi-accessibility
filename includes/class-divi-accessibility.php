@@ -5,7 +5,7 @@
  * A class definition that includes attributes and functions used across both the
  * public-facing side of the site and the admin area.
  *
- * @link       https://campuspress.com
+ * @link       https://github.com/RichardGeorgeDavis/divi-accessibility
  * @since      1.1.0
  *
  * @package    Divi_Accessibility

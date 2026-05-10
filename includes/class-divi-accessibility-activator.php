@@ -2,7 +2,7 @@
 /**
  * Fired during plugin activation
  *
- * @link       https://campuspress.com
+ * @link       https://github.com/RichardGeorgeDavis/divi-accessibility
  * @since      1.0.0
  *
  * @package    Divi_Accessibility

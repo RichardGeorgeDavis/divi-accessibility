@@ -10,13 +10,14 @@
  * @link              https://github.com/RichardGeorgeDavis/divi-accessibility
  * @since             1.2.0
  * @package           Divi_Accessibility
+ * @credit            Original project by CampusPress.
  *
  * @wordpress-plugin
  * Plugin Name:       Divi Accessibility
  * Plugin URI:        https://github.com/RichardGeorgeDavis/divi-accessibility
  * Description:       Improve Divi accessibility across Divi 4 and Divi 5 with WCAG-aligned fixes.
  * Version:           2.1.8
- * Author:            CampusPress, Richard George Davis
+ * Author:            Richard George Davis
  * Author URI:        https://github.com/RichardGeorgeDavis
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/old-licenses/gpl-2.0.html

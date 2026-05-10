@@ -7,8 +7,8 @@ and its builder output.
 
 ## Current Status
 
-This fork is maintained by Richard George Davis as the practical release path
-while official access is unresolved. The original plugin was created by
+Richard George Davis maintains this fork as the practical release path while
+official access is unresolved. The historical upstream plugin was created by
 CampusPress, and upstream PR
 [#121](https://github.com/campuspress/divi-accessibility/pull/121) is now
 closed as historical takeover/adoption context.
@@ -17,7 +17,7 @@ Current fork releases are published at
 [RichardGeorgeDavis/divi-accessibility](https://github.com/RichardGeorgeDavis/divi-accessibility/releases).
 The WordPress.org listing for `accessible-divi` is closed by author request, so
 this fork should not be treated as an official WordPress.org continuation unless
-CampusPress or WordPress.org grants ownership or committer access.
+upstream or WordPress.org grants ownership or committer access.
 
 The plugin includes a native GitHub Releases updater for this maintained fork.
 Sites must install `2.1.1` or later once; after that, future stable fork
@@ -227,8 +227,6 @@ releases that do not include both matching assets.
 
 ## Credit
 
-Originally created by [CampusPress](https://campuspress.com). This maintained
-fork is currently maintained by
-[Richard George Davis](https://github.com/RichardGeorgeDavis) unless official
-project ownership or committer access is granted. Plugin icon based off of
+Maintained by [Richard George Davis](https://github.com/RichardGeorgeDavis).
+Original project by [CampusPress](https://campuspress.com). Plugin icon based off of
 [The Accessible Icon Project](http://accessibleicon.org/).
