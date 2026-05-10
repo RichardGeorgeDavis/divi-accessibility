@@ -417,7 +417,8 @@ jQuery(document).ready(function($) {
 		$(this).attr('aria-label', 'Wide Header' + e);
 	});
 	$('#comment-wrap').attr('aria-label', 'Comments');
-	$('#et_search_icon, .et_pb_menu__icon.et_pb_menu__search-button').attr('aria-label', labels.open_search);
+	$('#et_search_icon').attr('aria-label', labels.open_search);
+	$('.et_pb_menu__icon.et_pb_menu__search-button').attr('aria-label', labels.open_site_search || labels.open_search);
 	$('.et_close_search_field, .et_pb_menu__icon.et_pb_menu__close-search-button').attr('aria-label', labels.close_search);
 	$('.et-cart-info, .et_pb_menu__icon.et_pb_menu__cart-button').attr('aria-label', labels.view_cart);
 

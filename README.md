@@ -83,6 +83,15 @@ and footer landmarks. Only the content skip link is enabled by default for
 backward compatibility; navigation and footer links can be enabled and pointed at
 site-specific selectors from the plugin settings.
 
+## Release 2.1.6
+
+`2.1.6` follows up the Accessibility Helper and Image Helper release with
+builder-preview parity and migration hardening. It keeps D4-to-D5 Image Helper
+conversion mappings registered even when the feature is disabled, resolves Divi
+5 builder image metadata from the configured media/source mode where available,
+sanitizes builder-preview description HTML, and preserves the menu-specific
+search label.
+
 ## Release 2.1.5
 
 `2.1.5` ports the better Accessibility Helper behavior from Divi Assistant while
@@ -138,7 +147,7 @@ preserving Divi 4 compatibility. The branch now includes:
 
 The latest recorded manual browser integration evidence is from the `2.1.0`
 release line. No new Divi 4 or Divi 5 browser runtime pass has been recorded for
-`2.1.5` yet.
+`2.1.6` yet.
 
 + Divi Pixel `2.50.0` and `2.50.1`: alternate/mobile header hamburger behavior,
   menu open/close state, `aria-expanded` sync, and screen-reader isolation while

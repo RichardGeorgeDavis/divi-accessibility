@@ -11,6 +11,8 @@
 	};
 	var packageConfig = window.DiviAccessibilityD5ImageHelperConfigData || window.diviAccessibilityD5ImageHelperConfigData || {};
 	var helperLabels = window.diviAccessibilityImageHelperLabels || packageConfig.diviAccessibilityImageHelperLabels || {};
+	var imageMetadataTextSource = packageConfig.imageMetadataTextSource || 'module';
+	var imageMetadataByUrl = packageConfig.imageMetadataByUrl || {};
 
 	function label( key, fallback ) {
 		return helperLabels[ key ] || __( fallback, 'divi-accessibility' );
@@ -108,6 +110,12 @@
 		return String( value ).replace( /^\s+|\s+$/g, '' );
 	}
 
+	imageMetadataTextSource = trimString( imageMetadataTextSource ).toLowerCase();
+	if ( -1 === [ 'module', 'media_when_empty', 'media_override' ].indexOf( imageMetadataTextSource ) ) {
+		imageMetadataTextSource = 'module';
+	}
+	imageMetadataByUrl = ensureObject( imageMetadataByUrl );
+
 	function stripHtml( value ) {
 		var element;
 
@@ -119,6 +127,164 @@
 		element.innerHTML = trimString( value );
 
 		return element.textContent || element.innerText || '';
+	}
+
+	function isSafeUrlValue( value ) {
+		var index;
+		var rawValue = trimString( value );
+		var normalized = '';
+
+		for ( index = 0; index < rawValue.length; index++ ) {
+			if ( rawValue.charCodeAt( index ) > 32 && 127 !== rawValue.charCodeAt( index ) ) {
+				normalized += rawValue.charAt( index );
+			}
+		}
+
+		normalized = normalized.toLowerCase();
+
+		return normalized
+			&& 0 !== normalized.indexOf( 'javascript:' )
+			&& 0 !== normalized.indexOf( 'data:' )
+			&& 0 !== normalized.indexOf( 'vbscript:' );
+	}
+
+	function sanitizeDescriptionHtml( value ) {
+		var allowedTags = {
+			a: true,
+			b: true,
+			br: true,
+			div: true,
+			em: true,
+			i: true,
+			li: true,
+			ol: true,
+			p: true,
+			span: true,
+			strong: true,
+			u: true,
+			ul: true,
+		};
+		var allowedAttrs = {
+			a: [ 'href', 'rel', 'target', 'title' ],
+		};
+		var container;
+
+		if ( 'undefined' === typeof document ) {
+			return stripHtml( value );
+		}
+
+		function sanitizeNode( node ) {
+			var attributes;
+			var childNodes;
+			var tagName;
+
+			if ( 3 === node.nodeType ) {
+				return;
+			}
+
+			if ( 1 !== node.nodeType ) {
+				if ( node.parentNode ) {
+					node.parentNode.removeChild( node );
+				}
+				return;
+			}
+
+			tagName = node.nodeName.toLowerCase();
+
+			if ( ! allowedTags[ tagName ] ) {
+				if ( node.parentNode ) {
+					node.parentNode.replaceChild( document.createTextNode( node.textContent || '' ), node );
+				}
+				return;
+			}
+
+			attributes = Array.prototype.slice.call( node.attributes || [] );
+			attributes.forEach( function( attribute ) {
+				var attrName = attribute.name.toLowerCase();
+				var attrValue = attribute.value;
+				var tagAttrs = allowedAttrs[ tagName ] || [];
+
+				if ( 0 === attrName.indexOf( 'on' ) || -1 === tagAttrs.indexOf( attrName ) ) {
+					node.removeAttribute( attribute.name );
+					return;
+				}
+
+				if ( 'href' === attrName && ! isSafeUrlValue( attrValue ) ) {
+					node.removeAttribute( attribute.name );
+				}
+			} );
+
+			if ( 'a' === tagName && '_blank' === node.getAttribute( 'target' ) ) {
+				node.setAttribute( 'rel', 'noopener noreferrer' );
+			}
+
+			childNodes = Array.prototype.slice.call( node.childNodes || [] );
+			childNodes.forEach( sanitizeNode );
+		}
+
+		container = document.createElement( 'div' );
+		container.innerHTML = trimString( value );
+		Array.prototype.slice.call( container.childNodes || [] ).forEach( sanitizeNode );
+
+		return container.innerHTML;
+	}
+
+	function getImageSrc( attrs ) {
+		var value = getAttrValue( attrs, [ 'image', 'innerContent' ], {} );
+
+		if ( value && 'object' === typeof value ) {
+			value = value.src || value.url || '';
+		}
+
+		return trimString( value );
+	}
+
+	function getMediaMetadataForSrc( src ) {
+		var cleanSrc = trimString( src );
+		var key;
+		var keys;
+
+		if ( ! cleanSrc ) {
+			return {};
+		}
+
+		keys = [
+			cleanSrc,
+			cleanSrc.split( '?' )[0],
+		];
+
+		try {
+			keys.push( decodeURIComponent( cleanSrc ) );
+			keys.push( decodeURIComponent( cleanSrc.split( '?' )[0] ) );
+		} catch ( error ) {
+			if ( error ) {
+				keys.push( cleanSrc );
+			}
+			// Invalid encoded URLs should still fall back to the non-decoded keys above.
+		}
+
+		for ( key = 0; key < keys.length; key++ ) {
+			if ( imageMetadataByUrl[ keys[ key ] ] && 'object' === typeof imageMetadataByUrl[ keys[ key ] ] ) {
+				return imageMetadataByUrl[ keys[ key ] ];
+			}
+		}
+
+		return {};
+	}
+
+	function resolveImageMetadataText( moduleValue, mediaValue ) {
+		moduleValue = trimString( moduleValue );
+		mediaValue = trimString( mediaValue );
+
+		if ( 'media_override' === imageMetadataTextSource && mediaValue ) {
+			return mediaValue;
+		}
+
+		if ( 'media_when_empty' === imageMetadataTextSource && ! moduleValue && mediaValue ) {
+			return mediaValue;
+		}
+
+		return moduleValue;
 	}
 
 	function isEnabled( value ) {
@@ -150,10 +316,16 @@
 	}
 
 	function getImageHelperMetadata( attrs ) {
+		var imageSrc = getImageSrc( attrs );
+		var mediaMetadata = getMediaMetadataForSrc( imageSrc );
+		var titleText = trimString( getAttrValue( attrs, [ 'imageMetadata', 'innerContent', 'titleText' ], '' ) );
+		var captionText = trimString( getAttrValue( attrs, [ 'imageMetadata', 'innerContent', 'captionText' ], '' ) );
+		var descriptionText = trimString( getAttrValue( attrs, [ 'imageMetadata', 'innerContent', 'descriptionText' ], '' ) );
+
 		return {
-			titleText: trimString( getAttrValue( attrs, [ 'imageMetadata', 'innerContent', 'titleText' ], '' ) ),
-			captionText: trimString( getAttrValue( attrs, [ 'imageMetadata', 'innerContent', 'captionText' ], '' ) ),
-			descriptionText: trimString( getAttrValue( attrs, [ 'imageMetadata', 'innerContent', 'descriptionText' ], '' ) ),
+			titleText: resolveImageMetadataText( titleText, mediaMetadata.title ),
+			captionText: resolveImageMetadataText( captionText, mediaMetadata.caption ),
+			descriptionText: resolveImageMetadataText( descriptionText, mediaMetadata.description ),
 			titleHeading: normalizeHeadingLevel( getAttrValue( attrs, [ 'imageMetadata', 'decoration', 'titleFont', 'font' ], 'h2' ) ),
 			showTitle: isEnabled( getAttrValue( attrs, [ 'imageMetadata', 'advanced', 'showTitle' ], 'off' ) ),
 			showCaption: isEnabled( getAttrValue( attrs, [ 'imageMetadata', 'advanced', 'showCaption' ], 'off' ) ),
@@ -184,7 +356,7 @@
 				key: 'description',
 				className: 'et_pb_image_description',
 				dangerouslySetInnerHTML: {
-					__html: metadata.descriptionText,
+					__html: sanitizeDescriptionHtml( metadata.descriptionText ),
 				},
 			} ) );
 		}

@@ -2,10 +2,10 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Divi Accessibility 2.1.5\n"
+"Project-Id-Version: Divi Accessibility 2.1.6\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/divi-accessibility\n"
-"POT-Creation-Date: 2026-05-10 09:13:10+00:00\n"
+"POT-Creation-Date: 2026-05-10 10:04:42+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -513,147 +513,147 @@ msgstr ""
 msgid "Accessibility Settings"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:1080
+#: admin/class-divi-accessibility-admin.php:1082
 msgid "Image Text"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:1081
+#: admin/class-divi-accessibility-admin.php:1083
 msgid "Image Text Container"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:1082
+#: admin/class-divi-accessibility-admin.php:1084
 msgid "Image Text Title"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:1083
+#: admin/class-divi-accessibility-admin.php:1085
 msgid "Image Text Caption"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:1084
+#: admin/class-divi-accessibility-admin.php:1086
 msgid "Image Text Description"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:1085
+#: admin/class-divi-accessibility-admin.php:1087
 msgid "Image Aspect Ratio"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:1086
+#: admin/class-divi-accessibility-admin.php:1088
 msgid "Set a frontend aspect ratio for this image."
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:1087
+#: admin/class-divi-accessibility-admin.php:1089
 msgid "Original Image Ratio"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:1088
+#: admin/class-divi-accessibility-admin.php:1090
 msgid "Square 1:1"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:1089
+#: admin/class-divi-accessibility-admin.php:1091
 msgid "Landscape 16:9"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:1090
+#: admin/class-divi-accessibility-admin.php:1092
 msgid "Landscape 4:3"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:1091
+#: admin/class-divi-accessibility-admin.php:1093
 msgid "Landscape 3:2"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:1092
+#: admin/class-divi-accessibility-admin.php:1094
 msgid "Portrait 9:16"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:1093
+#: admin/class-divi-accessibility-admin.php:1095
 msgid "Portrait 3:4"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:1094
+#: admin/class-divi-accessibility-admin.php:1096
 msgid "Portrait 2:3"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:1095
+#: admin/class-divi-accessibility-admin.php:1097
 msgid "Image Title Text"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:1096
+#: admin/class-divi-accessibility-admin.php:1098
 msgid "Visible title text to display with the image."
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:1097
+#: admin/class-divi-accessibility-admin.php:1099
 msgid "Image Caption Text"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:1098
+#: admin/class-divi-accessibility-admin.php:1100
 msgid "Visible caption text to display with the image."
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:1099
+#: admin/class-divi-accessibility-admin.php:1101
 msgid "Image Description Text"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:1100
+#: admin/class-divi-accessibility-admin.php:1102
 msgid "Visible description text to display with the image."
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:1101
+#: admin/class-divi-accessibility-admin.php:1103
 msgid "Show Image Title"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:1102
+#: admin/class-divi-accessibility-admin.php:1104
 msgid "Display the image title text on the frontend."
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:1103
+#: admin/class-divi-accessibility-admin.php:1105
 msgid "Show Image Caption"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:1104
+#: admin/class-divi-accessibility-admin.php:1106
 msgid "Display the image caption text on the frontend."
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:1105
+#: admin/class-divi-accessibility-admin.php:1107
 msgid "Show Image Description"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:1106
+#: admin/class-divi-accessibility-admin.php:1108
 msgid "Display the image description text on the frontend."
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:1107
+#: admin/class-divi-accessibility-admin.php:1109
 msgid "Use Text Overlay"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:1108
+#: admin/class-divi-accessibility-admin.php:1110
 msgid "Position image text over the image."
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:1109
+#: admin/class-divi-accessibility-admin.php:1111
 msgid "Image Text Container Background"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:1110
+#: admin/class-divi-accessibility-admin.php:1112
 msgid "Image Text Container Spacing"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:1111
+#: admin/class-divi-accessibility-admin.php:1113
 msgid "Image Text Container Border"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:1112
+#: admin/class-divi-accessibility-admin.php:1114
 msgid "Image Text Container Shadow"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:1113
+#: admin/class-divi-accessibility-admin.php:1115
 msgid "Title"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:1114
+#: admin/class-divi-accessibility-admin.php:1116
 msgid "Caption"
 msgstr ""
 
-#: admin/class-divi-accessibility-admin.php:1115
+#: admin/class-divi-accessibility-admin.php:1117
 msgid "Description Font"
 msgstr ""
 

@@ -1061,6 +1061,8 @@ class Divi_Accessibility_Admin {
 					'enqueue_app_window' => true,
 					'data_app_window'    => array(
 						'diviAccessibilityImageHelperLabels' => $this->get_divi_5_image_helper_labels(),
+						'imageMetadataTextSource'            => sanitize_key( $settings['image_metadata_text_source'] ),
+						'imageMetadataByUrl'                 => $this->get_divi_5_image_helper_media_metadata_map(),
 					),
 					'args'               => array(
 						'in_footer' => false,
@@ -1117,6 +1119,147 @@ class Divi_Accessibility_Admin {
 	}
 
 	/**
+	 * Return the post ID currently being edited in the Divi 5 Visual Builder.
+	 *
+	 * @return int
+	 */
+	private function get_divi_5_image_helper_post_id() {
+		$request_keys = array( 'post', 'p', 'page_id', 'post_id', 'et_post_id', 'et_fb_post_id' );
+		$post_id = get_the_ID();
+
+		foreach ( $request_keys as $request_key ) {
+			if ( $post_id || ! isset( $_GET[ $request_key ] ) || ! is_scalar( $_GET[ $request_key ] ) ) {
+				continue;
+			}
+
+			$post_id = absint( wp_unslash( $_GET[ $request_key ] ) );
+		}
+
+		return $post_id ? (int) $post_id : 0;
+	}
+
+	/**
+	 * Return the best known attachment ID for an image URL.
+	 *
+	 * @param string $url Image URL.
+	 * @return int
+	 */
+	private function get_divi_5_image_helper_attachment_id_by_url( $url ) {
+		global $wpdb;
+
+		if ( ! is_string( $url ) || '' === trim( $url ) ) {
+			return 0;
+		}
+
+		$image_url     = preg_replace( '/-(\d+)x(\d+)\./', '.', strtok( $url, '?' ) );
+		$attachment_id = (int) attachment_url_to_postid( $image_url );
+
+		if ( ! $attachment_id ) {
+			$parsed_url = wp_parse_url( $image_url );
+			$path       = is_array( $parsed_url ) && ! empty( $parsed_url['path'] ) ? $parsed_url['path'] : '';
+			$filename   = pathinfo( trim( $path, '/' ), PATHINFO_FILENAME );
+
+			if ( preg_match( '/%[0-9A-Fa-f]{2}/', $filename ) ) {
+				$filename = urldecode( $filename );
+			}
+
+			$filename = sanitize_file_name( $filename );
+
+			if ( '' !== $filename ) {
+				$results = $wpdb->get_results(
+					$wpdb->prepare(
+						"SELECT pm.post_id, pm.meta_value
+						FROM $wpdb->postmeta pm
+						INNER JOIN $wpdb->posts p ON pm.post_id = p.ID
+						WHERE pm.meta_key = '_wp_attached_file'
+						AND pm.meta_value LIKE %s
+						AND p.post_type = 'attachment'
+						AND p.post_status = 'inherit'",
+						'%' . $wpdb->esc_like( $filename ) . '%'
+					)
+				);
+
+				if ( ! empty( $results ) ) {
+					foreach ( $results as $result ) {
+						if ( strtolower( pathinfo( $result->meta_value, PATHINFO_FILENAME ) ) === strtolower( $filename ) ) {
+							$attachment_id = (int) $result->post_id;
+							break;
+						}
+					}
+				}
+			}
+		}
+
+		if ( $attachment_id && function_exists( 'pll_get_post' ) && function_exists( 'pll_current_language' ) ) {
+			$translation_id = pll_get_post( $attachment_id, pll_current_language() );
+			if ( $translation_id ) {
+				$attachment_id = (int) $translation_id;
+			}
+		}
+
+		if ( $attachment_id && class_exists( 'sitepress' ) ) {
+			$attachment_id = (int) apply_filters( 'wpml_object_id', $attachment_id, 'attachment', true );
+		}
+
+		return $attachment_id;
+	}
+
+	/**
+	 * Return safe Media Library metadata for the Divi 5 Image Helper builder preview.
+	 *
+	 * @return array
+	 */
+	private function get_divi_5_image_helper_media_metadata_map() {
+		$post_id = $this->get_divi_5_image_helper_post_id();
+
+		if ( ! $post_id ) {
+			return array();
+		}
+
+		$content = get_post_field( 'post_content', $post_id );
+
+		if ( ! is_string( $content ) || '' === $content ) {
+			return array();
+		}
+
+		$content = html_entity_decode( str_replace( '\\/', '/', $content ), ENT_QUOTES, get_bloginfo( 'charset' ) );
+
+		if ( ! preg_match_all( '#https?://[^"\'\s\]]+\.(?:avif|gif|jpe?g|png|svg|webp)(?:\?[^"\'\s\]]*)?#i', $content, $matches ) ) {
+			return array();
+		}
+
+		$metadata_by_url = array();
+		$image_urls      = array_slice( array_unique( $matches[0] ), 0, 80 );
+
+		foreach ( $image_urls as $image_url ) {
+			$image_url     = esc_url_raw( $image_url );
+			$attachment_id = $this->get_divi_5_image_helper_attachment_id_by_url( $image_url );
+
+			if ( ! $attachment_id ) {
+				continue;
+			}
+
+			$post = get_post( $attachment_id );
+
+			if ( ! $post || 'attachment' !== $post->post_type ) {
+				continue;
+			}
+
+			$data = array(
+				'title'       => sanitize_text_field( $post->post_title ),
+				'caption'     => sanitize_text_field( $post->post_excerpt ),
+				'description' => wp_kses_post( $post->post_content ),
+			);
+
+			foreach ( array_filter( array_unique( array( $image_url, strtok( $image_url, '?' ), wp_get_attachment_url( $attachment_id ) ) ) ) as $metadata_url ) {
+				$metadata_by_url[ esc_url_raw( $metadata_url ) ] = $data;
+			}
+		}
+
+		return $metadata_by_url;
+	}
+
+	/**
 	 * Register D4 to D5 conversion mapping for accessibility module settings.
 	 *
 	 * @param array $conversion_map Existing conversion map.
@@ -1127,12 +1270,7 @@ class Divi_Accessibility_Admin {
 			return $conversion_map;
 		}
 
-		$core_modules         = \ET\Builder\Packages\ModuleLibrary\ModuleRegistration::get_all_core_modules_metadata();
-		$settings             = array_merge(
-			self::get_options_list(),
-			is_array( $this->settings ) ? $this->settings : array()
-		);
-		$image_helper_enabled = 1 === (int) $settings['image_helper_module_fields'];
+		$core_modules  = \ET\Builder\Packages\ModuleLibrary\ModuleRegistration::get_all_core_modules_metadata();
 		$attribute_map = array(
 			'hide_aria_element'            => 'accessibility.advanced.hideAriaElement.*',
 			'show_for_screen_readers_only' => 'accessibility.advanced.showForScreenReadersOnly.*',
@@ -1161,68 +1299,66 @@ class Divi_Accessibility_Admin {
 			$conversion_map[ $module_slug ] = $module_conversion_map;
 		}
 
-		if ( $image_helper_enabled ) {
-			$image_attribute_map = array(
-				'image_aspect_ratio'        => 'image.innerContent.*.aspectRatio',
-				'enable_title_text'         => 'imageMetadata.advanced.showTitle.*',
-				'enable_caption_text'       => 'imageMetadata.advanced.showCaption.*',
-				'enable_description_text'   => 'imageMetadata.advanced.showDescription.*',
-				'title_text'                => 'imageMetadata.innerContent.titleText.*',
-				'caption_text'              => 'imageMetadata.innerContent.captionText.*',
-				'description_text'          => 'imageMetadata.innerContent.descriptionText.*',
-				'use_text_overlay'          => 'imageMetadata.decoration.showImageMetaAsOverlay.*',
-				'image_details_background'  => 'imageMetadata.decoration.containerBackground.*.color',
-				'image_details_margin'      => 'imageMetadata.decoration.containerSpacing.*.margin',
-				'image_details_padding'     => 'imageMetadata.decoration.containerSpacing.*.padding',
-				'image_details_border'      => 'imageMetadata.decoration.containerBorder.*',
-				'image_details_border_color' => 'imageMetadata.decoration.containerBorder.*.styles.all.color',
-				'image_details_border_width' => 'imageMetadata.decoration.containerBorder.*.styles.all.width',
-				'image_details_border_style' => 'imageMetadata.decoration.containerBorder.*.styles.all.style',
-				'image_title_font'          => 'imageMetadata.decoration.titleFont.font.*',
-				'image_title_level'         => 'imageMetadata.decoration.titleFont.font.*.headingLevel',
-				'image_title_color'         => 'imageMetadata.decoration.titleFont.font.*.color',
-				'image_title_size'          => 'imageMetadata.decoration.titleFont.font.*.size',
-				'image_title_letterspace'   => 'imageMetadata.decoration.titleFont.font.*.letterSpacing',
-				'image_title_lineheight'    => 'imageMetadata.decoration.titleFont.font.*.lineHeight',
-				'image_title_alignment'     => 'imageMetadata.decoration.titleFont.font.*.textAlign',
-				'image_caption_font'        => 'imageMetadata.decoration.captionFont.font.*',
-				'image_caption_color'       => 'imageMetadata.decoration.captionFont.font.*.color',
-				'image_caption_size'        => 'imageMetadata.decoration.captionFont.font.*.size',
-				'image_caption_letterspace' => 'imageMetadata.decoration.captionFont.font.*.letterSpacing',
-				'image_caption_lineheight'  => 'imageMetadata.decoration.captionFont.font.*.lineHeight',
-				'image_caption_alignment'   => 'imageMetadata.decoration.captionFont.font.*.textAlign',
-				'image_description_font'    => 'imageMetadata.decoration.descriptionFont.body.font.*',
-				'image_description_color'   => 'imageMetadata.decoration.descriptionFont.body.font.*.color',
-				'image_description_size'    => 'imageMetadata.decoration.descriptionFont.body.font.*.size',
-				'image_description_letterspace' => 'imageMetadata.decoration.descriptionFont.body.font.*.letterSpacing',
-				'image_description_lineheight' => 'imageMetadata.decoration.descriptionFont.body.font.*.lineHeight',
-				'image_description_alignment' => 'imageMetadata.decoration.descriptionFont.body.font.*.textAlign',
-			);
-			$image_module_map = isset( $conversion_map['et_pb_image'] ) && is_array( $conversion_map['et_pb_image'] )
-				? $conversion_map['et_pb_image']
-				: array();
+		$image_attribute_map = array(
+			'image_aspect_ratio'             => 'image.innerContent.*.aspectRatio',
+			'enable_title_text'              => 'imageMetadata.advanced.showTitle.*',
+			'enable_caption_text'            => 'imageMetadata.advanced.showCaption.*',
+			'enable_description_text'        => 'imageMetadata.advanced.showDescription.*',
+			'title_text'                     => 'imageMetadata.innerContent.titleText.*',
+			'caption_text'                   => 'imageMetadata.innerContent.captionText.*',
+			'description_text'               => 'imageMetadata.innerContent.descriptionText.*',
+			'use_text_overlay'               => 'imageMetadata.decoration.showImageMetaAsOverlay.*',
+			'image_details_background'       => 'imageMetadata.decoration.containerBackground.*.color',
+			'image_details_margin'           => 'imageMetadata.decoration.containerSpacing.*.margin',
+			'image_details_padding'          => 'imageMetadata.decoration.containerSpacing.*.padding',
+			'image_details_border'           => 'imageMetadata.decoration.containerBorder.*',
+			'image_details_border_color'     => 'imageMetadata.decoration.containerBorder.*.styles.all.color',
+			'image_details_border_width'     => 'imageMetadata.decoration.containerBorder.*.styles.all.width',
+			'image_details_border_style'     => 'imageMetadata.decoration.containerBorder.*.styles.all.style',
+			'image_title_font'               => 'imageMetadata.decoration.titleFont.font.*',
+			'image_title_level'              => 'imageMetadata.decoration.titleFont.font.*.headingLevel',
+			'image_title_color'              => 'imageMetadata.decoration.titleFont.font.*.color',
+			'image_title_size'               => 'imageMetadata.decoration.titleFont.font.*.size',
+			'image_title_letterspace'        => 'imageMetadata.decoration.titleFont.font.*.letterSpacing',
+			'image_title_lineheight'         => 'imageMetadata.decoration.titleFont.font.*.lineHeight',
+			'image_title_alignment'          => 'imageMetadata.decoration.titleFont.font.*.textAlign',
+			'image_caption_font'             => 'imageMetadata.decoration.captionFont.font.*',
+			'image_caption_color'            => 'imageMetadata.decoration.captionFont.font.*.color',
+			'image_caption_size'             => 'imageMetadata.decoration.captionFont.font.*.size',
+			'image_caption_letterspace'      => 'imageMetadata.decoration.captionFont.font.*.letterSpacing',
+			'image_caption_lineheight'       => 'imageMetadata.decoration.captionFont.font.*.lineHeight',
+			'image_caption_alignment'        => 'imageMetadata.decoration.captionFont.font.*.textAlign',
+			'image_description_font'         => 'imageMetadata.decoration.descriptionFont.body.font.*',
+			'image_description_color'        => 'imageMetadata.decoration.descriptionFont.body.font.*.color',
+			'image_description_size'         => 'imageMetadata.decoration.descriptionFont.body.font.*.size',
+			'image_description_letterspace'  => 'imageMetadata.decoration.descriptionFont.body.font.*.letterSpacing',
+			'image_description_lineheight'   => 'imageMetadata.decoration.descriptionFont.body.font.*.lineHeight',
+			'image_description_alignment'    => 'imageMetadata.decoration.descriptionFont.body.font.*.textAlign',
+		);
+		$image_module_map = isset( $conversion_map['et_pb_image'] ) && is_array( $conversion_map['et_pb_image'] )
+			? $conversion_map['et_pb_image']
+			: array();
 
-			$image_module_map['attributeMap'] = array_merge(
-				isset( $image_module_map['attributeMap'] ) && is_array( $image_module_map['attributeMap'] )
-					? $image_module_map['attributeMap']
-					: array(),
-				$image_attribute_map
-			);
-			$image_module_map['valueExpansionFunctionMap'] = array_merge(
-				isset( $image_module_map['valueExpansionFunctionMap'] ) && is_array( $image_module_map['valueExpansionFunctionMap'] )
-					? $image_module_map['valueExpansionFunctionMap']
-					: array(),
-				array(
-					'image_title_font'       => array( $this, 'convert_divi_5_image_helper_font' ),
-					'image_caption_font'     => array( $this, 'convert_divi_5_image_helper_font' ),
-					'image_description_font' => array( $this, 'convert_divi_5_image_helper_font' ),
-					'image_details_margin'   => array( $this, 'convert_divi_5_image_helper_spacing' ),
-					'image_details_padding'  => array( $this, 'convert_divi_5_image_helper_spacing' ),
-					'image_details_border'   => array( $this, 'convert_divi_5_image_helper_border' ),
-				)
-			);
-			$conversion_map['et_pb_image'] = $image_module_map;
-		}
+		$image_module_map['attributeMap'] = array_merge(
+			isset( $image_module_map['attributeMap'] ) && is_array( $image_module_map['attributeMap'] )
+				? $image_module_map['attributeMap']
+				: array(),
+			$image_attribute_map
+		);
+		$image_module_map['valueExpansionFunctionMap'] = array_merge(
+			isset( $image_module_map['valueExpansionFunctionMap'] ) && is_array( $image_module_map['valueExpansionFunctionMap'] )
+				? $image_module_map['valueExpansionFunctionMap']
+				: array(),
+			array(
+				'image_title_font'       => array( $this, 'convert_divi_5_image_helper_font' ),
+				'image_caption_font'     => array( $this, 'convert_divi_5_image_helper_font' ),
+				'image_description_font' => array( $this, 'convert_divi_5_image_helper_font' ),
+				'image_details_margin'   => array( $this, 'convert_divi_5_image_helper_spacing' ),
+				'image_details_padding'  => array( $this, 'convert_divi_5_image_helper_spacing' ),
+				'image_details_border'   => array( $this, 'convert_divi_5_image_helper_border' ),
+			)
+		);
+		$conversion_map['et_pb_image'] = $image_module_map;
 
 		return $conversion_map;
 	}

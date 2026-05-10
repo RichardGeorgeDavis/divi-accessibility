@@ -3,7 +3,7 @@ Contributors: campuspress, JoeFusco, alexstine, vebailovity
 Tags: divi, accessibility, accessible, navigation, wcag, a11y, section508, focus, labels, aria
 Requires at least: 6.0
 Tested up to: 6.9.4
-Stable tag: 2.1.5
+Stable tag: 2.1.6
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
@@ -87,7 +87,7 @@ Support the work:
 = Last Recorded Runtime-Tested Integrations =
 
 The latest recorded manual browser integration evidence is from version 2.1.0.
-No new Divi 4 or Divi 5 browser runtime pass has been recorded for 2.1.5 yet.
+No new Divi 4 or Divi 5 browser runtime pass has been recorded for 2.1.6 yet.
 
 * Divi Pixel 2.50.0 and 2.50.1: alternate/mobile header hamburger behavior,
   menu open/close state, aria-expanded sync, and screen-reader isolation while
@@ -154,6 +154,14 @@ are ignored.
 
 
 == Changelog ==
+
+= 2.1.6 =
+* Kept D4-to-D5 Image Helper conversion mappings registered even when the Image
+  Helper module fields option is disabled.
+* Improved Divi 5 builder preview parity for Image Helper media metadata source
+  modes.
+* Sanitized Image Helper description HTML in the Divi 5 builder preview.
+* Preserved the menu-specific search icon label when broader ARIA support runs.
 
 = 2.1.5 =
 * Added feature-gated Image Helper support for Divi 5 Image modules, including
