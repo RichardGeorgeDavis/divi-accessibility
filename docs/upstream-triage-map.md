@@ -6,10 +6,44 @@ Status checked: 2026-05-10
 
 - Do not clone all upstream issues into the fork.
 - Treat upstream PR `#121` as historical takeover-compatible context for the `2.1.0` release; it was closed by the 2026-05-10 status check.
-- Use this map to decide what is fixed, what needs reporter validation, what stays backlog, and what should not be folded into `2.1.0`.
+- Use the post-`2.1.7` queue below for current reporter-validation priorities.
+- Keep the older `2.1.0` closeout sections as historical evidence only.
 - Leave upstream issues open unless maintainer permissions are granted.
 
-## Runtime-Tested Plugin Evidence
+## Current Maintained-Fork Evidence
+
+- Current maintained-fork release: `2.1.7`
+- Release URL: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/2.1.7>
+- Release commit: `d2bddd36a5511bf14c20e3d24b38ae3f0e6193ba`
+- GitHub Actions run for the release commit: pass, <https://github.com/RichardGeorgeDavis/divi-accessibility/actions/runs/25629974111>
+- Release assets verified on 2026-05-10: `divi-accessibility-2.1.7.zip` and `divi-accessibility-2.1.7.zip.sha256`
+- Verified package SHA-256: `6819326003004c5210956b3e475bbd1e27940b8c8c7f5a0416c8c9458aa9fada`
+- Packaged-plugin smoke passed on WordPress `6.9.4`, PHP `8.5.3`, Divi `4.27.6` (`blueprint`) and Divi `5.4.1` (`master-licenses`).
+- Manual module matrix passed on WordPress `6.9.4`, PHP `8.5.3`, Divi `4.27.6` (`blueprint`) and Divi `5.3.3` (`tester`) in Chrome through Playwright MCP.
+- Fork issues are disabled, so upstream issues remain the public backlog reference.
+- Do not claim full WCAG conformance from these checks.
+
+## Post-`2.1.7` Triage Queue
+
+All listed upstream issues were still open when rechecked on 2026-05-10.
+
+| Item | Current disposition | Evidence / next action |
+| --- | --- | --- |
+| `#122` DIVI accessibility plugin does not work | Needs reporter validation. | `2.1.7` install/activate/deactivate/reactivate and frontend payload checks pass on local Divi 4 and Divi 5 sites. Ask the reporter to retest the exact affected header/site with the packaged `2.1.7` release. |
+| `#96` Divi 5? | Closure candidate after reporter/maintainer review. | Divi 5 packaged smoke passed on `master-licenses` with Divi `5.4.1`; Divi 5 D4-style module matrix passed on `tester` with Divi `5.3.3`. |
+| `#91` Mobile submenu expanded state | Probably fixed; needs original-header validation. | Mobile menu role/name/state passed on Divi 4 and Divi 5. Third-party/custom headers can still vary, so keep open until the original header path is retested. |
+| `#90` Undefined `$tota11y` warning | Closure candidate. | Current smoke did not record `divi-accessibility` PHP warnings or fatals; the initialization fix is already in the maintained release line. |
+| `#88` Hide from Screen Readers toggle not working | Needs builder-persistence or reporter validation before closure. | Runtime matrix confirms frontend module enhancements, but this specific issue is about Divi builder setting persistence and should not be closed from frontend-only checks. |
+| `#81` Social media links ADA issues | Needs focused social-module validation. | Social Media Follow links had accessible names in the `2.1.7` matrix, but the generated wording depends on module configuration and should be checked against the reporter's case. |
+| `#73` ESC focus return after closing mobile menu | Backlog until exact keyboard path is retested. | Mobile menu state smoke passed, but ESC focus return on the original mobile header was not separately reproduced. |
+| `#72` Submenu focus after ESC close | Backlog until exact keyboard path is retested. | Submenu focus handling is related to the mobile/header work, but reverse-tab and closed-submenu focus paths still need targeted validation. |
+| `#69` Theme Builder menu search naming | Needs Theme Builder variant validation. | Search form/close control naming and cart naming passed in `2.1.7` smoke, but alternate Theme Builder headers remain site-specific. |
+| `#60` Contact checkbox keyboard support | Closure candidate after reporter/maintainer review. | Divi 4 and Divi 5 matrix pages confirmed checkbox labels expose `role="checkbox"`, are focusable, and Space toggles both input checked state and `aria-checked`. |
+| `#52` Remove `role="link"` from anchor tags | Backlog. | Behavior-changing cleanup. Do not fold into a patch unless a concrete regression is reproduced and scoped. |
+
+No upstream comments were posted during the 2026-05-10 AFK validation batch.
+
+## Historical Runtime-Tested Plugin Evidence
 
 The third-party plugin list is evidence for compatibility triage only. Do not describe inactive or absent plugins as tested.
 
@@ -21,9 +55,11 @@ The third-party plugin list is evidence for compatibility triage only. Do not de
 | DiviMenus, DiviMenus On Media, DiviMenus Sharing, DonDivi Builder | Installed but inactive on local Divi Pixel test site B | Do not claim tested. Keep menu/mega-menu reports such as `#53`, `#56`, and `#31` open until active runtime pages exist. |
 | Advanced Toggle Module for Divi, Divi Assistant, Divi Modules Table Maker | Not installed on the checked sites | Do not claim tested. Add to follow-up compatibility backlog only if a page/site is provided. |
 
-## Final 2.1.0 Issue Closeout Queue
+## Historical Final 2.1.0 Issue Closeout Queue
 
-These are the safest immediate issue actions after the latest runtime checks:
+The recommendations below are preserved from the prior `2.1.0` handoff. Use the post-`2.1.7` queue above when the two sections conflict.
+
+These were the safest immediate issue actions after the `2.1.0` runtime checks:
 
 | Item | Recommended action | Rationale |
 | --- | --- | --- |
@@ -124,6 +160,6 @@ These are valid follow-up candidates but should not block the compatibility rele
 
 ## Next Triage Actions
 
-- Link this map from release handover and adoption package.
-- Ask maintainers to use this map when deciding which old issues/PRs are superseded by `#121`.
-- After final runtime gates pass, post a concise upstream summary listing closure candidates rather than commenting on every old issue.
+- Use the post-`2.1.7` queue as the working backlog reference.
+- Ask reporters or maintainers to validate closure candidates against the packaged `2.1.7` release before closing old upstream issues.
+- Open `2.1.8` code work only for reproducible failures against `2.1.7`; otherwise keep the next batch to documentation evidence and backlog prioritization.

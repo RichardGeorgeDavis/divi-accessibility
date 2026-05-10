@@ -2,20 +2,22 @@
 
 ## Current 2.1.7 State
 
-- Current maintained-fork release target: `2.1.7`
-- Current published maintained-fork release before this batch: `2.1.6`
-- Current release URL before this batch: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/2.1.6>
+- Current maintained-fork release: `2.1.7`
+- Published release URL: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/2.1.7>
+- Release commit: `d2bddd36a5511bf14c20e3d24b38ae3f0e6193ba`
 - `2.1.7` hardens the GitHub Releases updater by requiring exact zip and `.zip.sha256` assets, verifying update downloads before install, preserving saved settings while merging new defaults, fixing packaged translation loading, and documenting stale-status cleanup.
-- The published `2.1.6` release has the packaged zip asset only. Checksum assets are required for updater-compatible releases starting with `2.1.7`.
-- The latest recorded full manual browser integration evidence remains from the `2.1.0` release line; use `docs/testing/manual-accessibility-checklist.md` before updating runtime-tested claims.
+- The published `2.1.7` release has both `divi-accessibility-2.1.7.zip` and `divi-accessibility-2.1.7.zip.sha256`; the verified package SHA-256 is `6819326003004c5210956b3e475bbd1e27940b8c8c7f5a0416c8c9458aa9fada`.
+- The historical `2.1.6` release has the packaged zip asset only. Checksum assets are required for updater-compatible releases starting with `2.1.7`.
+- Packaged `2.1.7` local smoke passed on `blueprint` with Divi `4.27.6` and `master-licenses` with Divi `5.4.1`.
+- The focused manual module matrix for `2.1.7` passed on `blueprint` with Divi `4.27.6` and on `tester` with Divi `5.3.3`; see `docs/afk-batch-2026-05-10.md` and `docs/module-support-matrix.md`.
 
 ## Current Next Actions
 
-- Publish `2.1.7` with both `divi-accessibility-2.1.7.zip` and `divi-accessibility-2.1.7.zip.sha256` assets.
-- Run the manual checklist against `2.1.7` on Divi 4 and Divi 5 test sites before changing runtime-tested claims.
-- Update `docs/module-support-matrix.md` with exact Divi, WordPress, PHP, browser, WooCommerce, and Divi Pixel versions only after completing those checks.
-- Triage any reporter feedback against the current maintained-fork release first, then open focused follow-up work only when the original repro still fails.
-- Monitor CI on `origin/master` and keep `npm run release:check` green before the next release.
+- Triage upstream reporter feedback against `2.1.7` first, then open focused follow-up work only when the original reproduction still fails on the packaged zip.
+- Use `2.1.8` only for reproducible runtime defects or release-significant documentation/assets. No `2.1.8` code branch is needed from the 2026-05-10 packaged-plugin smoke.
+- Keep manual evidence dated and versioned. Do not broaden runtime-tested claims from static checks, package checks, or stale release notes.
+- Keep stale cached worktrees and unmerged local branches untouched until each has an explicit cleanup disposition.
+- Keep `npm run release:check` green before the next release.
 - Continue the official-access track with CampusPress/WordPress.org while treating the fork release as the practical user install path.
 
 ## Historical 2.1.3 Notes
@@ -99,8 +101,8 @@ The sections below preserve the `2.1.0` release and upstream PR history. They ar
     - POT generation excludes `ref/`
     - release command path works end-to-end
     - package output moved to `packaged/`
-- Pending:
-  - apply findings from fresh manual WordPress/Divi runtime verification.
+  - packaged `2.1.7` runtime smoke completed on local Divi 4 and Divi 5 sites
+  - focused `2.1.7` manual module matrix completed on local Divi 4 and Divi 5 sites
 
 ## Phase 3: Quick Wins
 
@@ -135,9 +137,9 @@ The sections below preserve the `2.1.0` release and upstream PR history. They ar
 
 - Current upstream PR: `#121` is closed
 - Upstream PR head at 2026-04-24 status check: `75003ef`
-- Current maintained-fork release target: `2.1.7`
+- Current maintained-fork release: `2.1.7`
 - Historical `2.1.0` RC builds are superseded.
 - Immediate handover action:
-  - run the manual accessibility checklist on Divi 4 and Divi 5 for the current release
-  - update the support matrix with exact tested versions
+  - use the dated `2.1.7` runtime evidence in `docs/afk-batch-2026-05-10.md` and `docs/module-support-matrix.md`
+  - open follow-up code work only for reproducible defects against the packaged `2.1.7` zip
   - keep the official-access history available without treating old upstream PR state as current
