@@ -9,7 +9,8 @@ enabled and populated.
 - `CONTRIBUTING.md`: contribution workflow and local development commands.
 - `SECURITY.md`: private vulnerability reporting policy.
 - `SUPPORT.md`: question and bug-report guidance.
-- `docs/release-2.1.0-handover.md`: maintained-fork release handover state, updated through `2.1.3`.
+- `docs/roadmap-next-actions.md`: current maintained-fork release state and next actions.
+- `docs/release-2.1.0-handover.md`: historical release handover state.
 - `docs/module-support-matrix.md`: module support evidence and known limitations.
 - `docs/testing/manual-accessibility-checklist.md`: current manual runtime checklist.
 - `docs/upstream-triage-map.md`: upstream issue and pull-request triage map.

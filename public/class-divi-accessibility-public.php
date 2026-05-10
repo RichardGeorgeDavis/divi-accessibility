@@ -116,7 +116,10 @@ class Divi_Accessibility_Public {
 			$this->add_resource( 'divi-accessibility-da11y', $name, self::TYPE_JS );
 		}
 
-		$root_style = reset( wp_styles()->queue );
+		$root_style = 'divi-accessibility-da11y-styles';
+		wp_register_style( $root_style, false, array(), $this->version );
+		wp_enqueue_style( $root_style );
+
 		foreach ( $this->get_style_resources() as $name ) {
 			$this->add_resource( $root_style, $name, self::TYPE_CSS );
 		}
@@ -488,7 +491,7 @@ class Divi_Accessibility_Public {
 
 		$can_load = false;
 
-		$settings = $this->settings;
+		$settings = $this->get_settings_with_defaults();
 
 		if ( isset( $settings[ $option ] ) && 1 == $settings[ $option ] ) {
 			$can_load = true;

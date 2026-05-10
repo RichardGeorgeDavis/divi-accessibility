@@ -1,6 +1,6 @@
 # Historical Release 2.1.0 Checklist
 
-This checklist records the final `2.1.0` upstream-ready compatibility release. It is historical and should not be used as the current maintained-fork release checklist. For current manual checks, use `docs/testing/manual-accessibility-checklist.md`; the current maintained-fork release is `2.1.3`.
+This checklist records the final `2.1.0` upstream-ready compatibility release. It is historical and should not be used as the current maintained-fork release checklist. For current manual checks, use `docs/testing/manual-accessibility-checklist.md` and `docs/roadmap-next-actions.md`.
 
 ## Current Verification Status
 
@@ -53,7 +53,7 @@ This checklist records the final `2.1.0` upstream-ready compatibility release. I
 ## Remaining Follow-Up
 
 - Continue reporter validation for search/cart controls on alternate header/menu configurations.
-- Upstream PR `#121` remains the canonical CampusPress merge path for the historical `2.1.0` compatibility work.
+- Upstream PR `#121` is historical context for the `2.1.0` compatibility work.
 - Ask maintainers to close upstream issues `#90`, `#96`, and `#88` after reviewing the fixes linked from `#121`.
 - For new release validation, test the current maintained-fork package, not the historical `2.1.0` package.
 

@@ -2,14 +2,13 @@
 
 ## Current Status
 
-- Date checked: 2026-04-24
+- Date checked: 2026-05-10
 - Upstream repository: <https://github.com/campuspress/divi-accessibility>
-- Upstream ready-for-review PR: <https://github.com/campuspress/divi-accessibility/pull/121>
+- Historical upstream PR: <https://github.com/campuspress/divi-accessibility/pull/121>
 - WordPress.org plugin page: <https://wordpress.org/plugins/accessible-divi/>
 - CampusPress public contact page: <https://campuspress.com/contact-us/>
 - CampusPress public contact email: `contact@campuspress.com`
-- Current fork release: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/2.1.0>
-- Current fork package SHA-256: `69c25e3bbda5d033dacda63ae4814c263c2afa4583be5ac5635caef36109faef`
+- Current maintained-fork release state: see `docs/roadmap-next-actions.md`
 - Upstream issue/PR triage map: `docs/upstream-triage-map.md`
 - WordPress.org status: closed as of 2020-05-12, unavailable for download, closure reason `Author Request`
 - Current strategy: dual track
@@ -26,12 +25,10 @@
 
 ## Current Upstream Activity
 
-- `#121` is open, ready for review, mergeable, and clean.
-- There are no reviews, no assignees, and no requested reviewers on `#121`.
+- `#121` is closed as of the 2026-05-10 status check.
 - The maintainer follow-up comment was posted on 2026-04-16:
   - <https://github.com/campuspress/divi-accessibility/pull/121#issuecomment-4259477492>
-- As of 2026-04-24, there has been no maintainer response to that follow-up.
-- `#122` was opened on 2026-04-14 and has no maintainer response.
+- `#122` remains open as of the 2026-05-10 status check.
 
 ## Official Adoption Process Notes
 
@@ -63,6 +60,7 @@ Important constraint:
 | 2026-04-24 | LocalWP/browser verification | `#122` | Reproduced and fixed Divi 5 submenu focus state mismatch; rebuilt package as RC3 candidate. |
 | 2026-04-24 | LocalWP/browser verification | `divi-draft` module page | Reproduced and fixed tabs panel `aria-hidden` mismatch; rebuilt package as RC4 candidate. |
 | 2026-04-24 | Release metadata | maintained fork | Preserved CampusPress creator credit, added current fork maintainer language, normalized GPL-compatible metadata, and documented issue/PR triage map. |
+| 2026-05-10 | GitHub status check | `#121`, `#122` | `#121` was closed; `#122` remained open. |
 | TBD | Direct contact | `contact@campuspress.com` / CampusPress contact page | Request GitHub maintainer access or WordPress.org transfer. |
 | TBD | Email | `plugins@wordpress.org` | Submit adoption request if direct maintainer contact does not resolve access. |
 
@@ -120,7 +118,7 @@ Reason for the request:
 
 - The plugin addresses Divi-specific accessibility gaps.
 - Users are still reporting active accessibility problems upstream.
-- The GitHub repository has an open ready-for-review PR for a 2.1.0 maintenance release:
+- The GitHub repository had a historical PR for a 2.1.0 maintenance release:
   https://github.com/campuspress/divi-accessibility/pull/121
 - The branch includes a fix for repeated PHP warnings reported in issue #90:
   https://github.com/campuspress/divi-accessibility/issues/90
@@ -138,12 +136,13 @@ Contact attempts:
 - 2026-04-24: Reproduced and fixed one related submenu state issue from #122 in the refreshed branch/package.
 - 2026-04-24: Reproduced and fixed one tabs panel state issue on the Divi draft module page in the refreshed branch/package.
 - 2026-04-24: Added maintained-fork ownership metadata and issue/PR triage map without claiming official WordPress.org continuity.
+- 2026-05-10: Rechecked PR and issue activity; PR #121 was closed and issue #122 remained open.
 - Direct maintainer contact attempt: [fill in date/channel/result before sending]
 
 Updated code:
 
-- Public repository/PR: https://github.com/campuspress/divi-accessibility/pull/121
-- Fork release/test build: https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/2.1.0
+- Historical upstream PR: https://github.com/campuspress/divi-accessibility/pull/121
+- Current maintained fork: https://github.com/RichardGeorgeDavis/divi-accessibility
 - Final runtime verification notes: `docs/release-2.1.0-pr-notes.md` and `docs/afk-batch-2026-04-24.md`
 
 I am prepared to address any Plugin Review Team findings and update the code to current WordPress.org plugin guidelines before any official release.

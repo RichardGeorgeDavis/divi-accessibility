@@ -10,8 +10,8 @@ and its builder output.
 This fork is maintained by Richard George Davis as the practical release path
 while official access is unresolved. The original plugin was created by
 CampusPress, and upstream PR
-[#121](https://github.com/campuspress/divi-accessibility/pull/121) remains the
-canonical takeover-compatible patch set for review by the original maintainers.
+[#121](https://github.com/campuspress/divi-accessibility/pull/121) is now
+closed as historical takeover/adoption context.
 
 Current fork releases are published at
 [RichardGeorgeDavis/divi-accessibility](https://github.com/RichardGeorgeDavis/divi-accessibility/releases).
@@ -21,8 +21,8 @@ CampusPress or WordPress.org grants ownership or committer access.
 
 The plugin includes a native GitHub Releases updater for this maintained fork.
 Sites must install `2.1.1` or later once; after that, future stable fork
-releases with a packaged zip asset appear through WordPress' normal Plugins
-update screen.
+releases with a packaged zip asset and matching `.zip.sha256` checksum asset
+appear through WordPress' normal Plugins update screen.
 
 ## Accessibility Scope
 
@@ -83,6 +83,15 @@ and footer landmarks. Only the content skip link is enabled by default for
 backward compatibility; navigation and footer links can be enabled and pointed at
 site-specific selectors from the plugin settings.
 
+## Release 2.1.7
+
+`2.1.7` hardens the maintained fork release path. Packaged releases now produce
+a matching `.zip.sha256` checksum file, and the GitHub updater only accepts
+stable releases that include both the exact versioned zip and checksum assets.
+It also verifies the downloaded package before WordPress installs it, preserves
+saved settings while merging new defaults, fixes packaged translation loading,
+and includes small frontend/admin reliability fixes found during audit cleanup.
+
 ## Release 2.1.6
 
 `2.1.6` follows up the Accessibility Helper and Image Helper release with
@@ -128,7 +137,8 @@ outdated admin note that implied the skip link depends on that separate option.
 bootstrap updater release: sites need to install `2.1.1` manually once, then
 future stable fork releases can appear in WordPress' normal Plugins update screen
 when the GitHub Release includes an exact packaged zip asset named like
-`divi-accessibility-X.X.X.zip`.
+`divi-accessibility-X.X.X.zip`. Current updater code also requires a matching
+checksum asset named like `divi-accessibility-X.X.X.zip.sha256`.
 
 ## Release 2.1.0
 
@@ -145,9 +155,9 @@ preserving Divi 4 compatibility. The branch now includes:
 
 ## Last Recorded Runtime-Tested Integrations
 
-The latest recorded manual browser integration evidence is from the `2.1.0`
-release line. No new Divi 4 or Divi 5 browser runtime pass has been recorded for
-`2.1.6` yet.
+The latest recorded full manual browser integration evidence is from the `2.1.0`
+release line. No new full Divi 4 or Divi 5 browser runtime pass has been
+recorded for `2.1.7` yet.
 
 + Divi Pixel `2.50.0` and `2.50.1`: alternate/mobile header hamburger behavior,
   menu open/close state, `aria-expanded` sync, and screen-reader isolation while
@@ -177,7 +187,8 @@ While working on snippets, it may be beneficial to have them automatically
 re-built on file change. This is what the `npm run watch` script does.
 
 To package an intermediate (throwaway) plugin zip archive for testing, use the
-`npm run package` script. The zip is written to `packaged/`.
+`npm run package` script. The zip and `.sha256` checksum file are written to
+`packaged/`.
 
 To build a releaseable package, use
 `DA11Y_RELEASE_VERSION=X.X.X DA11Y_ASSUME_YES=true npm run release`. This will
@@ -194,9 +205,10 @@ prerelease script can update those files automatically. Use `-y` to skip prompts
 
 GitHub release updates require the packaged zip asset, not GitHub's generated
 source archive. For each stable release, attach
-`packaged/divi-accessibility-X.X.X.zip` to the GitHub Release with the asset name
-`divi-accessibility-X.X.X.zip`; the plugin updater will ignore drafts,
-prereleases, and releases that do not include a matching packaged zip.
+`packaged/divi-accessibility-X.X.X.zip` and
+`packaged/divi-accessibility-X.X.X.zip.sha256` to the GitHub Release with those
+exact asset names; the plugin updater will ignore drafts, prereleases, and
+releases that do not include both matching assets.
 
 
 ## Resources

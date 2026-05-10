@@ -1,21 +1,26 @@
 # Roadmap / Next Actions
 
-## Current 2.1.3 State
+## Current 2.1.7 State
 
-- Current maintained-fork release: `2.1.3`
-- Current release URL: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/2.1.3>
-- Current updater-compatible package: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/download/2.1.3/divi-accessibility-2.1.3.zip>
-- Current release commit: `0680c0a`
-- `2.1.3` added expanded skip links, focused module ARIA fields, ARIA guardrails/guidance, module support/testing docs, GitHub Actions CI, and `npm run release:check`.
-- No manual Divi 4 or Divi 5 browser runtime checks were run specifically for `2.1.3`; use `docs/testing/manual-accessibility-checklist.md` before updating runtime-tested claims.
+- Current maintained-fork release target: `2.1.7`
+- Current published maintained-fork release before this batch: `2.1.6`
+- Current release URL before this batch: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/2.1.6>
+- `2.1.7` hardens the GitHub Releases updater by requiring exact zip and `.zip.sha256` assets, verifying update downloads before install, preserving saved settings while merging new defaults, fixing packaged translation loading, and documenting stale-status cleanup.
+- The published `2.1.6` release has the packaged zip asset only. Checksum assets are required for updater-compatible releases starting with `2.1.7`.
+- The latest recorded full manual browser integration evidence remains from the `2.1.0` release line; use `docs/testing/manual-accessibility-checklist.md` before updating runtime-tested claims.
 
 ## Current Next Actions
 
-- Run the new manual checklist against `2.1.3` on Divi 4 and Divi 5 test sites.
+- Publish `2.1.7` with both `divi-accessibility-2.1.7.zip` and `divi-accessibility-2.1.7.zip.sha256` assets.
+- Run the manual checklist against `2.1.7` on Divi 4 and Divi 5 test sites before changing runtime-tested claims.
 - Update `docs/module-support-matrix.md` with exact Divi, WordPress, PHP, browser, WooCommerce, and Divi Pixel versions only after completing those checks.
-- Triage any reporter feedback against `2.1.3` first, then open focused follow-up work only when the original repro still fails.
-- Monitor CI on `fork/master` and keep `npm run release:check` green before the next release.
+- Triage any reporter feedback against the current maintained-fork release first, then open focused follow-up work only when the original repro still fails.
+- Monitor CI on `origin/master` and keep `npm run release:check` green before the next release.
 - Continue the official-access track with CampusPress/WordPress.org while treating the fork release as the practical user install path.
+
+## Historical 2.1.3 Notes
+
+`2.1.3` added expanded skip links, focused module ARIA fields, ARIA guardrails/guidance, module support/testing docs, GitHub Actions CI, and `npm run release:check`. Those notes are historical and should not be used to select a current downloadable artifact.
 
 ## Historical 2.1.0 Closeout Notes
 
@@ -68,8 +73,7 @@ The sections below preserve the `2.1.0` release and upstream PR history. They ar
 ## Phase 1.75: Upstream Adoption / Fork Continuity
 
 - Current status:
-  - Upstream PR `#121` has no maintainer review, assignee, or requested reviewer as of 2026-04-24.
-  - Maintainer follow-up was posted on `#121` on 2026-04-16.
+  - Upstream PR `#121` is closed as of the 2026-05-10 status check.
   - WordPress.org lists `accessible-divi` as closed since 2020-05-12 with closure reason `Author Request`.
 - Adopted path:
   - dual track: pursue official adoption or maintainer access while keeping the fork usable as the practical release path.
@@ -83,7 +87,7 @@ The sections below preserve the `2.1.0` release and upstream PR history. They ar
 - Completed:
   - `README.md` updated for Divi 4/5 support and the maintained-fork release path.
   - `readme.txt` updated for release metadata, FAQ, and changelog.
-  - POT metadata regenerated through `2.1.3`.
+  - POT metadata regenerated through the current maintained-fork release line.
   - Admin resources updated to current WCAG/WAI references.
   - Internal release checklist, handover, and PR notes added.
 
@@ -96,7 +100,7 @@ The sections below preserve the `2.1.0` release and upstream PR history. They ar
     - release command path works end-to-end
     - package output moved to `packaged/`
 - Pending:
-  - apply findings from fresh `2.1.3` manual WordPress/Divi runtime verification.
+  - apply findings from fresh manual WordPress/Divi runtime verification.
 
 ## Phase 3: Quick Wins
 
@@ -129,11 +133,11 @@ The sections below preserve the `2.1.0` release and upstream PR history. They ar
 
 ## Handover State
 
-- Current upstream draft PR: `#121`
+- Current upstream PR: `#121` is closed
 - Upstream PR head at 2026-04-24 status check: `75003ef`
-- Current maintained-fork release: `2.1.3`
+- Current maintained-fork release target: `2.1.7`
 - Historical `2.1.0` RC builds are superseded.
 - Immediate handover action:
-  - run the `2.1.3` manual accessibility checklist on Divi 4 and Divi 5
+  - run the manual accessibility checklist on Divi 4 and Divi 5 for the current release
   - update the support matrix with exact tested versions
-  - continue monitoring upstream PR `#121`
+  - keep the official-access history available without treating old upstream PR state as current

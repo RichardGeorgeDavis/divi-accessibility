@@ -130,9 +130,23 @@ jQuery(document).ready(function($) {
 	 * Use js to focus for internal links.
 	 */
 	$(document).off('click.da11ySkipLink', 'a[href^="#"]').on('click.da11ySkipLink', 'a[href^="#"]', function () {
-		const content = $('#' + $(this).attr('href').slice(1));
+		const href = $(this).attr('href');
+		let targetId = href ? href.slice(1) : '';
 
-		if (content.length) {
+		if (!targetId) {
+			return;
+		}
+
+		try {
+			targetId = decodeURIComponent(targetId);
+		} catch (error) {
+			void error;
+			return;
+		}
+
+		const content = document.getElementById(targetId);
+
+		if (content) {
 			content.focus();
 		}
 	});

@@ -34,9 +34,20 @@ class Divi_Accessibility_Activator {
 
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-divi-accessibility-admin.php';
 
-		$options = Divi_Accessibility_Admin::get_options_list();
+		$options  = Divi_Accessibility_Admin::get_options_list();
+		$existing = get_option( 'divi_accessibility_options', false );
 
-		update_option( 'divi_accessibility_options', $options );
+		if ( false === $existing ) {
+			add_option( 'divi_accessibility_options', $options );
+			return;
+		}
+
+		if ( ! is_array( $existing ) ) {
+			update_option( 'divi_accessibility_options', $options );
+			return;
+		}
+
+		update_option( 'divi_accessibility_options', array_merge( $options, $existing ) );
 
 	}
 

@@ -168,12 +168,13 @@ jQuery(document).ready(function($) {
 		}, 1000);
 	}
 
-	$(this).keyup(function () {
-		$('.et-search-field').focus(function () {
+	$(document)
+		.off('focusin.da11ySearch focusout.da11ySearch', '.et-search-field')
+		.on('focusin.da11ySearch', '.et-search-field', function () {
 			show_search();
-		}).blur(function () {
+		})
+		.on('focusout.da11ySearch', '.et-search-field', function () {
 			hide_search();
 		});
-	});
 
 });

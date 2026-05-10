@@ -1,21 +1,23 @@
 # Release Handover
 
 Prepared: 2026-04-24
-Last updated: 2026-04-28
+Last updated: 2026-05-10
 
-## Current State
+## Historical State
 
-`2.1.3` is the current maintained-fork release. It builds on the final `2.1.0` compatibility release, keeps the `2.1.1` fork-only GitHub Releases updater, includes the `2.1.2` skip-link visibility fix, and adds expanded skip links, focused module ARIA fields, guardrails, docs, and pragmatic CI/release checks.
+This handover is historical. Use `docs/roadmap-next-actions.md` and the latest `docs/afk-batch-*` note for the current maintained-fork release state.
 
-- Current release: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/2.1.3>
-- Current zip asset: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/download/2.1.3/divi-accessibility-2.1.3.zip>
-- Current zip SHA-256: `9f20f1881d039f9f110e72b6b06950ed9575fac052ecfedfff6c55cc4c747a69`
-- Current release tag target: `0680c0a`
-- Current `2.1.3` release commit: `0680c0a`
+`2.1.3` was the current maintained-fork release when this handover was prepared. It built on the final `2.1.0` compatibility release, kept the `2.1.1` fork-only GitHub Releases updater, included the `2.1.2` skip-link visibility fix, and added expanded skip links, focused module ARIA fields, guardrails, docs, and pragmatic CI/release checks.
 
-`2.1.1` is the bootstrap updater release. Sites already on `2.1.0` need to install `2.1.1` manually once because `2.1.0` did not contain the updater. Future releases after `2.1.1` can then appear in WordPress' normal Plugins update screen when the GitHub Release includes an exact packaged zip asset.
+- Historical `2.1.3` release: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/2.1.3>
+- Historical `2.1.3` zip asset: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/download/2.1.3/divi-accessibility-2.1.3.zip>
+- Historical `2.1.3` zip SHA-256: `9f20f1881d039f9f110e72b6b06950ed9575fac052ecfedfff6c55cc4c747a69`
+- Historical `2.1.3` release tag target: `0680c0a`
+- Historical `2.1.3` release commit: `0680c0a`
 
-`2.1.0` remains the final upstream-safe compatibility release for CampusPress PR `#121`.
+`2.1.1` was the bootstrap updater release. Sites already on `2.1.0` needed to install `2.1.1` manually once because `2.1.0` did not contain the updater. Later releases can appear in WordPress' normal Plugins update screen when the GitHub Release includes the required packaged assets for that release line.
+
+`2.1.0` remains the final upstream-safe compatibility release associated with CampusPress PR `#121`.
 
 - `2.1.0` release: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/2.1.0>
 - `2.1.0` zip asset: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/download/2.1.0/divi-accessibility-2.1.0.zip>

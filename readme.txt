@@ -3,7 +3,7 @@ Contributors: campuspress, JoeFusco, alexstine, vebailovity
 Tags: divi, accessibility, accessible, navigation, wcag, a11y, section508, focus, labels, aria
 Requires at least: 6.0
 Tested up to: 6.9.4
-Stable tag: 2.1.6
+Stable tag: 2.1.7
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
@@ -24,15 +24,15 @@ specifically found within Divi.
 * Adds reduced motion support and version-scoped plugin-owned compatibility styling
 * Fixes Divi screen-reader-text behavior, configurable skip links, focus
   outlines, duplicate menu IDs, and icon handling
-* Checks this maintained fork's stable GitHub Releases for packaged plugin
-  updates through WordPress' normal Plugins update screen
+* Checks this maintained fork's stable GitHub Releases for checksum-verified
+  packaged plugin updates through WordPress' normal Plugins update screen
 * Includes Tota11y integration for admin-side review
 
 = Current Status =
 
 This fork is maintained by Richard George Davis while official access is
 unresolved. The original plugin was created by CampusPress, and the upstream
-release-candidate PR remains available for original-maintainer review.
+release-candidate PR is closed as historical takeover/adoption context.
 
 This fork should not be treated as an official WordPress.org continuation unless
 CampusPress or WordPress.org grants ownership or committer access.
@@ -40,7 +40,8 @@ CampusPress or WordPress.org grants ownership or committer access.
 Sites must install version 2.1.1 or later once. After that, future stable fork
 releases are checked through WordPress' normal Plugins update screen when the
 GitHub Release includes a packaged zip asset named like
-divi-accessibility-2.2.0.zip.
+divi-accessibility-2.2.0.zip and a matching
+divi-accessibility-2.2.0.zip.sha256 checksum asset.
 
 = Accessibility Scope =
 
@@ -87,7 +88,8 @@ Support the work:
 = Last Recorded Runtime-Tested Integrations =
 
 The latest recorded manual browser integration evidence is from version 2.1.0.
-No new Divi 4 or Divi 5 browser runtime pass has been recorded for 2.1.6 yet.
+No new full Divi 4 or Divi 5 browser runtime pass has been recorded for 2.1.7
+yet.
 
 * Divi Pixel 2.50.0 and 2.50.1: alternate/mobile header hamburger behavior,
   menu open/close state, aria-expanded sync, and screen-reader isolation while
@@ -106,7 +108,7 @@ JavaScript on those responses.
 Fork releases and active maintenance:
 [https://github.com/RichardGeorgeDavis/divi-accessibility/](https://github.com/RichardGeorgeDavis/divi-accessibility/)
 
-Canonical upstream PR for maintainer review:
+Historical upstream PR:
 [https://github.com/campuspress/divi-accessibility/pull/121](https://github.com/campuspress/divi-accessibility/pull/121)
 
 = Credit =
@@ -143,9 +145,10 @@ compatibility layers only where Divi 5 requires a separate path.
 Version 2.1.1 is the bootstrap updater release. After a site has 2.1.1 or later
 installed, the plugin checks the latest stable release at
 github.com/RichardGeorgeDavis/divi-accessibility and exposes newer packaged
-releases through WordPress' normal plugin updater. Drafts, prereleases, GitHub
-source archives, and releases without a packaged divi-accessibility-*.zip asset
-are ignored.
+releases through WordPress' normal plugin updater. Current updater code ignores
+drafts, prereleases, GitHub source archives, and releases without both a
+packaged divi-accessibility-*.zip asset and matching
+divi-accessibility-*.zip.sha256 checksum asset.
 
 
 == Screenshots ==
@@ -154,6 +157,19 @@ are ignored.
 
 
 == Changelog ==
+
+= 2.1.7 =
+* Required maintained-fork GitHub releases to include both the exact packaged
+  zip asset and a matching .zip.sha256 checksum asset.
+* Verified update package downloads against the published SHA-256 checksum
+  before WordPress installs them.
+* Added checksum generation to the release package script and release metadata
+  checks.
+* Preserved existing plugin settings while merging new defaults during
+  activation and runtime loading.
+* Fixed packaged translation loading and tightened frontend/admin reliability
+  around inline styles, hash-link focus, search focus handlers, mobile menu
+  keyboard activation, and Divi 5 builder metadata access.
 
 = 2.1.6 =
 * Kept D4-to-D5 Image Helper conversion mappings registered even when the Image

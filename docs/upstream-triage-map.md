@@ -1,11 +1,11 @@
 # Upstream Issue And PR Triage Map
 
-Status checked: 2026-04-24
+Status checked: 2026-05-10
 
 ## Strategy
 
 - Do not clone all upstream issues into the fork.
-- Keep upstream PR `#121` as the canonical takeover-compatible patch set for the `2.1.0` release.
+- Treat upstream PR `#121` as historical takeover-compatible context for the `2.1.0` release; it was closed by the 2026-05-10 status check.
 - Use this map to decide what is fixed, what needs reporter validation, what stays backlog, and what should not be folded into `2.1.0`.
 - Leave upstream issues open unless maintainer permissions are granted.
 

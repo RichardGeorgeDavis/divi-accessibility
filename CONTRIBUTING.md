@@ -45,7 +45,7 @@ Build a test package:
 npm run package
 ```
 
-The package is written to `packaged/`.
+The package and `.sha256` checksum file are written to `packaged/`.
 
 ## Pull Request Expectations
 

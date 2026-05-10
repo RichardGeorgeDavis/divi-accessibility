@@ -80,6 +80,7 @@ class Divi_Accessibility_Updater {
 	public function register_hooks() {
 		add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'filter_update_plugins_transient' ) );
 		add_filter( 'plugins_api', array( $this, 'filter_plugins_api' ), 10, 3 );
+		add_filter( 'upgrader_pre_download', array( $this, 'verify_release_package_download' ), 10, 4 );
 		add_action( 'upgrader_process_complete', array( $this, 'clear_release_cache_after_update' ), 10, 2 );
 	}
 
@@ -195,6 +196,62 @@ class Divi_Accessibility_Updater {
 	}
 
 	/**
+	 * Download and verify this plugin's release package before WordPress installs it.
+	 *
+	 * @since 2.1.7
+	 * @param bool|WP_Error|string $reply      Whether to bail without returning the package.
+	 * @param string               $package    The package file name.
+	 * @param WP_Upgrader          $upgrader   WordPress upgrader instance.
+	 * @param array                $hook_extra Extra arguments passed to hooked filters.
+	 * @return bool|WP_Error|string Verified package path, an error, or the original reply.
+	 */
+	public function verify_release_package_download( $reply, $package, $upgrader, $hook_extra ) {
+		unset( $upgrader );
+
+		if ( false !== $reply || empty( $package ) || ! is_string( $package ) ) {
+			return $reply;
+		}
+
+		if ( ! $this->is_this_plugin_update_context( $hook_extra ) ) {
+			return $reply;
+		}
+
+		$release = $this->get_release();
+
+		if ( ! $release || empty( $release['package'] ) || empty( $release['checksum'] ) || $package !== $release['package'] ) {
+			return $reply;
+		}
+
+		$expected_checksum = $this->get_release_package_checksum( $release['checksum'] );
+
+		if ( is_wp_error( $expected_checksum ) ) {
+			return $expected_checksum;
+		}
+
+		if ( ! function_exists( 'download_url' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/file.php';
+		}
+
+		$download = download_url( $package );
+
+		if ( is_wp_error( $download ) ) {
+			return $download;
+		}
+
+		$actual_checksum = hash_file( 'sha256', $download );
+
+		if ( ! $actual_checksum || ! hash_equals( strtolower( $expected_checksum ), strtolower( $actual_checksum ) ) ) {
+			wp_delete_file( $download );
+			return new WP_Error(
+				'divi_accessibility_checksum_mismatch',
+				__( 'The Divi Accessibility update package failed checksum verification.', 'divi-accessibility' )
+			);
+		}
+
+		return $download;
+	}
+
+	/**
 	 * Retrieve and normalize the latest GitHub release.
 	 *
 	 * @since 2.1.1
@@ -256,9 +313,9 @@ class Divi_Accessibility_Updater {
 			return null;
 		}
 
-		$package = $this->find_package_asset( $release['assets'], $version );
+		$release_assets = $this->find_release_assets( $release['assets'], $version );
 
-		if ( empty( $version ) || empty( $package ) ) {
+		if ( empty( $version ) || empty( $release_assets['package'] ) || empty( $release_assets['checksum'] ) ) {
 			return null;
 		}
 
@@ -269,32 +326,44 @@ class Divi_Accessibility_Updater {
 			'body'         => ! empty( $release['body'] ) ? $release['body'] : '',
 			'url'          => ! empty( $release['html_url'] ) ? $release['html_url'] : self::REPOSITORY_URL,
 			'published_at' => ! empty( $release['published_at'] ) ? $release['published_at'] : '',
-			'package'      => $package,
+			'package'      => $release_assets['package'],
+			'checksum'     => $release_assets['checksum'],
 		);
 	}
 
 	/**
-	 * Find the packaged plugin zip in a GitHub release's assets.
+	 * Find the packaged plugin zip and checksum in a GitHub release's assets.
 	 *
 	 * @since 2.1.1
 	 * @param array  $assets  GitHub release assets.
 	 * @param string $version Release version.
-	 * @return string|null Package URL.
+	 * @return array Release asset URLs.
 	 */
-	private function find_package_asset( $assets, $version ) {
-		$preferred_name = 'divi-accessibility-' . $version . '.zip';
+	private function find_release_assets( $assets, $version ) {
+		$preferred_name          = 'divi-accessibility-' . $version . '.zip';
+		$preferred_checksum_name = 'divi-accessibility-' . $version . '.zip.sha256';
+		$release_assets          = array(
+			'package'  => null,
+			'checksum' => null,
+		);
+
 		foreach ( $assets as $asset ) {
 			if ( empty( $asset['name'] ) || empty( $asset['browser_download_url'] ) ) {
 				continue;
 			}
 
 			if ( $preferred_name === $asset['name'] ) {
-				return $asset['browser_download_url'];
+				$release_assets['package'] = esc_url_raw( $asset['browser_download_url'] );
+				continue;
+			}
+
+			if ( $preferred_checksum_name === $asset['name'] ) {
+				$release_assets['checksum'] = esc_url_raw( $asset['browser_download_url'] );
 			}
 
 		}
 
-		return null;
+		return $release_assets;
 	}
 
 	/**
@@ -312,7 +381,98 @@ class Divi_Accessibility_Updater {
 			'new_version' => $release['version'],
 			'url'         => $release['url'],
 			'package'     => $release['package'],
+			'checksum'    => $release['checksum'],
 		);
+	}
+
+	/**
+	 * Return whether the current update download belongs to this plugin.
+	 *
+	 * @since 2.1.7
+	 * @param array $hook_extra Extra arguments passed to hooked filters.
+	 * @return bool Whether this hook context is for this plugin.
+	 */
+	private function is_this_plugin_update_context( $hook_extra ) {
+		if ( ! is_array( $hook_extra ) ) {
+			return false;
+		}
+
+		if ( empty( $hook_extra['type'] ) || 'plugin' !== $hook_extra['type'] ) {
+			return false;
+		}
+
+		$plugins = array();
+
+		if ( ! empty( $hook_extra['plugin'] ) ) {
+			$plugins[] = $hook_extra['plugin'];
+		}
+
+		if ( ! empty( $hook_extra['plugins'] ) && is_array( $hook_extra['plugins'] ) ) {
+			$plugins = array_merge( $plugins, $hook_extra['plugins'] );
+		}
+
+		return empty( $plugins ) || in_array( $this->plugin_file, $plugins, true );
+	}
+
+	/**
+	 * Fetch and parse the SHA-256 checksum published with a release package.
+	 *
+	 * @since 2.1.7
+	 * @param string $checksum_url GitHub release checksum asset URL.
+	 * @return string|WP_Error SHA-256 checksum or an error.
+	 */
+	private function get_release_package_checksum( $checksum_url ) {
+		$response = wp_remote_get(
+			$checksum_url,
+			array(
+				'timeout' => 10,
+				'headers' => array(
+					'Accept'     => 'text/plain',
+					'User-Agent' => 'Divi-Accessibility-Updater/' . $this->version,
+				),
+			)
+		);
+
+		if ( is_wp_error( $response ) ) {
+			return $response;
+		}
+
+		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
+			return new WP_Error(
+				'divi_accessibility_checksum_unavailable',
+				__( 'The Divi Accessibility update checksum could not be downloaded.', 'divi-accessibility' )
+			);
+		}
+
+		$checksum = $this->parse_checksum( wp_remote_retrieve_body( $response ) );
+
+		if ( ! $checksum ) {
+			return new WP_Error(
+				'divi_accessibility_invalid_checksum',
+				__( 'The Divi Accessibility update checksum is invalid.', 'divi-accessibility' )
+			);
+		}
+
+		return $checksum;
+	}
+
+	/**
+	 * Parse a SHA-256 checksum from a bare checksum or sha256sum-formatted file.
+	 *
+	 * @since 2.1.7
+	 * @param string $body Checksum file contents.
+	 * @return string|null SHA-256 checksum.
+	 */
+	private function parse_checksum( $body ) {
+		if ( ! is_string( $body ) ) {
+			return null;
+		}
+
+		if ( preg_match( '/(?:^|sha256:|\s)([a-f0-9]{64})(?:\s|$)/i', trim( $body ), $matches ) ) {
+			return strtolower( $matches[1] );
+		}
+
+		return null;
 	}
 
 	/**

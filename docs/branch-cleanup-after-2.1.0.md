@@ -2,11 +2,13 @@
 
 Prepared: 2026-04-24
 
-## Current Release Branches
+## Historical Release Branches
 
 - Keep `master` as the maintained-fork release branch.
-- Keep `codex/divi4-divi5-style-compat` until upstream PR `#121` is merged or explicitly abandoned.
+- `codex/divi4-divi5-style-compat` is historical upstream PR `#121` context.
 - Do not merge old feature branches into `master`; the verified `2.1.0` history already folds the release-relevant work into a clean sequence.
+
+For the `2.1.7` release batch, leave unmerged cached worktree branches untouched and revisit cleanup only after the release and CI settle.
 
 ## Safe-To-Delete Candidates After Verification
 
@@ -42,4 +44,3 @@ Some branches are checked out in cached worktrees. Remove the corresponding cach
 - `codex/remove-redundant-link-role`
 - `codex/restore-eslint-lint`
 - `codex/return-focus-on-mobile-menu-esc`
-

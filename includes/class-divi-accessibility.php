@@ -212,17 +212,19 @@ class Divi_Accessibility {
 		load_plugin_textdomain(
 			'divi-accessibility',
 			false,
-			trailingslashit( DA11Y_PATH, 'languages' )
+			dirname( DA11Y_FILE ) . '/languages'
 		);
 	}
 
 	/**
-	 * Retreive settings.
+	 * Retrieve settings.
 	 *
 	 * @since    1.0.0
 	 */
 	public function load_settings() {
-		$this->settings = get_option( $this->da11y_options );
+		$settings = get_option( $this->da11y_options );
+
+		$this->settings = is_array( $settings ) ? $settings : array();
 	}
 
 }

@@ -177,8 +177,18 @@ if ( ! fs.readFileSync( 'scripts/package.js', 'utf8' ).includes( '${ pkg.name }-
 	addError( 'scripts/package.js must continue naming release zips as ${pkg.name}-${pkg.version}.zip.' );
 }
 
-if ( ! fs.readFileSync( 'includes/class-divi-accessibility-updater.php', 'utf8' ).includes( "'divi-accessibility-' . $version . '.zip'" ) ) {
+if ( ! fs.readFileSync( 'scripts/package.js', 'utf8' ).includes( '${ package_file }.sha256' ) ) {
+	addError( 'scripts/package.js must continue writing release checksum assets as ${package_file}.sha256.' );
+}
+
+const updaterFile = fs.readFileSync( 'includes/class-divi-accessibility-updater.php', 'utf8' );
+
+if ( ! updaterFile.includes( "'divi-accessibility-' . $version . '.zip'" ) ) {
 	addError( 'Updater must continue requiring exact divi-accessibility-{version}.zip release assets.' );
+}
+
+if ( ! updaterFile.includes( "'divi-accessibility-' . $version . '.zip.sha256'" ) ) {
+	addError( 'Updater must continue requiring exact divi-accessibility-{version}.zip.sha256 release assets.' );
 }
 
 if ( filesUpdated ) {

@@ -1135,7 +1135,13 @@ class Divi_Accessibility_Admin {
 			$post_id = absint( wp_unslash( $_GET[ $request_key ] ) );
 		}
 
-		return $post_id ? (int) $post_id : 0;
+		$post_id = $post_id ? (int) $post_id : 0;
+
+		if ( ! $post_id || ! current_user_can( 'edit_post', $post_id ) ) {
+			return 0;
+		}
+
+		return $post_id;
 	}
 
 	/**

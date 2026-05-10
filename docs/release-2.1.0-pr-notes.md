@@ -102,7 +102,7 @@ This branch prepares Divi Accessibility `2.1.0` as a broad compatibility and mod
 ## Handover Notes
 
 - draft tester comments are already posted on `#121`
-- these are historical `2.1.0` upstream PR notes; the current maintained-fork release is `2.1.3`
+- these are historical `2.1.0` upstream PR notes; use `docs/roadmap-next-actions.md` for the current maintained-fork release state
 - historical final `2.1.0` asset: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/2.1.0>
 - historical `2.1.0` zip asset: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/download/2.1.0/divi-accessibility-2.1.0.zip>
 - older `codex-2.1.0-rc1`, `codex-2.1.0-rc2`, `codex-2.1.0-rc3`, `codex-2.1.0-rc4`, and `codex-2.1.0-rc5` builds should be treated as superseded

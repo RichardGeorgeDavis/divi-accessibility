@@ -1,5 +1,7 @@
 const sh = require( 'shelljs' );
 const path = require( 'path' );
+const fs = require( 'fs' );
+const crypto = require( 'crypto' );
 const AdmZip = require( 'adm-zip' );
 const pkg = require( '../package.json' );
 
@@ -15,12 +17,17 @@ const whitelist = [
 ];
 const package_dir = 'packaged';
 const package_file = path.join( package_dir, `${ pkg.name }-${ pkg.version }.zip` );
+const checksum_file = `${ package_file }.sha256`;
 
 console.log( `--- Packing ${ pkg.name } v${ pkg.version } ---` );
 sh.mkdir( '-p', package_dir );
 if ( sh.test( '-e', package_file ) ) {
 	console.log( `\t- Removing previously existing archive: ${ package_file }` );
 	sh.rm( package_file );
+}
+if ( sh.test( '-e', checksum_file ) ) {
+	console.log( `\t- Removing previously existing checksum: ${ checksum_file }` );
+	sh.rm( checksum_file );
 }
 
 
@@ -31,21 +38,24 @@ sh.ls( '.' ).forEach( raw => {
 		return true;
 	}
 	const entry = path.resolve( raw );
-		console.log( `\t\tAdding ${ raw }` );
-		if ( sh.test( '-d', entry ) ) {
-			zip.addLocalFolder(
-				entry,
-				`${ pkg.name }/${ raw }`,
-				( filename ) => path.basename( filename ) !== '.DS_Store'
-			);
-		} else {
-			if ( '.DS_Store' === path.basename( entry ) ) {
-				return true;
-			}
-			zip.addLocalFile( entry, pkg.name );
-
+	console.log( `\t\tAdding ${ raw }` );
+	if ( sh.test( '-d', entry ) ) {
+		zip.addLocalFolder(
+			entry,
+			`${ pkg.name }/${ raw }`,
+			( filename ) => path.basename( filename ) !== '.DS_Store'
+		);
+	} else {
+		if ( '.DS_Store' === path.basename( entry ) ) {
+			return true;
 		}
-	} );
+		zip.addLocalFile( entry, pkg.name );
+
+	}
+} );
 console.log( `\t- Writing package archive: ${ package_file }` );
 zip.writeZip( package_file );
+const checksum = crypto.createHash( 'sha256' ).update( fs.readFileSync( package_file ) ).digest( 'hex' );
+console.log( `\t- Writing package checksum: ${ checksum_file }` );
+fs.writeFileSync( checksum_file, `${ checksum }  ${ path.basename( package_file ) }\n` );
 console.log( `--- All done ---` );

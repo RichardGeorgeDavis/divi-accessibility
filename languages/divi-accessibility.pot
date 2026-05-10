@@ -2,10 +2,10 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Divi Accessibility 2.1.6\n"
+"Project-Id-Version: Divi Accessibility 2.1.7\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/divi-accessibility\n"
-"POT-Creation-Date: 2026-05-10 10:04:42+00:00\n"
+"POT-Creation-Date: 2026-05-10 13:23:59+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -722,95 +722,107 @@ msgstr ""
 msgid "Improve Divi accessibility across Divi 4 and Divi 5 with WCAG-aligned fixes."
 msgstr ""
 
-#: includes/class-divi-accessibility-updater.php:330
+#: includes/class-divi-accessibility-updater.php:247
+msgid "The Divi Accessibility update package failed checksum verification."
+msgstr ""
+
+#: includes/class-divi-accessibility-updater.php:443
+msgid "The Divi Accessibility update checksum could not be downloaded."
+msgstr ""
+
+#: includes/class-divi-accessibility-updater.php:452
+msgid "The Divi Accessibility update checksum is invalid."
+msgstr ""
+
+#: includes/class-divi-accessibility-updater.php:490
 msgid "View release notes on GitHub."
 msgstr ""
 
-#: public/class-divi-accessibility-public.php:192
+#: public/class-divi-accessibility-public.php:195
 msgid "Previous slide"
 msgstr ""
 
-#: public/class-divi-accessibility-public.php:193
+#: public/class-divi-accessibility-public.php:196
 msgid "Next slide"
 msgstr ""
 
-#: public/class-divi-accessibility-public.php:194
+#: public/class-divi-accessibility-public.php:197
 msgid "Go to slide %d"
 msgstr ""
 
-#: public/class-divi-accessibility-public.php:199
+#: public/class-divi-accessibility-public.php:202
 msgid "Close search"
 msgstr ""
 
-#: public/class-divi-accessibility-public.php:200
+#: public/class-divi-accessibility-public.php:203
 msgid "Open search"
 msgstr ""
 
-#: public/class-divi-accessibility-public.php:201
+#: public/class-divi-accessibility-public.php:204
 msgid "Open site search"
 msgstr ""
 
-#: public/class-divi-accessibility-public.php:202
+#: public/class-divi-accessibility-public.php:205
 msgid "Search"
 msgstr ""
 
-#: public/class-divi-accessibility-public.php:203
+#: public/class-divi-accessibility-public.php:206
 msgid "Search form"
 msgstr ""
 
-#: public/class-divi-accessibility-public.php:204
+#: public/class-divi-accessibility-public.php:207
 msgid "Menu search form"
 msgstr ""
 
-#: public/class-divi-accessibility-public.php:205
+#: public/class-divi-accessibility-public.php:208
 msgid "Search for..."
 msgstr ""
 
-#: public/class-divi-accessibility-public.php:206
+#: public/class-divi-accessibility-public.php:209
 msgid "View cart"
 msgstr ""
 
-#: public/class-divi-accessibility-public.php:210
+#: public/class-divi-accessibility-public.php:213
 msgid "opens in a new tab"
 msgstr ""
 
-#: public/class-divi-accessibility-public.php:211
+#: public/class-divi-accessibility-public.php:214
 msgid "Visit our"
 msgstr ""
 
-#: public/class-divi-accessibility-public.php:212
+#: public/class-divi-accessibility-public.php:215
 msgid "page"
 msgstr ""
 
-#: public/class-divi-accessibility-public.php:213
+#: public/class-divi-accessibility-public.php:216
 msgid "Read more about"
 msgstr ""
 
-#: public/class-divi-accessibility-public.php:214
+#: public/class-divi-accessibility-public.php:217
 msgid "Video play button"
 msgstr ""
 
-#: public/class-divi-accessibility-public.php:215
+#: public/class-divi-accessibility-public.php:218
 msgid "Open and close mobile menu"
 msgstr ""
 
-#: public/class-divi-accessibility-public.php:216
+#: public/class-divi-accessibility-public.php:219
 msgid "Audio player"
 msgstr ""
 
-#: public/class-divi-accessibility-public.php:217
+#: public/class-divi-accessibility-public.php:220
 msgid "by"
 msgstr ""
 
-#: public/class-divi-accessibility-public.php:218
+#: public/class-divi-accessibility-public.php:221
 msgid "of"
 msgstr ""
 
-#: public/class-divi-accessibility-public.php:219
+#: public/class-divi-accessibility-public.php:222
 msgid "Back to top"
 msgstr ""
 
-#: public/class-divi-accessibility-public.php:220
+#: public/class-divi-accessibility-public.php:223
 msgid "submenu"
 msgstr ""
 

@@ -100,8 +100,15 @@ jQuery(document).ready(function($) {
 	/**
 	* Allows mobile menu to be opened with keyboard.
 	*/
+	$(document).on('keydown', menuControlSelector, function(event) {
+		if (event.keyCode === 13 || event.keyCode === 32) {
+			event.preventDefault();
+		}
+	});
+
 	$(document).on('keyup', menuControlSelector, function(event) {
 		if (event.keyCode === 13 || event.keyCode === 32) {
+			event.preventDefault();
 			$(this).click();
 		}
 	});
