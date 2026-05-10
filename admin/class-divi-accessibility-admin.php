@@ -215,6 +215,12 @@ class Divi_Accessibility_Admin {
 			'reduced_motion'               => 0,
 			'underline_urls'               => 0,
 			'underline_urls_not_title'     => 0,
+			'underline_urls_not_menu'      => 0,
+			'image_alt_source'             => 'disabled',
+			'image_alt_fallback_source'    => 'disabled',
+			'hide_image_title_tooltips'    => 0,
+			'image_helper_module_fields'   => 0,
+			'image_metadata_text_source'   => 'module',
 			'tota11y'                      => 0,
 			'developer_mode'               => 0,
 		);
@@ -422,8 +428,60 @@ class Divi_Accessibility_Admin {
 				array(
 					'name'        => 'underline_urls_not_title',
 					'title'       => __( 'Exclude underlines from titles and buttons', 'divi-accessibility' ),
-					'description' => __( 'Disable URL underlines on titles, headings, and buttons.', 'divi-accessibility' ),
+					'description' => __( 'Disable URL underlines on titles, headings, tabs, and buttons.', 'divi-accessibility' ),
 					'type'        => 'checkbox',
+				),
+				array(
+					'name'        => 'underline_urls_not_menu',
+					'title'       => __( 'Exclude underlines from menus', 'divi-accessibility' ),
+					'description' => __( 'Disable URL underlines inside Divi header and menu modules.', 'divi-accessibility' ),
+					'type'        => 'checkbox',
+				),
+				array(
+					'name'        => 'image_alt_source',
+					'title'       => __( 'Image alt text source', 'divi-accessibility' ),
+					'description' => __( 'Choose whether Divi image modules can use WordPress Media Library alt text on the frontend.', 'divi-accessibility' ),
+					'type'        => 'select',
+					'options'     => array(
+						'disabled'         => __( 'Disabled', 'divi-accessibility' ),
+						'media_when_empty' => __( 'Use media alt text when module alt text is empty', 'divi-accessibility' ),
+						'media_override'   => __( 'Always use media alt text when available', 'divi-accessibility' ),
+					),
+				),
+				array(
+					'name'        => 'image_alt_fallback_source',
+					'title'       => __( 'Image alt text fallback', 'divi-accessibility' ),
+					'description' => __( 'Choose a fallback for empty image alt text when no Media Library alt text is available.', 'divi-accessibility' ),
+					'type'        => 'select',
+					'options'     => array(
+						'disabled' => __( 'Disabled', 'divi-accessibility' ),
+						'title'    => __( 'Use media title', 'divi-accessibility' ),
+						'filename' => __( 'Use image filename', 'divi-accessibility' ),
+					),
+				),
+				array(
+					'name'        => 'hide_image_title_tooltips',
+					'title'       => __( 'Hide image title tooltips', 'divi-accessibility' ),
+					'description' => __( 'Remove image title attributes on the frontend so browser tooltips do not appear on hover.', 'divi-accessibility' ),
+					'type'        => 'checkbox',
+				),
+				array(
+					'name'        => 'image_helper_module_fields',
+					'title'       => __( 'Divi 5 image helper fields', 'divi-accessibility' ),
+					'description' => __( 'Add Divi 5 Image module fields for aspect ratio and optional visible image title, caption, and description metadata.', 'divi-accessibility' ),
+					'subtext'     => __( 'Divi 5 Visual Builder only', 'divi-accessibility' ),
+					'type'        => 'checkbox',
+				),
+				array(
+					'name'        => 'image_metadata_text_source',
+					'title'       => __( 'Image metadata text source', 'divi-accessibility' ),
+					'description' => __( 'Choose whether Image Helper title, caption, and description fields should prefer module text or Media Library metadata.', 'divi-accessibility' ),
+					'type'        => 'select',
+					'options'     => array(
+						'module'           => __( 'Use module text', 'divi-accessibility' ),
+						'media_when_empty' => __( 'Use media metadata when module text is empty', 'divi-accessibility' ),
+						'media_override'   => __( 'Always use media metadata when available', 'divi-accessibility' ),
+					),
 				),
 			),
 			'tools'         => array(
@@ -483,10 +541,14 @@ class Divi_Accessibility_Admin {
 		$active_tab        = isset( $dashboard_tabs[ $active_tab ] ) ? $active_tab : 'accessibility';
 		$active_field_keys = array();
 		$field_types       = array();
+		$field_options     = array();
 
 		foreach ( $dashboard_fields as $tab_fields ) {
 			foreach ( $tab_fields as $field ) {
 				$field_types[ $field['name'] ] = isset( $field['type'] ) ? $field['type'] : 'checkbox';
+				if ( isset( $field['options'] ) && is_array( $field['options'] ) ) {
+					$field_options[ $field['name'] ] = $field['options'];
+				}
 			}
 		}
 
@@ -536,6 +598,24 @@ class Divi_Accessibility_Admin {
 				}
 
 				$valid_options[ $key ] = $text;
+
+			} elseif ( 'select' === $field_type ) {
+
+				$default_value  = (string) $option;
+				$select_options = isset( $field_options[ $key ] ) ? $field_options[ $key ] : array();
+				$value          = isset( $current_settings[ $key ] ) ? (string) $current_settings[ $key ] : $default_value;
+
+				if ( $is_active_field ) {
+					$value = isset( $input[ $key ] ) && is_scalar( $input[ $key ] )
+						? sanitize_key( wp_unslash( $input[ $key ] ) )
+						: $default_value;
+				}
+
+				if ( ! isset( $select_options[ $value ] ) ) {
+					$value = $default_value;
+				}
+
+				$valid_options[ $key ] = $value;
 
 			} elseif ( ! $is_active_field ) {
 
@@ -749,6 +829,53 @@ class Divi_Accessibility_Admin {
 	}
 
 	/**
+	 * Callback for select settings.
+	 *
+	 * @since 2.1.5
+	 * @param array $arg Input args.
+	 */
+	public function divi_accessibility_select_cb( $arg ) {
+
+		$name          = $arg['name'];
+		$label_for     = $arg['label_for'];
+		$label_subtext = $arg['label_subtext'];
+		$labelledby    = ! empty( $arg['labelledby'] ) ? $arg['labelledby'] : '';
+		$options       = isset( $arg['options'] ) && is_array( $arg['options'] ) ? $arg['options'] : array();
+
+		$option_list = $this->get_options_list();
+		$value       = isset( $option_list[ $name ] ) ? $option_list[ $name ] : '';
+
+		if ( isset( $this->settings[ $name ] ) && isset( $options[ $this->settings[ $name ] ] ) ) {
+			$value = $this->settings[ $name ];
+		}
+
+		?>
+
+		<fieldset>
+			<label class="widefat">
+				<select
+					name="<?php echo esc_attr( $this->da11y_options ) . '[' . esc_attr( $name ) . ']'; ?>"
+					id="<?php echo esc_attr( $label_for ); ?>"
+					<?php echo '' !== $labelledby ? 'aria-labelledby="' . esc_attr( $labelledby ) . '"' : ''; ?>
+				>
+					<?php foreach ( $options as $option_value => $option_label ) { ?>
+						<option value="<?php echo esc_attr( $option_value ); ?>" <?php selected( $value, $option_value ); ?>>
+							<?php echo esc_html( $option_label ); ?>
+						</option>
+					<?php } ?>
+				</select>
+			</label>
+
+			<?php if ( '' != $label_subtext ) { ?>
+				<p class="description">(<em><?php echo esc_html( $label_subtext ); ?></em>)</p>
+			<?php } ?>
+
+		</fieldset>
+
+		<?php
+	}
+
+	/**
 	 * Register DIVI builder accessibility settings
 	 *
 	 * @param array $fields
@@ -909,6 +1036,84 @@ class Divi_Accessibility_Admin {
 				),
 			)
 		);
+
+		$settings = array_merge(
+			self::get_options_list(),
+			is_array( $this->settings ) ? $this->settings : array()
+		);
+
+		if ( 1 !== (int) $settings['image_helper_module_fields'] ) {
+			return;
+		}
+
+		\ET\Builder\VisualBuilder\Assets\PackageBuildManager::register_package_build(
+			array(
+				'name'    => 'divi-accessibility-d5-image-helper',
+				'version' => $this->version,
+				'script'  => array(
+					'src'                => plugin_dir_url( __FILE__ ) . 'js/divi-accessibility-d5-image-helper.js',
+					'deps'               => array(
+						'lodash',
+						'divi-vendor-wp-hooks',
+						'divi-vendor-wp-i18n',
+					),
+					'enqueue_top_window' => false,
+					'enqueue_app_window' => true,
+					'data_app_window'    => array(
+						'diviAccessibilityImageHelperLabels' => $this->get_divi_5_image_helper_labels(),
+					),
+					'args'               => array(
+						'in_footer' => false,
+					),
+				),
+			)
+		);
+	}
+
+	/**
+	 * Get translated labels for the Divi 5 Image Helper package.
+	 *
+	 * @return array
+	 */
+	private function get_divi_5_image_helper_labels() {
+		return array(
+			'image_text'                   => __( 'Image Text', 'divi-accessibility' ),
+			'image_text_container'         => __( 'Image Text Container', 'divi-accessibility' ),
+			'image_text_title'             => __( 'Image Text Title', 'divi-accessibility' ),
+			'image_text_caption'           => __( 'Image Text Caption', 'divi-accessibility' ),
+			'image_text_description'       => __( 'Image Text Description', 'divi-accessibility' ),
+			'image_aspect_ratio'           => __( 'Image Aspect Ratio', 'divi-accessibility' ),
+			'image_aspect_ratio_desc'      => __( 'Set a frontend aspect ratio for this image.', 'divi-accessibility' ),
+			'original_image_ratio'         => __( 'Original Image Ratio', 'divi-accessibility' ),
+			'square_1_1'                   => __( 'Square 1:1', 'divi-accessibility' ),
+			'landscape_16_9'               => __( 'Landscape 16:9', 'divi-accessibility' ),
+			'landscape_4_3'                => __( 'Landscape 4:3', 'divi-accessibility' ),
+			'landscape_3_2'                => __( 'Landscape 3:2', 'divi-accessibility' ),
+			'portrait_9_16'                => __( 'Portrait 9:16', 'divi-accessibility' ),
+			'portrait_3_4'                 => __( 'Portrait 3:4', 'divi-accessibility' ),
+			'portrait_2_3'                 => __( 'Portrait 2:3', 'divi-accessibility' ),
+			'image_title_text'             => __( 'Image Title Text', 'divi-accessibility' ),
+			'image_title_text_desc'        => __( 'Visible title text to display with the image.', 'divi-accessibility' ),
+			'image_caption_text'           => __( 'Image Caption Text', 'divi-accessibility' ),
+			'image_caption_text_desc'      => __( 'Visible caption text to display with the image.', 'divi-accessibility' ),
+			'image_description_text'       => __( 'Image Description Text', 'divi-accessibility' ),
+			'image_description_text_desc'  => __( 'Visible description text to display with the image.', 'divi-accessibility' ),
+			'show_image_title'             => __( 'Show Image Title', 'divi-accessibility' ),
+			'show_image_title_desc'        => __( 'Display the image title text on the frontend.', 'divi-accessibility' ),
+			'show_image_caption'           => __( 'Show Image Caption', 'divi-accessibility' ),
+			'show_image_caption_desc'      => __( 'Display the image caption text on the frontend.', 'divi-accessibility' ),
+			'show_image_description'       => __( 'Show Image Description', 'divi-accessibility' ),
+			'show_image_description_desc'  => __( 'Display the image description text on the frontend.', 'divi-accessibility' ),
+			'use_text_overlay'             => __( 'Use Text Overlay', 'divi-accessibility' ),
+			'use_text_overlay_desc'        => __( 'Position image text over the image.', 'divi-accessibility' ),
+			'container_background'         => __( 'Image Text Container Background', 'divi-accessibility' ),
+			'container_spacing'            => __( 'Image Text Container Spacing', 'divi-accessibility' ),
+			'container_border'             => __( 'Image Text Container Border', 'divi-accessibility' ),
+			'container_shadow'             => __( 'Image Text Container Shadow', 'divi-accessibility' ),
+			'title'                        => __( 'Title', 'divi-accessibility' ),
+			'caption'                      => __( 'Caption', 'divi-accessibility' ),
+			'description_font'             => __( 'Description Font', 'divi-accessibility' ),
+		);
 	}
 
 	/**
@@ -922,7 +1127,12 @@ class Divi_Accessibility_Admin {
 			return $conversion_map;
 		}
 
-		$core_modules = \ET\Builder\Packages\ModuleLibrary\ModuleRegistration::get_all_core_modules_metadata();
+		$core_modules         = \ET\Builder\Packages\ModuleLibrary\ModuleRegistration::get_all_core_modules_metadata();
+		$settings             = array_merge(
+			self::get_options_list(),
+			is_array( $this->settings ) ? $this->settings : array()
+		);
+		$image_helper_enabled = 1 === (int) $settings['image_helper_module_fields'];
 		$attribute_map = array(
 			'hide_aria_element'            => 'accessibility.advanced.hideAriaElement.*',
 			'show_for_screen_readers_only' => 'accessibility.advanced.showForScreenReadersOnly.*',
@@ -951,6 +1161,193 @@ class Divi_Accessibility_Admin {
 			$conversion_map[ $module_slug ] = $module_conversion_map;
 		}
 
+		if ( $image_helper_enabled ) {
+			$image_attribute_map = array(
+				'image_aspect_ratio'        => 'image.innerContent.*.aspectRatio',
+				'enable_title_text'         => 'imageMetadata.advanced.showTitle.*',
+				'enable_caption_text'       => 'imageMetadata.advanced.showCaption.*',
+				'enable_description_text'   => 'imageMetadata.advanced.showDescription.*',
+				'title_text'                => 'imageMetadata.innerContent.titleText.*',
+				'caption_text'              => 'imageMetadata.innerContent.captionText.*',
+				'description_text'          => 'imageMetadata.innerContent.descriptionText.*',
+				'use_text_overlay'          => 'imageMetadata.decoration.showImageMetaAsOverlay.*',
+				'image_details_background'  => 'imageMetadata.decoration.containerBackground.*.color',
+				'image_details_margin'      => 'imageMetadata.decoration.containerSpacing.*.margin',
+				'image_details_padding'     => 'imageMetadata.decoration.containerSpacing.*.padding',
+				'image_details_border'      => 'imageMetadata.decoration.containerBorder.*',
+				'image_details_border_color' => 'imageMetadata.decoration.containerBorder.*.styles.all.color',
+				'image_details_border_width' => 'imageMetadata.decoration.containerBorder.*.styles.all.width',
+				'image_details_border_style' => 'imageMetadata.decoration.containerBorder.*.styles.all.style',
+				'image_title_font'          => 'imageMetadata.decoration.titleFont.font.*',
+				'image_title_level'         => 'imageMetadata.decoration.titleFont.font.*.headingLevel',
+				'image_title_color'         => 'imageMetadata.decoration.titleFont.font.*.color',
+				'image_title_size'          => 'imageMetadata.decoration.titleFont.font.*.size',
+				'image_title_letterspace'   => 'imageMetadata.decoration.titleFont.font.*.letterSpacing',
+				'image_title_lineheight'    => 'imageMetadata.decoration.titleFont.font.*.lineHeight',
+				'image_title_alignment'     => 'imageMetadata.decoration.titleFont.font.*.textAlign',
+				'image_caption_font'        => 'imageMetadata.decoration.captionFont.font.*',
+				'image_caption_color'       => 'imageMetadata.decoration.captionFont.font.*.color',
+				'image_caption_size'        => 'imageMetadata.decoration.captionFont.font.*.size',
+				'image_caption_letterspace' => 'imageMetadata.decoration.captionFont.font.*.letterSpacing',
+				'image_caption_lineheight'  => 'imageMetadata.decoration.captionFont.font.*.lineHeight',
+				'image_caption_alignment'   => 'imageMetadata.decoration.captionFont.font.*.textAlign',
+				'image_description_font'    => 'imageMetadata.decoration.descriptionFont.body.font.*',
+				'image_description_color'   => 'imageMetadata.decoration.descriptionFont.body.font.*.color',
+				'image_description_size'    => 'imageMetadata.decoration.descriptionFont.body.font.*.size',
+				'image_description_letterspace' => 'imageMetadata.decoration.descriptionFont.body.font.*.letterSpacing',
+				'image_description_lineheight' => 'imageMetadata.decoration.descriptionFont.body.font.*.lineHeight',
+				'image_description_alignment' => 'imageMetadata.decoration.descriptionFont.body.font.*.textAlign',
+			);
+			$image_module_map = isset( $conversion_map['et_pb_image'] ) && is_array( $conversion_map['et_pb_image'] )
+				? $conversion_map['et_pb_image']
+				: array();
+
+			$image_module_map['attributeMap'] = array_merge(
+				isset( $image_module_map['attributeMap'] ) && is_array( $image_module_map['attributeMap'] )
+					? $image_module_map['attributeMap']
+					: array(),
+				$image_attribute_map
+			);
+			$image_module_map['valueExpansionFunctionMap'] = array_merge(
+				isset( $image_module_map['valueExpansionFunctionMap'] ) && is_array( $image_module_map['valueExpansionFunctionMap'] )
+					? $image_module_map['valueExpansionFunctionMap']
+					: array(),
+				array(
+					'image_title_font'       => array( $this, 'convert_divi_5_image_helper_font' ),
+					'image_caption_font'     => array( $this, 'convert_divi_5_image_helper_font' ),
+					'image_description_font' => array( $this, 'convert_divi_5_image_helper_font' ),
+					'image_details_margin'   => array( $this, 'convert_divi_5_image_helper_spacing' ),
+					'image_details_padding'  => array( $this, 'convert_divi_5_image_helper_spacing' ),
+					'image_details_border'   => array( $this, 'convert_divi_5_image_helper_border' ),
+				)
+			);
+			$conversion_map['et_pb_image'] = $image_module_map;
+		}
+
 		return $conversion_map;
+	}
+
+	/**
+	 * Convert Divi 4 font data to the Divi 5 image helper font format.
+	 *
+	 * @param mixed $value Legacy value.
+	 * @return array
+	 */
+	public function convert_divi_5_image_helper_font( $value ) {
+		if ( ! is_string( $value ) || '||||||||' === $value ) {
+			return array();
+		}
+
+		$value_parts = explode( '|', $value );
+		$font        = array();
+		$font_style  = array();
+
+		if ( ! empty( $value_parts[0] ) ) {
+			$font['family'] = $value_parts[0];
+		}
+
+		if ( ! empty( $value_parts[1] ) ) {
+			$font['weight'] = 'on' === $value_parts[1] ? '700' : $value_parts[1];
+		}
+
+		if ( isset( $value_parts[2] ) && 0 === strpos( $value_parts[2], 'on' ) ) {
+			$font_style[] = 'italic';
+		}
+
+		if ( isset( $value_parts[3] ) && 0 === strpos( $value_parts[3], 'on' ) ) {
+			$font_style[] = 'uppercase';
+		}
+
+		if ( isset( $value_parts[4] ) && 0 === strpos( $value_parts[4], 'on' ) ) {
+			$font_style[] = 'underline';
+		}
+
+		if ( isset( $value_parts[5] ) && 0 === strpos( $value_parts[5], 'on' ) ) {
+			$font_style[] = 'capitalize';
+		}
+
+		if ( isset( $value_parts[6] ) && 0 === strpos( $value_parts[6], 'on' ) ) {
+			$font_style[] = 'strikethrough';
+		}
+
+		if ( ! empty( $font_style ) ) {
+			$font['style'] = $font_style;
+		}
+
+		if ( ! empty( $value_parts[7] ) ) {
+			$font['lineColor'] = $value_parts[7];
+		}
+
+		if ( ! empty( $value_parts[8] ) ) {
+			$font['lineStyle'] = $value_parts[8];
+		}
+
+		return $font;
+	}
+
+	/**
+	 * Convert Divi 4 spacing data to the Divi 5 image helper spacing format.
+	 *
+	 * @param mixed $value Legacy value.
+	 * @return array
+	 */
+	public function convert_divi_5_image_helper_spacing( $value ) {
+		if ( ! is_string( $value ) ) {
+			return array();
+		}
+
+		$value_parts = explode( '|', $value );
+		$sync_value  = function( $raw_value ) {
+			return in_array( strtolower( trim( (string) $raw_value ) ), array( '1', 'on', 'true' ), true ) ? 'on' : 'off';
+		};
+
+		return array(
+			'top'            => isset( $value_parts[0] ) ? $value_parts[0] : '',
+			'right'          => isset( $value_parts[1] ) ? $value_parts[1] : '',
+			'bottom'         => isset( $value_parts[2] ) ? $value_parts[2] : '',
+			'left'           => isset( $value_parts[3] ) ? $value_parts[3] : '',
+			'syncVertical'   => isset( $value_parts[4] ) ? $sync_value( $value_parts[4] ) : 'off',
+			'syncHorizontal' => isset( $value_parts[5] ) ? $sync_value( $value_parts[5] ) : 'off',
+		);
+	}
+
+	/**
+	 * Convert Divi 4 border radius data to the Divi 5 image helper border format.
+	 *
+	 * @param mixed $value Legacy value.
+	 * @param array $context Legacy sibling values.
+	 * @return array
+	 */
+	public function convert_divi_5_image_helper_border( $value, $context = array() ) {
+		if ( ! is_string( $value ) ) {
+			return array();
+		}
+
+		$context         = is_array( $context ) ? $context : array();
+		$value_parts     = explode( '|', $value );
+		$is_single_value = false === strpos( $value, '|' );
+		$radius          = array(
+			'sync'        => $is_single_value ? 'on' : ( isset( $value_parts[0] ) && in_array( strtolower( trim( (string) $value_parts[0] ) ), array( '1', 'on', 'true' ), true ) ? 'on' : 'off' ),
+			'topLeft'     => $is_single_value ? $value : ( isset( $value_parts[1] ) ? $value_parts[1] : '' ),
+			'topRight'    => $is_single_value ? $value : ( isset( $value_parts[2] ) ? $value_parts[2] : '' ),
+			'bottomRight' => $is_single_value ? $value : ( isset( $value_parts[3] ) ? $value_parts[3] : '' ),
+			'bottomLeft'  => $is_single_value ? $value : ( isset( $value_parts[4] ) ? $value_parts[4] : '' ),
+		);
+		$border          = array(
+			'radius' => $radius,
+		);
+		$style           = array(
+			'color' => isset( $context['border_color'] ) ? $context['border_color'] : ( isset( $context['image_details_border_color'] ) ? $context['image_details_border_color'] : '' ),
+			'width' => isset( $context['border_width'] ) ? $context['border_width'] : ( isset( $context['image_details_border_width'] ) ? $context['image_details_border_width'] : '' ),
+			'style' => isset( $context['border_style'] ) ? $context['border_style'] : ( isset( $context['image_details_border_style'] ) ? $context['image_details_border_style'] : '' ),
+		);
+
+		if ( '' !== $style['color'] || '' !== $style['width'] || '' !== $style['style'] ) {
+			$border['styles'] = array(
+				'all' => $style,
+			);
+		}
+
+		return $border;
 	}
 }

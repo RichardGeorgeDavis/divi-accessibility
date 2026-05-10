@@ -7,4 +7,34 @@
 	visibility: visible !important;
 	opacity: 1 !important;
 }
-
+header .menu-item-has-children,
+.et_pb_menu .menu-item-has-children {
+	position: relative;
+}
+.da11y-dropdown-toggle {
+	position: absolute;
+	top: 50%;
+	right: 0.4em;
+	width: 1rem;
+	height: 1rem;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	color: inherit;
+	cursor: pointer;
+	transform: translateY(-50%);
+}
+.da11y-dropdown-toggle:focus {
+	outline: 2px solid currentColor;
+	outline-offset: 3px;
+}
+.da11y-dropdown-toggle::after {
+	content: "";
+	display: block;
+	width: 0.35rem;
+	height: 0.35rem;
+	margin: 0.2rem auto 0;
+	border-right: 2px solid currentColor;
+	border-bottom: 2px solid currentColor;
+	transform: rotate(45deg);
+}

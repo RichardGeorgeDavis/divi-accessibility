@@ -1,7 +1,9 @@
 jQuery(document).ready(function($) {
-		var labels = (_da11y && _da11y.control_labels) || {
+		var da11y = window._da11y || {};
+		var labels = da11y.control_labels || {
 			close_search: 'Close search',
 			open_search: 'Open search',
+			open_site_search: 'Open site search',
 			search: 'Search',
 			search_for: 'Search for...',
 			view_cart: 'View cart'
@@ -65,7 +67,8 @@ jQuery(document).ready(function($) {
 		ensureSearchLabel($(this), 'et_pb_s_module_input_' + e, false);
 	});
 
-	setControlLabel('#et_search_icon, .et_pb_menu__icon.et_pb_menu__search-button', labels.open_search, 'button');
+	setControlLabel('#et_search_icon', labels.open_search, 'button');
+	setControlLabel('.et_pb_menu__icon.et_pb_menu__search-button', labels.open_site_search || labels.open_search, 'button');
 	setControlLabel('.et_close_search_field, .et_pb_menu__icon.et_pb_menu__close-search-button', labels.close_search, 'button');
 	setControlLabel('.et-cart-info, .et_pb_menu__icon.et_pb_menu__cart-button', labels.view_cart, 'link');
 
@@ -91,7 +94,7 @@ jQuery(document).ready(function($) {
 	* Correct labels on social media icons
 	*/
 	$('.et-social-facebook a.icon span').text('Facebook');
-	$('.et-social-twitter a.icon span').text('Twitter');
+	$('.et-social-twitter a.icon span').text('X');
 	$('.et-social-google-plus a.icon span').text('Google Plus');
 	$('.et-social-pinterest a.icon span').text('Pinterest');
 	$('.et-social-linkedin a.icon span').text('LinkedIn');

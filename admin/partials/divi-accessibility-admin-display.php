@@ -124,7 +124,7 @@ $resources         = array(
 										</div>
 									<?php endif; ?>
 								</div>
-								<div class="box-content minibox da11y-setting-control <?php echo 'color' === $type ? 'da11y-setting-control-color' : ''; ?> <?php echo in_array( $type, array( 'text', 'textarea' ), true ) ? 'da11y-setting-control-text' : ''; ?>">
+								<div class="box-content minibox da11y-setting-control <?php echo 'color' === $type ? 'da11y-setting-control-color' : ''; ?> <?php echo in_array( $type, array( 'text', 'textarea', 'select' ), true ) ? 'da11y-setting-control-text' : ''; ?>">
 									<?php
 									if ( 'color' === $type ) {
 										$this->divi_accessibility_color_picker_cb(
@@ -143,6 +143,16 @@ $resources         = array(
 												'label_subtext' => $subtext,
 												'labelledby'    => $title_id,
 												'type'          => $type,
+											)
+										);
+									} elseif ( 'select' === $type ) {
+										$this->divi_accessibility_select_cb(
+											array(
+												'name'          => $name,
+												'label_for'     => $label_for,
+												'label_subtext' => $subtext,
+												'labelledby'    => $title_id,
+												'options'       => isset( $setting['options'] ) ? $setting['options'] : array(),
 											)
 										);
 									} else {

@@ -198,11 +198,27 @@ class Divi_Accessibility_Public {
 			$data['control_labels'] = array(
 				'close_search' => __( 'Close search', 'divi-accessibility' ),
 				'open_search'  => __( 'Open search', 'divi-accessibility' ),
+				'open_site_search' => __( 'Open site search', 'divi-accessibility' ),
 				'search'       => __( 'Search', 'divi-accessibility' ),
+				'search_form'  => __( 'Search form', 'divi-accessibility' ),
+				'menu_search_form' => __( 'Menu search form', 'divi-accessibility' ),
 				'search_for'   => __( 'Search for...', 'divi-accessibility' ),
 				'view_cart'    => __( 'View cart', 'divi-accessibility' ),
 			);
 		}
+		$data['accessibility_labels'] = array(
+			'opens_in_new_tab' => __( 'opens in a new tab', 'divi-accessibility' ),
+			'visit_our'        => __( 'Visit our', 'divi-accessibility' ),
+			'page'             => __( 'page', 'divi-accessibility' ),
+			'read_more_about'  => __( 'Read more about', 'divi-accessibility' ),
+			'video_play_button' => __( 'Video play button', 'divi-accessibility' ),
+			'open_and_close_mobile_menu' => __( 'Open and close mobile menu', 'divi-accessibility' ),
+			'audio_player'     => __( 'Audio player', 'divi-accessibility' ),
+			'by'               => __( 'by', 'divi-accessibility' ),
+			'of'               => __( 'of', 'divi-accessibility' ),
+			'back_to_top'      => __( 'Back to top', 'divi-accessibility' ),
+			'submenu'          => __( 'submenu', 'divi-accessibility' ),
+		);
 		return $data;
 	}
 
@@ -222,6 +238,7 @@ class Divi_Accessibility_Public {
 			'aria_support',
 			'aria_hidden_icons',
 			'aria_mobile_menu',
+			'hide_image_title_tooltips',
 			'developer_mode',
 		);
 	}
@@ -242,6 +259,7 @@ class Divi_Accessibility_Public {
 			'slider_accessibility',
 			'underline_urls',
 			'underline_urls_not_title',
+			'underline_urls_not_menu',
 		);
 	}
 
@@ -481,6 +499,847 @@ class Divi_Accessibility_Public {
 	}
 
 	/**
+	 * Return settings merged with defaults.
+	 *
+	 * @return array
+	 */
+	private function get_settings_with_defaults() {
+		return array_merge(
+			Divi_Accessibility_Admin::get_options_list(),
+			is_array( $this->settings ) ? $this->settings : array()
+		);
+	}
+
+	/**
+	 * Return a single setting value.
+	 *
+	 * @param string $name Setting name.
+	 * @return mixed
+	 */
+	private function get_setting_value( $name ) {
+		$settings = $this->get_settings_with_defaults();
+
+		return isset( $settings[ $name ] ) ? $settings[ $name ] : null;
+	}
+
+	/**
+	 * Whether frontend image alt processing should run.
+	 *
+	 * @return bool
+	 */
+	private function should_process_image_alt_text() {
+		return 'disabled' !== $this->get_setting_value( 'image_alt_source' )
+			|| 'disabled' !== $this->get_setting_value( 'image_alt_fallback_source' );
+	}
+
+	/**
+	 * Whether Divi 5 Image Helper rendering should run.
+	 *
+	 * @return bool
+	 */
+	private function should_render_image_helper_metadata() {
+		return 1 === (int) $this->get_setting_value( 'image_helper_module_fields' );
+	}
+
+	/**
+	 * Return the best known attachment ID for an image URL.
+	 *
+	 * @param string $url Image URL.
+	 * @return int
+	 */
+	private function get_attachment_id_by_url( $url ) {
+		global $wpdb;
+
+		if ( ! is_string( $url ) || '' === trim( $url ) ) {
+			return 0;
+		}
+
+		$image_url     = preg_replace( '/-(\d+)x(\d+)\./', '.', strtok( $url, '?' ) );
+		$attachment_id = (int) attachment_url_to_postid( $image_url );
+
+		if ( ! $attachment_id ) {
+			$parsed_url = wp_parse_url( $image_url );
+			$path       = is_array( $parsed_url ) && ! empty( $parsed_url['path'] ) ? $parsed_url['path'] : '';
+			$filename   = pathinfo( trim( $path, '/' ), PATHINFO_FILENAME );
+
+			if ( preg_match( '/%[0-9A-Fa-f]{2}/', $filename ) ) {
+				$filename = urldecode( $filename );
+			}
+
+			$filename = sanitize_file_name( $filename );
+
+			if ( '' !== $filename ) {
+				$results = $wpdb->get_results(
+					$wpdb->prepare(
+						"SELECT pm.post_id, pm.meta_value
+						FROM $wpdb->postmeta pm
+						INNER JOIN $wpdb->posts p ON pm.post_id = p.ID
+						WHERE pm.meta_key = '_wp_attached_file'
+						AND pm.meta_value LIKE %s
+						AND p.post_type = 'attachment'
+						AND p.post_status = 'inherit'",
+						'%' . $wpdb->esc_like( $filename ) . '%'
+					)
+				);
+
+				if ( ! empty( $results ) ) {
+					foreach ( $results as $result ) {
+						if ( strtolower( pathinfo( $result->meta_value, PATHINFO_FILENAME ) ) === strtolower( $filename ) ) {
+							$attachment_id = (int) $result->post_id;
+							break;
+						}
+					}
+				}
+			}
+		}
+
+		if ( $attachment_id && function_exists( 'pll_get_post' ) && function_exists( 'pll_current_language' ) ) {
+			$translation_id = pll_get_post( $attachment_id, pll_current_language() );
+			if ( $translation_id ) {
+				$attachment_id = (int) $translation_id;
+			}
+		}
+
+		if ( $attachment_id && class_exists( 'sitepress' ) ) {
+			$attachment_id = (int) apply_filters( 'wpml_object_id', $attachment_id, 'attachment', true );
+		}
+
+		return $attachment_id;
+	}
+
+	/**
+	 * Return image attachment metadata used by frontend helpers.
+	 *
+	 * @param string $url Image URL.
+	 * @return array
+	 */
+	private function get_image_attachment_data( $url ) {
+		$attachment_id = $this->get_attachment_id_by_url( $url );
+		$image_url     = preg_replace( '/-(\d+)x(\d+)\./', '.', strtok( (string) $url, '?' ) );
+		$filename      = pathinfo( wp_basename( $image_url ), PATHINFO_FILENAME );
+		$filename      = trim( str_replace( array( '-', '_' ), ' ', $filename ) );
+
+		if ( ! $attachment_id ) {
+			return array(
+				'id'          => 0,
+				'alt'         => '',
+				'title'       => '',
+				'caption'     => '',
+				'description' => '',
+				'filename'    => $filename,
+			);
+		}
+
+		$post = get_post( $attachment_id );
+
+		if ( ! $post || 'attachment' !== $post->post_type ) {
+			return array(
+				'id'          => 0,
+				'alt'         => '',
+				'title'       => '',
+				'caption'     => '',
+				'description' => '',
+				'filename'    => $filename,
+			);
+		}
+
+		return array(
+			'id'          => $attachment_id,
+			'alt'         => (string) get_post_meta( $attachment_id, '_wp_attachment_image_alt', true ),
+			'title'       => (string) $post->post_title,
+			'caption'     => (string) $post->post_excerpt,
+			'description' => (string) $post->post_content,
+			'filename'    => $filename,
+		);
+	}
+
+	/**
+	 * Resolve frontend alt text according to plugin settings.
+	 *
+	 * @param string $url Existing image URL.
+	 * @param string $module_alt Existing module alt text.
+	 * @param bool   $module_alt_is_authored Whether the module/rendered image explicitly authored an alt attribute.
+	 * @return string
+	 */
+	private function resolve_image_alt_text( $url, $module_alt, $module_alt_is_authored = false ) {
+		$module_alt      = trim( (string) $module_alt );
+		$alt_source      = (string) $this->get_setting_value( 'image_alt_source' );
+		$fallback_source = (string) $this->get_setting_value( 'image_alt_fallback_source' );
+
+		if ( 'media_override' !== $alt_source ) {
+			if ( '' !== $module_alt ) {
+				return $module_alt;
+			}
+
+			if ( $module_alt_is_authored ) {
+				return '';
+			}
+		}
+
+		$attachment_data = $this->get_image_attachment_data( $url );
+
+		if ( 'disabled' !== $alt_source && '' !== trim( $attachment_data['alt'] ) ) {
+			return sanitize_text_field( $attachment_data['alt'] );
+		}
+
+		if ( 'title' === $fallback_source && '' !== trim( $attachment_data['title'] ) ) {
+			return sanitize_text_field( $attachment_data['title'] );
+		}
+
+		if ( 'filename' === $fallback_source && '' !== trim( $attachment_data['filename'] ) ) {
+			return sanitize_text_field( $attachment_data['filename'] );
+		}
+
+		return $module_alt;
+	}
+
+	/**
+	 * Override Divi 4 shortcode module image alt attributes when configured.
+	 *
+	 * @param array  $props Module props.
+	 * @param array  $attrs Original attrs.
+	 * @param string $render_slug Module slug.
+	 * @param string $_address Module address.
+	 * @param string $content Module content.
+	 * @return array
+	 */
+	public function maybe_override_module_image_alt( $props, $attrs = array(), $render_slug = '', $_address = '', $content = '' ) {
+		unset( $_address, $content );
+
+		$attrs = is_array( $attrs ) ? $attrs : array();
+
+		if ( ! $this->should_process_image_alt_text() || ! is_array( $props ) ) {
+			return $props;
+		}
+
+		if ( function_exists( 'et_fb_is_enabled' ) && et_fb_is_enabled() ) {
+			return $props;
+		}
+
+		if ( function_exists( 'et_builder_bfb_enabled' ) && et_builder_bfb_enabled() ) {
+			return $props;
+		}
+
+		switch ( $render_slug ) {
+			case 'et_pb_image':
+			case 'et_pb_fullwidth_image':
+				if ( ! empty( $props['src'] ) ) {
+					$has_alt      = array_key_exists( 'alt', $attrs );
+					$props['alt'] = $this->resolve_image_alt_text( $props['src'], $has_alt ? $props['alt'] : '', $has_alt );
+				}
+				break;
+
+			case 'et_pb_blurb':
+				if ( isset( $props['use_icon'] ) && 'on' === $props['use_icon'] ) {
+					break;
+				}
+				if ( ! empty( $props['image'] ) ) {
+					$has_alt      = array_key_exists( 'alt', $attrs );
+					$props['alt'] = $this->resolve_image_alt_text( $props['image'], $has_alt ? $props['alt'] : '', $has_alt );
+				}
+				break;
+
+			case 'et_pb_fullwidth_header':
+				if ( ! empty( $props['logo_image_url'] ) ) {
+					$has_alt                = array_key_exists( 'logo_alt_text', $attrs );
+					$props['logo_alt_text'] = $this->resolve_image_alt_text( $props['logo_image_url'], $has_alt ? $props['logo_alt_text'] : '', $has_alt );
+				}
+				if ( ! empty( $props['header_image_url'] ) ) {
+					$has_alt                 = array_key_exists( 'image_alt_text', $attrs );
+					$props['image_alt_text'] = $this->resolve_image_alt_text( $props['header_image_url'], $has_alt ? $props['image_alt_text'] : '', $has_alt );
+				}
+				break;
+
+			case 'et_pb_slide':
+				if ( ! empty( $props['image'] ) ) {
+					$has_alt            = array_key_exists( 'image_alt', $attrs );
+					$props['image_alt'] = $this->resolve_image_alt_text( $props['image'], $has_alt ? $props['image_alt'] : '', $has_alt );
+				}
+				break;
+		}
+
+		return $props;
+	}
+
+	/**
+	 * Load a small HTML fragment into DOMDocument.
+	 *
+	 * @param string $html HTML fragment.
+	 * @return DOMDocument|null
+	 */
+	private function load_html_fragment( $html ) {
+		if ( ! class_exists( 'DOMDocument' ) || ! is_string( $html ) || '' === $html ) {
+			return null;
+		}
+
+		$dom = new DOMDocument( '1.0', 'UTF-8' );
+		$previous = libxml_use_internal_errors( true );
+
+		if ( function_exists( 'mb_encode_numericentity' ) ) {
+			$html = mb_encode_numericentity( $html, array( 0x80, 0x10FFFF, 0, 0xFFFFFF ), 'UTF-8' );
+		} else {
+			$html = '<?xml version="1.0" encoding="UTF-8"?>' . "\n" . $html;
+		}
+
+		$loaded = $dom->loadHTML( $html, LIBXML_NOERROR | LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
+		libxml_clear_errors();
+		libxml_use_internal_errors( $previous );
+		$dom->encoding = 'UTF-8';
+
+		return $loaded ? $dom : null;
+	}
+
+	/**
+	 * Save DOMDocument back to a string.
+	 *
+	 * @param DOMDocument $dom DOM document.
+	 * @return string
+	 */
+	private function save_html_fragment( $dom ) {
+		$html = $dom->saveHTML();
+
+		if ( function_exists( 'mb_decode_numericentity' ) ) {
+			$html = mb_decode_numericentity( $html, array( 0x80, 0x10FFFF, 0, 0xFFFFFF ), 'UTF-8' );
+		}
+
+		return $html;
+	}
+
+	/**
+	 * Append safe HTML content into a DOM node.
+	 *
+	 * @param DOMDocument $dom Parent DOM document.
+	 * @param DOMNode     $node Node to receive children.
+	 * @param string      $html HTML content.
+	 * @return void
+	 */
+	private function append_safe_html_to_node( $dom, $node, $html ) {
+		$html = trim( wp_kses_post( $html ) );
+
+		if ( '' === $html ) {
+			return;
+		}
+
+		$fragment_dom = $this->load_html_fragment( '<div data-da11y-fragment-root="1">' . $html . '</div>' );
+
+		if ( ! $fragment_dom ) {
+			$node->appendChild( $dom->createTextNode( wp_strip_all_tags( $html ) ) );
+			return;
+		}
+
+		$xpath = new DOMXPath( $fragment_dom );
+		$root  = $xpath->query( '//*[@data-da11y-fragment-root="1"]' );
+		$root  = $root && $root->length ? $root->item( 0 ) : null;
+
+		if ( ! $root ) {
+			$node->appendChild( $dom->createTextNode( wp_strip_all_tags( $html ) ) );
+			return;
+		}
+
+		foreach ( iterator_to_array( $root->childNodes ) as $child ) {
+			$node->appendChild( $dom->importNode( $child, true ) );
+		}
+	}
+
+	/**
+	 * Add configured alt text to images inside rendered output.
+	 *
+	 * @param string $output Rendered output.
+	 * @return string
+	 */
+	private function add_image_alt_text_to_output( $output ) {
+		if ( ! $this->should_process_image_alt_text() ) {
+			return $output;
+		}
+
+		$dom = $this->load_html_fragment( $output );
+
+		if ( ! $dom ) {
+			return $output;
+		}
+
+		$updated = false;
+
+		foreach ( $dom->getElementsByTagName( 'img' ) as $image ) {
+			$src = $image->getAttribute( 'src' );
+
+			if ( '' === $src ) {
+				continue;
+			}
+
+			$has_alt     = $image->hasAttribute( 'alt' );
+			$current_alt = $has_alt ? $image->getAttribute( 'alt' ) : '';
+			$new_alt     = $this->resolve_image_alt_text( $src, $current_alt, $has_alt );
+
+			if ( $new_alt !== $current_alt ) {
+				$image->setAttribute( 'alt', $new_alt );
+				$updated = true;
+			}
+		}
+
+		return $updated ? $this->save_html_fragment( $dom ) : $output;
+	}
+
+	/**
+	 * Return the first available Divi 5 image source from attrs.
+	 *
+	 * @param array $attrs Module attrs.
+	 * @return string
+	 */
+	private function get_divi_5_image_src_from_attrs( array $attrs ) {
+		$value = $this->get_nested_module_prop( $attrs, array( 'image', 'innerContent', 'desktop', 'value', 'src' ) );
+
+		return is_string( $value ) ? $value : '';
+	}
+
+	/**
+	 * Choose module/media metadata text for an image helper field.
+	 *
+	 * @param string $module_value Module value.
+	 * @param string $media_value Media value.
+	 * @return string
+	 */
+	private function resolve_image_metadata_text( $module_value, $media_value ) {
+		$source       = (string) $this->get_setting_value( 'image_metadata_text_source' );
+		$module_value = trim( (string) $module_value );
+		$media_value  = trim( (string) $media_value );
+
+		if ( 'media_override' === $source && '' !== $media_value ) {
+			return $media_value;
+		}
+
+		if ( 'media_when_empty' === $source && '' === $module_value && '' !== $media_value ) {
+			return $media_value;
+		}
+
+		return $module_value;
+	}
+
+	/**
+	 * Build Divi 5 image metadata field data.
+	 *
+	 * @param array $attrs Module attrs.
+	 * @return array
+	 */
+	private function get_divi_5_image_metadata( array $attrs ) {
+		$image_src        = $this->get_divi_5_image_src_from_attrs( $attrs );
+		$attachment_data  = '' !== $image_src ? $this->get_image_attachment_data( $image_src ) : array();
+		$title_text       = $this->get_module_prop_string( $attrs, array( array( 'imageMetadata', 'innerContent', 'titleText', 'desktop', 'value' ) ) );
+		$caption_text     = $this->get_module_prop_string( $attrs, array( array( 'imageMetadata', 'innerContent', 'captionText', 'desktop', 'value' ) ) );
+		$description_text = $this->get_module_prop_string( $attrs, array( array( 'imageMetadata', 'innerContent', 'descriptionText', 'desktop', 'value' ) ) );
+		$heading_level    = $this->get_module_prop_string( $attrs, array( array( 'imageMetadata', 'decoration', 'titleFont', 'font', 'desktop', 'value', 'headingLevel' ) ) );
+
+		if ( ! in_array( $heading_level, array( 'h1', 'h2', 'h3', 'h4', 'h5', 'h6' ), true ) ) {
+			$heading_level = 'h2';
+		}
+
+		return array(
+			'image_src'         => $image_src,
+			'title_text'        => $this->resolve_image_metadata_text( $title_text, isset( $attachment_data['title'] ) ? $attachment_data['title'] : '' ),
+			'caption_text'      => $this->resolve_image_metadata_text( $caption_text, isset( $attachment_data['caption'] ) ? $attachment_data['caption'] : '' ),
+			'description_text'  => $this->resolve_image_metadata_text( $description_text, isset( $attachment_data['description'] ) ? $attachment_data['description'] : '' ),
+			'title_heading'     => $heading_level,
+			'show_title'        => $this->module_prop_is_enabled( $attrs, array( array( 'imageMetadata', 'advanced', 'showTitle', 'desktop', 'value' ) ) ),
+			'show_caption'      => $this->module_prop_is_enabled( $attrs, array( array( 'imageMetadata', 'advanced', 'showCaption', 'desktop', 'value' ) ) ),
+			'show_description'  => $this->module_prop_is_enabled( $attrs, array( array( 'imageMetadata', 'advanced', 'showDescription', 'desktop', 'value' ) ) ),
+			'use_text_overlay'  => $this->module_prop_is_enabled( $attrs, array( array( 'imageMetadata', 'decoration', 'showImageMetaAsOverlay', 'desktop', 'value' ) ) ),
+			'aspect_ratio'      => $this->get_module_prop_string( $attrs, array( array( 'image', 'innerContent', 'desktop', 'value', 'aspectRatio' ) ) ),
+		);
+	}
+
+	/**
+	 * Add Divi 5 image metadata markup to rendered output.
+	 *
+	 * @param string $output Rendered output.
+	 * @param array  $attrs Module attrs.
+	 * @return string
+	 */
+	private function add_image_metadata_to_output( $output, array $attrs ) {
+		if ( ! $this->should_render_image_helper_metadata() ) {
+			return $output;
+		}
+
+		$metadata = $this->get_divi_5_image_metadata( $attrs );
+
+		if (
+			( ! $metadata['show_title'] || '' === trim( $metadata['title_text'] ) )
+			&& ( ! $metadata['show_caption'] || '' === trim( $metadata['caption_text'] ) )
+			&& ( ! $metadata['show_description'] || '' === trim( $metadata['description_text'] ) )
+			&& ( '' === $metadata['aspect_ratio'] || 'none' === $metadata['aspect_ratio'] )
+		) {
+			return $output;
+		}
+
+		$dom = $this->load_html_fragment( $output );
+
+		if ( ! $dom ) {
+			return $output;
+		}
+
+		$xpath       = new DOMXPath( $dom );
+		$wrap_nodes  = $xpath->query( "//*[contains(concat(' ', normalize-space(@class), ' '), ' et_pb_image_wrap ')]" );
+		$image_wrap  = $wrap_nodes && $wrap_nodes->length ? $wrap_nodes->item( 0 ) : null;
+		$changed     = false;
+		$aspect      = trim( $metadata['aspect_ratio'] );
+
+		if ( $image_wrap && '' !== $aspect && 'none' !== $aspect && preg_match( '#^\d+/\d+$#', $aspect ) ) {
+			$existing_style = $image_wrap->getAttribute( 'style' );
+			$image_wrap->setAttribute( 'style', trim( $existing_style . '; aspect-ratio: ' . $aspect . '; overflow: hidden;' ) );
+
+			$images = $image_wrap->getElementsByTagName( 'img' );
+			if ( $images->length ) {
+				$img            = $images->item( 0 );
+				$existing_style = $img->getAttribute( 'style' );
+				$img->setAttribute( 'style', trim( $existing_style . '; width: 100%; height: 100%; object-fit: cover;' ) );
+			}
+
+			$changed = true;
+		}
+
+		if ( ! $image_wrap ) {
+			return $changed ? $this->save_html_fragment( $dom ) : $output;
+		}
+
+		$existing_metadata = $xpath->query( "//*[contains(concat(' ', normalize-space(@class), ' '), ' da11y-image-metadata-container ')]" );
+		if ( $existing_metadata && $existing_metadata->length ) {
+			return $changed ? $this->save_html_fragment( $dom ) : $output;
+		}
+
+		$container_classes = 'et_pb_image_metadata_container da11y-image-metadata-container';
+		$container         = $dom->createElement( 'div' );
+		$container->setAttribute( 'class', $container_classes );
+
+		if ( $metadata['use_text_overlay'] ) {
+			$container->setAttribute( 'style', 'position:absolute;top:0;left:0;' );
+		}
+
+		if ( $metadata['show_title'] && '' !== trim( $metadata['title_text'] ) ) {
+			$title = $dom->createElement( $metadata['title_heading'] );
+			$title->setAttribute( 'class', 'et_pb_image_title' );
+			$title->appendChild( $dom->createTextNode( wp_strip_all_tags( $metadata['title_text'] ) ) );
+			$container->appendChild( $title );
+		}
+
+		if ( $metadata['show_caption'] && '' !== trim( $metadata['caption_text'] ) ) {
+			$caption = $dom->createElement( 'p' );
+			$caption->setAttribute( 'class', 'et_pb_image_caption' );
+			$caption->appendChild( $dom->createTextNode( wp_strip_all_tags( $metadata['caption_text'] ) ) );
+			$container->appendChild( $caption );
+		}
+
+		if ( $metadata['show_description'] && '' !== trim( $metadata['description_text'] ) ) {
+			$description = $dom->createElement( 'div' );
+			$description->setAttribute( 'class', 'et_pb_image_description' );
+			$this->append_safe_html_to_node( $dom, $description, $metadata['description_text'] );
+			$container->appendChild( $description );
+		}
+
+		if ( $container->hasChildNodes() ) {
+			if ( $image_wrap->nextSibling ) {
+				$image_wrap->parentNode->insertBefore( $container, $image_wrap->nextSibling );
+			} else {
+				$image_wrap->parentNode->appendChild( $container );
+			}
+			$changed = true;
+		}
+
+		return $changed ? $this->save_html_fragment( $dom ) : $output;
+	}
+
+	/**
+	 * Filter Divi 5 image module wrappers.
+	 *
+	 * @param string $module_wrapper Rendered module wrapper.
+	 * @param array  $args Divi module args.
+	 * @return string
+	 */
+	public function maybe_filter_divi_5_image_module_wrapper( $module_wrapper, $args = array() ) {
+		if (
+			! is_string( $module_wrapper )
+			|| ! is_array( $args )
+			|| empty( $args['name'] )
+			|| 'divi/image' !== $args['name']
+		) {
+			return $module_wrapper;
+		}
+
+		$attrs = isset( $args['attrs'] ) && is_array( $args['attrs'] ) ? $args['attrs'] : array();
+		$output = $this->add_image_alt_text_to_output( $module_wrapper );
+		$output = $this->add_image_metadata_to_output( $output, $attrs );
+		$this->maybe_render_divi_5_image_helper_styles( $args );
+
+		return function_exists( 'et_core_esc_previously' ) ? et_core_esc_previously( $output ) : $output;
+	}
+
+	/**
+	 * Render Divi 5 Image Helper design styles when Divi's style API is available.
+	 *
+	 * @param array $args Divi module render args.
+	 * @return void
+	 */
+	private function maybe_render_divi_5_image_helper_styles( array $args ) {
+		if ( ! $this->should_render_image_helper_metadata() ) {
+			return;
+		}
+
+		if (
+			empty( $args['attrs'] )
+			|| ! is_array( $args['attrs'] )
+			|| empty( $args['elements'] )
+			|| ! is_object( $args['elements'] )
+			|| ! method_exists( $args['elements'], 'style' )
+			|| ! class_exists( '\ET\Builder\FrontEnd\Module\Style' )
+			|| ! class_exists( '\ET\Builder\Packages\StyleLibrary\Utils\StyleDeclarations' )
+		) {
+			return;
+		}
+
+		$attrs       = $args['attrs'];
+		$elements    = $args['elements'];
+		$order_class = '';
+
+		if ( isset( $elements->order_class ) && is_string( $elements->order_class ) ) {
+			$order_class = $elements->order_class;
+		} elseif ( isset( $elements->orderClass ) && is_string( $elements->orderClass ) ) {
+			$order_class = $elements->orderClass;
+		}
+
+		if ( '' === $order_class || empty( $args['id'] ) || empty( $args['name'] ) ) {
+			return;
+		}
+
+		$image_decoration    = isset( $attrs['image']['innerContent'] ) && is_array( $attrs['image']['innerContent'] )
+			? $attrs['image']['innerContent']
+			: array();
+		$metadata_decoration = isset( $attrs['imageMetadata']['decoration'] ) && is_array( $attrs['imageMetadata']['decoration'] )
+			? $attrs['imageMetadata']['decoration']
+			: array();
+
+		if ( empty( $image_decoration ) && empty( $metadata_decoration ) ) {
+			return;
+		}
+
+		try {
+			$styles = array(
+				$elements->style(
+					array(
+						'attrName'   => 'image',
+						'styleProps' => array(
+							'advancedStyles' => array(
+								array(
+									'componentName' => 'divi/common',
+									'props'         => array(
+										'selector'            => $order_class . ' .et_pb_image_wrap',
+										'attr'                => $image_decoration,
+										'declarationFunction' => function( $params ) {
+											return $this->get_divi_5_image_wrap_style_declarations( $params );
+										},
+									),
+								),
+								array(
+									'componentName' => 'divi/common',
+									'props'         => array(
+										'selector'            => $order_class . ' .et_pb_image_wrap img',
+										'attr'                => $image_decoration,
+										'declarationFunction' => function( $params ) {
+											return $this->get_divi_5_image_style_declarations( $params );
+										},
+									),
+								),
+							),
+						),
+					)
+				),
+				$elements->style(
+					array(
+						'attrName'   => 'imageMetadata',
+						'styleProps' => array(
+							'advancedStyles' => array(
+								array(
+									'componentName' => 'divi/common',
+									'props'         => array(
+										'selector'            => $order_class . ' .et_pb_image_metadata_container',
+										'attr'                => isset( $metadata_decoration['showImageMetaAsOverlay'] ) ? $metadata_decoration['showImageMetaAsOverlay'] : array(),
+										'declarationFunction' => function( $params ) {
+											return $this->get_divi_5_image_metadata_overlay_style_declarations( $params );
+										},
+									),
+								),
+								array(
+									'componentName' => 'divi/background',
+									'props'         => array(
+										'selector' => $order_class . ' .et_pb_image_metadata_container',
+										'attr'     => isset( $metadata_decoration['containerBackground'] ) ? $metadata_decoration['containerBackground'] : array(),
+									),
+								),
+								array(
+									'componentName' => 'divi/spacing',
+									'props'         => array(
+										'selector' => $order_class . ' .et_pb_image_metadata_container',
+										'attr'     => isset( $metadata_decoration['containerSpacing'] ) ? $metadata_decoration['containerSpacing'] : array(),
+									),
+								),
+								array(
+									'componentName' => 'divi/border',
+									'props'         => array(
+										'selector' => $order_class . ' .et_pb_image_metadata_container',
+										'attr'     => isset( $metadata_decoration['containerBorder'] ) ? $metadata_decoration['containerBorder'] : array(),
+									),
+								),
+								array(
+									'componentName' => 'divi/boxShadow',
+									'props'         => array(
+										'selector' => $order_class . ' .et_pb_image_metadata_container',
+										'attr'     => isset( $metadata_decoration['containerShadow'] ) ? $metadata_decoration['containerShadow'] : array(),
+									),
+								),
+								array(
+									'componentName' => 'divi/font',
+									'props'         => array(
+										'selector' => $order_class . ' .et_pb_image_title',
+										'attr'     => isset( $metadata_decoration['titleFont'] ) ? $metadata_decoration['titleFont'] : array(),
+									),
+								),
+								array(
+									'componentName' => 'divi/font',
+									'props'         => array(
+										'selector' => $order_class . ' .et_pb_image_caption',
+										'attr'     => isset( $metadata_decoration['captionFont'] ) ? $metadata_decoration['captionFont'] : array(),
+									),
+								),
+							),
+						),
+					)
+				),
+			);
+
+			if ( class_exists( '\ET\Builder\Packages\Module\Options\Element\ElementStyle' ) ) {
+				$styles[] = \ET\Builder\Packages\Module\Options\Element\ElementStyle::style(
+					array(
+						'selector' => $order_class . ' .et_pb_image_description',
+						'attrs'    => array(
+							'bodyFont' => isset( $metadata_decoration['descriptionFont'] ) ? $metadata_decoration['descriptionFont'] : array(),
+						),
+					)
+				);
+			}
+
+			\ET\Builder\FrontEnd\Module\Style::add(
+				array(
+					'id'            => (string) $args['id'],
+					'name'          => (string) $args['name'],
+					'orderIndex'    => isset( $args['orderIndex'] ) ? (int) $args['orderIndex'] : 0,
+					'storeInstance' => isset( $args['storeInstance'] ) ? (int) $args['storeInstance'] : 0,
+					'styles'        => $styles,
+				)
+			);
+		} catch ( Throwable $e ) {
+			return;
+		}
+	}
+
+	/**
+	 * Return a StyleDeclarations instance.
+	 *
+	 * @return object
+	 */
+	private function get_divi_5_style_declarations() {
+		return new \ET\Builder\Packages\StyleLibrary\Utils\StyleDeclarations(
+			array(
+				'returnType' => 'string',
+				'important'  => false,
+			)
+		);
+	}
+
+	/**
+	 * Return a normalized image aspect ratio value from Divi style params.
+	 *
+	 * @param array $params Divi style params.
+	 * @return string
+	 */
+	private function get_divi_5_image_aspect_ratio_from_style_params( $params ) {
+		$attr_value = isset( $params['attrValue'] ) ? $params['attrValue'] : array();
+		$aspect     = 'none';
+
+		if ( is_array( $attr_value ) && isset( $attr_value['aspectRatio'] ) && is_scalar( $attr_value['aspectRatio'] ) ) {
+			$aspect = (string) $attr_value['aspectRatio'];
+		} elseif ( is_scalar( $attr_value ) ) {
+			$aspect = (string) $attr_value;
+		}
+
+		$aspect = str_replace( ' ', '', trim( $aspect ) );
+
+		return preg_match( '#^\d+/\d+$#', $aspect ) ? $aspect : 'none';
+	}
+
+	/**
+	 * Build image wrapper style declarations.
+	 *
+	 * @param array $params Divi style params.
+	 * @return string
+	 */
+	private function get_divi_5_image_wrap_style_declarations( $params ) {
+		$aspect             = $this->get_divi_5_image_aspect_ratio_from_style_params( $params );
+		$style_declarations = $this->get_divi_5_style_declarations();
+
+		if ( 'none' !== $aspect ) {
+			$style_declarations->add( 'aspect-ratio', $aspect );
+			$style_declarations->add( 'overflow', 'hidden' );
+		} else {
+			$style_declarations->add( 'aspect-ratio', 'auto' );
+		}
+
+		return $style_declarations->value();
+	}
+
+	/**
+	 * Build image element style declarations.
+	 *
+	 * @param array $params Divi style params.
+	 * @return string
+	 */
+	private function get_divi_5_image_style_declarations( $params ) {
+		$aspect             = $this->get_divi_5_image_aspect_ratio_from_style_params( $params );
+		$style_declarations = $this->get_divi_5_style_declarations();
+
+		if ( 'none' !== $aspect ) {
+			$style_declarations->add( 'width', '100%' );
+			$style_declarations->add( 'height', '100%' );
+			$style_declarations->add( 'object-fit', 'cover' );
+		} else {
+			$style_declarations->add( 'width', 'auto' );
+			$style_declarations->add( 'height', 'auto' );
+			$style_declarations->add( 'object-fit', 'fill' );
+		}
+
+		return $style_declarations->value();
+	}
+
+	/**
+	 * Build metadata overlay style declarations.
+	 *
+	 * @param array $params Divi style params.
+	 * @return string
+	 */
+	private function get_divi_5_image_metadata_overlay_style_declarations( $params ) {
+		$style_declarations = $this->get_divi_5_style_declarations();
+		$is_overlay         = isset( $params['attrValue'] ) && $this->module_prop_value_is_enabled( $params['attrValue'] );
+
+		if ( $is_overlay ) {
+			$style_declarations->add( 'position', 'absolute' );
+			$style_declarations->add( 'top', '0' );
+			$style_declarations->add( 'left', '0' );
+		} else {
+			$style_declarations->add( 'position', 'relative' );
+			$style_declarations->add( 'top', 'unset' );
+			$style_declarations->add( 'left', 'unset' );
+		}
+
+		return $style_declarations->value();
+	}
+
+	/**
 	 * Prevent WordPress from adding a unique ID from menu list items.
 	 * Because Divi uses js to build the mobile navigation menu from the main navigation links,
 	 * unique ID's are cloned, causing issues with accessibility & validation.
@@ -517,6 +1376,24 @@ class Divi_Accessibility_Public {
 	}
 
 	/**
+	 * Determine whether a module prop value is enabled.
+	 *
+	 * @param mixed $value Module prop value.
+	 * @return bool
+	 */
+	private function module_prop_value_is_enabled( $value ) {
+		if ( true === $value || 1 === $value ) {
+			return true;
+		}
+
+		if ( ! is_scalar( $value ) ) {
+			return false;
+		}
+
+		return in_array( strtolower( trim( (string) $value ) ), array( '1', 'on', 'true' ), true );
+	}
+
+	/**
 	 * Determine whether a module prop is enabled in D4 or D5 storage formats.
 	 *
 	 * @param array $props Module props.
@@ -525,7 +1402,7 @@ class Divi_Accessibility_Public {
 	 */
 	private function module_prop_is_enabled( array $props, array $paths ) {
 		foreach ( $paths as $path ) {
-			if ( 'on' === $this->get_nested_module_prop( $props, $path ) ) {
+			if ( $this->module_prop_value_is_enabled( $this->get_nested_module_prop( $props, $path ) ) ) {
 				return true;
 			}
 		}
@@ -829,16 +1706,25 @@ class Divi_Accessibility_Public {
 			|| ! is_array( $block )
 			|| empty( $block['blockName'] )
 			|| 0 !== strpos( $block['blockName'], 'divi/' )
-			|| empty( $block['attrs'] )
-			|| ! is_array( $block['attrs'] )
 		) {
+			return $block_content;
+		}
+
+		$attrs = isset( $block['attrs'] ) && is_array( $block['attrs'] ) ? $block['attrs'] : array();
+
+		if ( 'divi/image' === $block['blockName'] ) {
+			$block_content = $this->add_image_alt_text_to_output( $block_content );
+			$block_content = $this->add_image_metadata_to_output( $block_content, $attrs );
+		}
+
+		if ( empty( $attrs ) ) {
 			return $block_content;
 		}
 
 		return $this->add_module_accessibility_to_output(
 			$block_content,
-			$this->get_module_accessibility_class_list( $block['attrs'] ),
-			$this->get_module_accessibility_attributes( $block['attrs'] )
+			$this->get_module_accessibility_class_list( $attrs ),
+			$this->get_module_accessibility_attributes( $attrs )
 		);
 	}
 

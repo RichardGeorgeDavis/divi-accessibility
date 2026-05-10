@@ -1,11 +1,40 @@
 jQuery(document).ready(function($) {
-		var labels = (_da11y && _da11y.control_labels) || {
+		var da11y = window._da11y || {};
+		var labels = da11y.control_labels || {
 			close_search: 'Close search',
 			open_search: 'Open search',
+			open_site_search: 'Open site search',
 			search: 'Search',
+			search_form: 'Search form',
+			menu_search_form: 'Menu search form',
 			search_for: 'Search for...',
 			view_cart: 'View cart'
 		};
+		var accessibilityLabels = da11y.accessibility_labels || {
+			opens_in_new_tab: 'opens in a new tab',
+			visit_our: 'Visit our',
+			page: 'page',
+			read_more_about: 'Read more about',
+			video_play_button: 'Video play button',
+			open_and_close_mobile_menu: 'Open and close mobile menu',
+			audio_player: 'Audio player',
+			by: 'by',
+			of: 'of',
+			back_to_top: 'Back to top'
+		};
+		labels.open_site_search = labels.open_site_search || labels.open_search || 'Open site search';
+		labels.search_form = labels.search_form || 'Search form';
+		labels.menu_search_form = labels.menu_search_form || 'Menu search form';
+		accessibilityLabels.opens_in_new_tab = accessibilityLabels.opens_in_new_tab || 'opens in a new tab';
+		accessibilityLabels.visit_our = accessibilityLabels.visit_our || 'Visit our';
+		accessibilityLabels.page = accessibilityLabels.page || 'page';
+		accessibilityLabels.read_more_about = accessibilityLabels.read_more_about || 'Read more about';
+		accessibilityLabels.video_play_button = accessibilityLabels.video_play_button || 'Video play button';
+		accessibilityLabels.open_and_close_mobile_menu = accessibilityLabels.open_and_close_mobile_menu || 'Open and close mobile menu';
+		accessibilityLabels.audio_player = accessibilityLabels.audio_player || 'Audio player';
+		accessibilityLabels.by = accessibilityLabels.by || 'by';
+		accessibilityLabels.of = accessibilityLabels.of || 'of';
+		accessibilityLabels.back_to_top = accessibilityLabels.back_to_top || 'Back to top';
 
 		/**
 	 * Add role="tabList".
@@ -81,26 +110,15 @@ jQuery(document).ready(function($) {
 	});
 
 
-	// Add aria-haspopup="true" support to submenus
-	$('ul.sub-menu .menu-item a').each(function () {
+	// Add aria-haspopup="true" support to parent submenu links.
+	$('li.menu-item-has-children > a').each(function () {
 		$(this).attr({
 			'aria-haspopup': 'true',
 		});
 	});
 
-	// Add role="link" to all links
-	$('a:not(.et-social-icon a, .wp-block-button__link, figure a, .et_pb_button, .et_pb_video_play a, .et_pb_tabs_controls a)').each(function () {
-		$(this).attr({
-			'role': 'link',
-		});
-	});
-
-	// Add role="button" to clickable elements
-	$('#et_search_icon, .et_close_search_field, #et_mobile_nav_menu, #searchsubmit, .icon, .wp-block-button__link, .et_pb_button, .et_pb_video_play a').each(function () {
-		$(this).attr({
-			'role': 'button',
-		});
-	});
+	// Add role="button" only to non-native clickable Divi controls.
+	$('#et_search_icon, .et_close_search_field, #et_mobile_nav_menu, .et_pb_video_play a').attr('role', 'button');
 
 	//Add aria support to reCAPTCHA
 	$('#g-recaptcha-response').each(function () {
@@ -402,6 +420,142 @@ jQuery(document).ready(function($) {
 	$('#et_search_icon, .et_pb_menu__icon.et_pb_menu__search-button').attr('aria-label', labels.open_search);
 	$('.et_close_search_field, .et_pb_menu__icon.et_pb_menu__close-search-button').attr('aria-label', labels.close_search);
 	$('.et-cart-info, .et_pb_menu__icon.et_pb_menu__cart-button').attr('aria-label', labels.view_cart);
+
+	$('header form.et-search-form').attr('aria-label', labels.search_form);
+	$('header form.et_pb_menu__search-form').attr('aria-label', labels.menu_search_form);
+	$('.et_pb_module.et_pb_menu .et_mobile_nav_menu').attr({
+		'aria-label': accessibilityLabels.open_and_close_mobile_menu,
+		'role': 'button',
+		'tabindex': 0
+	});
+
+	$('.et_pb_module.et_pb_menu .et_mobile_nav_menu').on('keydown', function(event) {
+		if (event.which === 13 || event.which === 32) {
+			event.preventDefault();
+			$(this).find('.mobile_menu_bar').trigger('click');
+		}
+	});
+
+	function normalizeSocialName(name) {
+		name = $.trim(name || '').replace(/^et-social-/, '').replace(/^et_pb_social_icon_/, '');
+
+		if ('twitter' === name.toLowerCase()) {
+			return 'X';
+		}
+
+		return name.charAt(0).toUpperCase() + name.slice(1);
+	}
+
+	$('.et-social-icon').each(function() {
+		var className = this.className || '';
+		var match = className.match(/et-social-([A-Za-z0-9_-]+)/);
+		var name = match ? normalizeSocialName(match[1]) : '';
+
+		if (name) {
+			$(this).find('a').attr('aria-label', accessibilityLabels.visit_our + ' ' + name + ' ' + accessibilityLabels.page);
+		}
+	});
+
+	$('.et_pb_social_icon > a.icon').each(function() {
+		var title = normalizeSocialName($(this).attr('title'));
+
+		if (title) {
+			$(this).attr('aria-label', accessibilityLabels.visit_our + ' ' + title + ' ' + accessibilityLabels.page);
+		}
+	});
+
+	$('.et_pb_module article.et_pb_post .post-content .more-link').each(function() {
+		var $link = $(this);
+
+		if ($.trim($link.text()).toLowerCase() !== 'read more') {
+			return;
+		}
+
+		var title = $.trim($link.closest('article').find('.entry-title a, .entry-title').first().text());
+
+		if (title) {
+			$link.attr('aria-label', accessibilityLabels.read_more_about + ' ' + title);
+		}
+	});
+
+	$('a.et_pb_video_play, .et_pb_video_play a').attr('aria-label', accessibilityLabels.video_play_button);
+
+	$('.et_pb_module.et_pb_image a').has('img').each(function() {
+		var $link = $(this);
+		var $image = $link.find('img').first();
+		var label = $.trim($image.attr('alt') || $image.attr('title') || '');
+		var href = $link.attr('href') || '';
+
+		if (!label && href && href.charAt(0) !== '#') {
+			label = href.replace(/\/+$/, '').split('/').pop().replace(/[-_]/g, ' ');
+		}
+
+		if (label) {
+			$link.attr('aria-label', label);
+		}
+	});
+
+	$('a[target="_blank"]').each(function() {
+		var $link = $(this);
+		var currentLabel = $.trim($link.attr('aria-label') || $link.text() || $link.attr('title') || '');
+		var suffix = '(' + accessibilityLabels.opens_in_new_tab + ')';
+
+		if (!currentLabel) {
+			currentLabel = 'link';
+		}
+
+		if (currentLabel.toLowerCase().indexOf(accessibilityLabels.opens_in_new_tab.toLowerCase()) === -1) {
+			$link.attr('aria-label', currentLabel + ' ' + suffix);
+		}
+	});
+
+	function formatTime(seconds) {
+		var safeSeconds = !isNaN(seconds) && isFinite(seconds) ? seconds : 0;
+		var minutes = Math.floor(safeSeconds / 60);
+		var remainingSeconds = Math.floor(safeSeconds % 60);
+
+		return minutes + ':' + (remainingSeconds < 10 ? '0' : '') + remainingSeconds;
+	}
+
+	$('.mejs-container').each(function() {
+		var $container = $(this);
+		var title = $.trim($container.closest('.et_pb_audio_module').find('.et_pb_module_header').text());
+		var artist = $.trim($container.closest('.et_pb_audio_module').find('.et_audio_module_meta strong').text());
+		var label = accessibilityLabels.audio_player;
+
+		if (title) {
+			label += ': ' + title;
+		}
+
+		if (artist) {
+			label += ' ' + accessibilityLabels.by + ' ' + artist;
+		}
+
+		$container.attr('aria-label', label);
+	});
+
+	$('audio.wp-audio-shortcode').on('timeupdate loadedmetadata', function() {
+		var current = formatTime(this.currentTime);
+		var duration = formatTime(this.duration);
+
+		$(this).closest('.mejs-container').find('.mejs-time-slider').attr('aria-valuetext', current + ' ' + accessibilityLabels.of + ' ' + duration);
+	});
+
+	$('span.et_pb_scroll_top').attr({
+		'role': 'button',
+		'aria-label': accessibilityLabels.back_to_top,
+		'tabindex': '0'
+	}).on('keyup', function(event) {
+		if (event.which !== 13 && event.which !== 32) {
+			return;
+		}
+
+		event.preventDefault();
+		$(this).trigger('click');
+		setTimeout(function() {
+			$('a, button, input, textarea, select, [tabindex]:not([tabindex="-1"])').filter(':visible').first().focus();
+		}, 300);
+	});
 
 	/**
 	 * Hide manually disabled ARIA elements

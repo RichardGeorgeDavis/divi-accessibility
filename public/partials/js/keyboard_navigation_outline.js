@@ -2,6 +2,13 @@ jQuery(document).ready(function($) {
 
 	let lastKey = new Date();
 	let lastClick = new Date();
+	var outlineColor = (window._da11y && window._da11y.active_outline_color) || '';
+
+	function applyOutlineColor($element) {
+		if (outlineColor) {
+			$element.css('outline-color', outlineColor);
+		}
+	}
 
 	/**
 	 * Only apply focus styles for keyboard usage.
@@ -10,7 +17,7 @@ jQuery(document).ready(function($) {
 		$('.keyboard-outline').removeClass('keyboard-outline');
 		const wasByKeyboard = lastClick < lastKey;
 		if (wasByKeyboard) {
-			$(e.target).addClass('keyboard-outline');
+			applyOutlineColor($(e.target).addClass('keyboard-outline'));
 		}
 	});
 
@@ -23,4 +30,3 @@ jQuery(document).ready(function($) {
 	});
 
 });
-

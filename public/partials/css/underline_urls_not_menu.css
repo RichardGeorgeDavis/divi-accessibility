@@ -1,0 +1,7 @@
+#main-header a,
+#top-header a,
+#et-secondary-nav li a,
+#main-header .nav li a,
+#et-main-area .et_pb_menu a {
+	text-decoration: none !important;
+}
