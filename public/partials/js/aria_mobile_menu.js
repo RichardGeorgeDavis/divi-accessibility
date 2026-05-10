@@ -1,7 +1,6 @@
 jQuery(document).ready(function($) {
 	var hiddenSelector = '#top-header, #main-content, #et-main-area, #main-footer, .et-l--body, .et-l--footer';
 	var menuControlSelector = '.mobile_menu_bar, .mobile_menu_bar_toggle, .dipi_hamburger';
-	var mobileMenuSelector = '#et_mobile_nav_menu, .et_mobile_nav_menu';
 	var openMenuSelector = '.mobile_nav.opened, .dipi_hamburger.is-active';
 
 	function setManagedAriaHidden($elements, hidden) {
@@ -69,6 +68,51 @@ jQuery(document).ready(function($) {
 		window.setTimeout(syncMobileMenuState, 750);
 	}
 
+	function getPrimaryMenuControl() {
+		var $visibleControl = $(menuControlSelector).filter(':visible').first();
+
+		return $visibleControl.length ? $visibleControl : $(menuControlSelector).first();
+	}
+
+	function restoreFocusToMenuControl($control) {
+		window.setTimeout(function() {
+			$control.focus();
+		}, 0);
+		window.setTimeout(function() {
+			$control.focus();
+		}, 50);
+		window.setTimeout(function() {
+			$control.focus();
+		}, 250);
+	}
+
+	function closeMobileMenu() {
+		var $control = getPrimaryMenuControl();
+
+		if (!$control.length) {
+			return $control;
+		}
+
+		$control.click();
+		syncMobileMenuStateAfterToggle();
+
+		return $control;
+	}
+
+	function closeMobileMenuAndRestoreFocus() {
+		var $control = closeMobileMenu();
+
+		if (!$control.length) {
+			return;
+		}
+
+		restoreFocusToMenuControl($control);
+	}
+
+	function hasFocusInsideMobileMenu() {
+		return $('#et_mobile_nav_menu .et_mobile_menu :focus, .et_mobile_nav_menu .et_mobile_menu :focus').length > 0;
+	}
+
 	function observeMobileMenuStateChanges() {
 		if (!window.MutationObserver || !document.body) {
 			return;
@@ -117,11 +161,9 @@ jQuery(document).ready(function($) {
 	* Allows mobile menu to be closed with keyboard.
 	*/
 	$(document).keyup(function(event) {
-		if (event.keyCode === 27) {
-			if($(mobileMenuSelector + ' .mobile_nav').hasClass('opened')) {
-				$('.mobile_menu_bar').click();
-				syncMobileMenuStateAfterToggle();
-			}
+		if (event.keyCode === 27 && isMobileMenuOpen()) {
+			event.preventDefault();
+			closeMobileMenuAndRestoreFocus();
 		}
 	});
 
@@ -129,10 +171,9 @@ jQuery(document).ready(function($) {
 	* Closes mobile menu when it loses focus.
 	*/
 	$(this).on('focusin', function () {
-		if($(mobileMenuSelector + ' .mobile_nav').hasClass('opened')) {
-			if(!$(mobileMenuSelector + ' .et_mobile_menu :focus').length) {
-				$(mobileMenuSelector + ' .mobile_menu_bar').click();
-				syncMobileMenuStateAfterToggle();
+		if(isMobileMenuOpen()) {
+			if(!hasFocusInsideMobileMenu()) {
+				closeMobileMenu();
 			}
 		}
 	});

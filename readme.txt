@@ -3,7 +3,7 @@ Contributors: campuspress, JoeFusco, alexstine, vebailovity
 Tags: divi, accessibility, accessible, navigation, wcag, a11y, section508, focus, labels, aria
 Requires at least: 6.0
 Tested up to: 6.9.4
-Stable tag: 2.1.7
+Stable tag: 2.1.8
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
@@ -87,9 +87,10 @@ Support the work:
 
 = Last Recorded Runtime-Tested Integrations =
 
-The latest recorded manual browser integration evidence is from version 2.1.0.
-No new full Divi 4 or Divi 5 browser runtime pass has been recorded for 2.1.7
-yet.
+The latest recorded focused browser runtime evidence is from version 2.1.8, with
+broader Divi 4 and Divi 5 module-matrix evidence recorded for version 2.1.7.
+See docs/module-support-matrix.md and docs/afk-batch-2026-05-10.md in the
+GitHub repository for exact WordPress, PHP, Divi, browser, and package details.
 
 * Divi Pixel 2.50.0 and 2.50.1: alternate/mobile header hamburger behavior,
   menu open/close state, aria-expanded sync, and screen-reader isolation while
@@ -157,6 +158,13 @@ divi-accessibility-*.zip.sha256 checksum asset.
 
 
 == Changelog ==
+
+= 2.1.8 =
+* Fixed mobile menu Escape handling so menus close and focus returns to the
+  menu button when Escape is pressed from a focused mobile menu link.
+* Ignored stale cached updater release data that predates required checksum
+  assets, preventing missing-checksum warnings after upgrading from older
+  cached release metadata.
 
 = 2.1.7 =
 * Required maintained-fork GitHub releases to include both the exact packaged

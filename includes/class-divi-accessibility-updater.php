@@ -261,7 +261,11 @@ class Divi_Accessibility_Updater {
 		$cached = get_site_transient( self::TRANSIENT_KEY );
 
 		if ( is_array( $cached ) && array_key_exists( 'release', $cached ) ) {
-			return $cached['release'];
+			if ( null === $cached['release'] || $this->is_normalized_release_data( $cached['release'] ) ) {
+				return $cached['release'];
+			}
+
+			delete_site_transient( self::TRANSIENT_KEY );
 		}
 
 		$response = wp_remote_get(
@@ -286,6 +290,27 @@ class Divi_Accessibility_Updater {
 		set_site_transient( self::TRANSIENT_KEY, array( 'release' => $release ), self::CACHE_TTL );
 
 		return $release;
+	}
+
+	/**
+	 * Return whether cached release data matches the current normalized shape.
+	 *
+	 * @since 2.1.8
+	 * @param mixed $release Cached release data.
+	 * @return bool Whether the release data is usable.
+	 */
+	private function is_normalized_release_data( $release ) {
+		if ( ! is_array( $release ) ) {
+			return false;
+		}
+
+		foreach ( array( 'version', 'tag', 'name', 'url', 'package', 'checksum' ) as $required_key ) {
+			if ( empty( $release[ $required_key ] ) ) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	/**
@@ -374,6 +399,8 @@ class Divi_Accessibility_Updater {
 	 * @return object WordPress update data.
 	 */
 	private function build_update_data( $release ) {
+		$checksum = ! empty( $release['checksum'] ) ? $release['checksum'] : '';
+
 		return (object) array(
 			'id'          => self::REPOSITORY_URL,
 			'slug'        => $this->slug,
@@ -381,7 +408,7 @@ class Divi_Accessibility_Updater {
 			'new_version' => $release['version'],
 			'url'         => $release['url'],
 			'package'     => $release['package'],
-			'checksum'    => $release['checksum'],
+			'checksum'    => $checksum,
 		);
 	}
 

@@ -1,8 +1,8 @@
 # Roadmap / Next Actions
 
-## Current 2.1.7 State
+## Current 2.1.8 Prep State
 
-- Current maintained-fork release: `2.1.7`
+- Latest published maintained-fork release: `2.1.7`
 - Published release URL: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/2.1.7>
 - Release commit: `d2bddd36a5511bf14c20e3d24b38ae3f0e6193ba`
 - `2.1.7` hardens the GitHub Releases updater by requiring exact zip and `.zip.sha256` assets, verifying update downloads before install, preserving saved settings while merging new defaults, fixing packaged translation loading, and documenting stale-status cleanup.
@@ -10,11 +10,15 @@
 - The historical `2.1.6` release has the packaged zip asset only. Checksum assets are required for updater-compatible releases starting with `2.1.7`.
 - Packaged `2.1.7` local smoke passed on `blueprint` with Divi `4.27.6` and `master-licenses` with Divi `5.4.1`.
 - The focused manual module matrix for `2.1.7` passed on `blueprint` with Divi `4.27.6` and on `tester` with Divi `5.3.3`; see `docs/afk-batch-2026-05-10.md` and `docs/module-support-matrix.md`.
+- Current `master` prep version: `2.1.8`, unreleased.
+- `2.1.8` prep fixes a reproduced mobile-menu Escape close/focus-return defect and stale cached updater release data missing the required checksum field.
+- Local `2.1.8` package smoke passed on `blueprint`, `tester`, and `master-licenses`; local package SHA-256 is `5db50373276be3f67181357420a6c811616a8cac62785cd7e01c028a343f3ea9`.
 
 ## Current Next Actions
 
-- Triage upstream reporter feedback against `2.1.7` first, then open focused follow-up work only when the original reproduction still fails on the packaged zip.
-- Use `2.1.8` only for reproducible runtime defects or release-significant documentation/assets. No `2.1.8` code branch is needed from the 2026-05-10 packaged-plugin smoke.
+- Publish `2.1.8` only after the full static/package gates and GitHub Actions pass for this prep commit.
+- After publishing, verify the GitHub Release API reports both `divi-accessibility-2.1.8.zip` and `divi-accessibility-2.1.8.zip.sha256`, then verify the downloaded checksum.
+- Ask reporters or maintainers to validate `#73` and related mobile-header reports against the `2.1.8` release once published.
 - Keep manual evidence dated and versioned. Do not broaden runtime-tested claims from static checks, package checks, or stale release notes.
 - Keep stale cached worktrees and unmerged local branches untouched until each has an explicit cleanup disposition.
 - Keep `npm run release:check` green before the next release.

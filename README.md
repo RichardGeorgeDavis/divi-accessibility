@@ -83,6 +83,13 @@ and footer landmarks. Only the content skip link is enabled by default for
 backward compatibility; navigation and footer links can be enabled and pointed at
 site-specific selectors from the plugin settings.
 
+## Release 2.1.8
+
+`2.1.8` is focused post-`2.1.7` prep from runtime validation. It restores
+mobile-menu Escape behavior when focus is inside the open mobile menu, returning
+focus to the menu button after close, and it ignores stale cached updater release
+metadata that lacks the checksum field required by current releases.
+
 ## Release 2.1.7
 
 `2.1.7` hardens the maintained fork release path. Packaged releases now produce

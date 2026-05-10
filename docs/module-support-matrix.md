@@ -4,7 +4,7 @@ This matrix tracks plugin-owned accessibility fixes by module and Divi major ver
 
 | Module or Area | Divi 4 Supported? | Divi 5 Supported? | Fixes Applied | Known Limitations | Manual Test Notes | Last Tested Divi Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| Menu | Yes | Yes | Search/cart naming, mobile menu state, submenu keyboard and ARIA support, skip-link navigation target compatibility. | Third-party menu replacements may use different markup. | Test desktop menu, mobile menu, search open/close, cart/account links, keyboard tab order, and `aria-expanded` state. | `2.1.7`: Divi `4.27.6`, Divi `5.4.1`, Divi `5.3.3` |
+| Menu | Yes | Yes | Search/cart naming, mobile menu state, Escape close/focus return, submenu keyboard and ARIA support, skip-link navigation target compatibility. | Third-party menu replacements may use different markup. | Test desktop menu, mobile menu, Escape from focused menu links, search open/close, cart/account links, keyboard tab order, and `aria-expanded` state. | `2.1.8`: Divi `4.27.6`, Divi `5.3.3`; `2.1.7`: Divi `5.4.1` |
 | Fullwidth Menu | Yes | Partial | Menu naming and mobile menu behavior where Divi markup matches supported selectors. | Fullwidth and custom header layouts vary by builder output. | Test desktop and mobile menu open/close, focus movement, and screen-reader isolation. | TBD |
 | Search | Yes | Yes | Search field labels, open/close accessible names, keyboard activation support. | Custom search modules may need site-specific review. | Test icon buttons, visible and screen-reader labels, Enter key submission, and focus return. | `2.1.7`: Divi `4.27.6`, Divi `5.4.1`, Divi `5.3.3` |
 | Contact Form | Yes | Yes | Label fixes, required/invalid state support, alert/live feedback, checkbox keyboard support. | Server-side validation messages depend on Divi output. | Submit empty/invalid/valid forms and confirm focusable fields expose labels and invalid state. | `2.1.7`: Divi `4.27.6`, Divi `5.3.3` |
@@ -36,3 +36,16 @@ This matrix tracks plugin-owned accessibility fixes by module and Divi major ver
 - Divi 5 module matrix site: `tester`, Divi `5.3.3`
 - Checks that passed: package install, activation, deactivation/reactivation, option preservation/default merge, frontend `_da11y.version`, Divi body class, skip-link focus, mobile menu role/name/state, search labels/names, cart naming where present, slider labels, contact text field state, contact checkbox keyboard toggle, tab roles/associations, accordion/toggle semantics, image helper output, social-link names, and D4-style shortcode enhancement on Divi 5.
 - No full WCAG conformance claim is made from this matrix.
+
+## 2026-05-10 `2.1.8` Targeted Runtime Evidence
+
+- Packaged plugin under test: `packaged/divi-accessibility-2.1.8.zip`
+- WordPress: `6.9.4`
+- PHP: `8.5.3`
+- Browser: Chrome through the Codex in-app browser
+- Divi 4 site: `blueprint`, Divi `4.27.6`
+- Divi 5 module site: `tester`, Divi `5.3.3`
+- Divi 5 packaged-plugin smoke site: `master-licenses`, Divi `5.4.1`
+- Checks that passed: Escape from a focused mobile menu link closes the menu, updates `aria-expanded` to `false`, removes `.mobile_nav.opened`, returns focus to `.mobile_menu_bar`, and leaves no focused menu link on both Divi 4 and Divi 5.
+- Regression checks that still passed: Divi 5 saved hide/screen-reader-only module output, D4-to-D5 migrated hide/screen-reader-only output, and default-header search/cart labels.
+- Updater stale-cache check: stale cached release data without `checksum` was refreshed, and the missing-checksum warning count did not increase.

@@ -18,8 +18,11 @@ Status checked: 2026-05-10
 - GitHub Actions run for the release commit: pass, <https://github.com/RichardGeorgeDavis/divi-accessibility/actions/runs/25629974111>
 - Release assets verified on 2026-05-10: `divi-accessibility-2.1.7.zip` and `divi-accessibility-2.1.7.zip.sha256`
 - Verified package SHA-256: `6819326003004c5210956b3e475bbd1e27940b8c8c7f5a0416c8c9458aa9fada`
+- Current `master` prep version after targeted validation: `2.1.8`, unreleased.
+- Local `2.1.8` package SHA-256: `5db50373276be3f67181357420a6c811616a8cac62785cd7e01c028a343f3ea9`
 - Packaged-plugin smoke passed on WordPress `6.9.4`, PHP `8.5.3`, Divi `4.27.6` (`blueprint`) and Divi `5.4.1` (`master-licenses`).
 - Manual module matrix passed on WordPress `6.9.4`, PHP `8.5.3`, Divi `4.27.6` (`blueprint`) and Divi `5.3.3` (`tester`) in Chrome through Playwright MCP.
+- Targeted `2.1.8` validation reproduced and fixed mobile-menu Escape close/focus return on `blueprint` and `tester`; stale updater cache validation also passed without adding a missing-checksum PHP warning.
 - Fork issues are disabled, so upstream issues remain the public backlog reference.
 - Do not claim full WCAG conformance from these checks.
 
@@ -32,12 +35,12 @@ All listed upstream issues were still open when rechecked on 2026-05-10.
 | `#122` DIVI accessibility plugin does not work | Needs reporter validation. | `2.1.7` install/activate/deactivate/reactivate and frontend payload checks pass on local Divi 4 and Divi 5 sites. Ask the reporter to retest the exact affected header/site with the packaged `2.1.7` release. |
 | `#96` Divi 5? | Closure candidate after reporter/maintainer review. | Divi 5 packaged smoke passed on `master-licenses` with Divi `5.4.1`; Divi 5 D4-style module matrix passed on `tester` with Divi `5.3.3`. |
 | `#91` Mobile submenu expanded state | Probably fixed; needs original-header validation. | Mobile menu role/name/state passed on Divi 4 and Divi 5. Third-party/custom headers can still vary, so keep open until the original header path is retested. |
-| `#90` Undefined `$tota11y` warning | Closure candidate. | Current smoke did not record `divi-accessibility` PHP warnings or fatals; the initialization fix is already in the maintained release line. |
-| `#88` Hide from Screen Readers toggle not working | Needs builder-persistence or reporter validation before closure. | Runtime matrix confirms frontend module enhancements, but this specific issue is about Divi builder setting persistence and should not be closed from frontend-only checks. |
+| `#90` Undefined `$tota11y` warning | Closure candidate. | Current smoke did not reproduce the original `$tota11y` warning; a separate stale updater-cache missing-checksum warning was found and fixed in `2.1.8` prep. |
+| `#88` Hide from Screen Readers toggle not working | Closure candidate for frontend output; builder UI save/reopen still useful if maintainer requires UI-level proof. | Targeted Divi 5 saved-attribute fixture confirmed `hideAriaElement` adds `aria-hidden` plus `aria-hidden="true"` and `showForScreenReadersOnly` adds `screen-reader-text`; D4-to-D5 migrated output also passed. |
 | `#81` Social media links ADA issues | Needs focused social-module validation. | Social Media Follow links had accessible names in the `2.1.7` matrix, but the generated wording depends on module configuration and should be checked against the reporter's case. |
-| `#73` ESC focus return after closing mobile menu | Backlog until exact keyboard path is retested. | Mobile menu state smoke passed, but ESC focus return on the original mobile header was not separately reproduced. |
-| `#72` Submenu focus after ESC close | Backlog until exact keyboard path is retested. | Submenu focus handling is related to the mobile/header work, but reverse-tab and closed-submenu focus paths still need targeted validation. |
-| `#69` Theme Builder menu search naming | Needs Theme Builder variant validation. | Search form/close control naming and cart naming passed in `2.1.7` smoke, but alternate Theme Builder headers remain site-specific. |
+| `#73` ESC focus return after closing mobile menu | Fixed in `2.1.8` prep; needs release and reporter validation before closure. | Targeted `2.1.7` retest reproduced the failure on Divi 4 and Divi 5. Installed `2.1.8` package closes the menu, clears `aria-expanded`, removes `.mobile_nav.opened`, returns focus to `.mobile_menu_bar`, and leaves no focused menu link. |
+| `#72` Submenu focus after ESC close | Partially covered by `2.1.8`; keep open for reverse-tab/submenu-specific validation. | Escape from a focused mobile menu link now closes and restores focus to the menu button on Divi 4 and Divi 5, but the original submenu-specific path should still be validated. |
+| `#69` Theme Builder menu search naming | Default-header path passes; Theme Builder variants still need reporter validation. | `master-licenses` Divi 5 default header exposed `Open search`, `Close search`, `View cart`, and `Search form`; alternate Theme Builder headers remain site-specific. |
 | `#60` Contact checkbox keyboard support | Closure candidate after reporter/maintainer review. | Divi 4 and Divi 5 matrix pages confirmed checkbox labels expose `role="checkbox"`, are focusable, and Space toggles both input checked state and `aria-checked`. |
 | `#52` Remove `role="link"` from anchor tags | Backlog. | Behavior-changing cleanup. Do not fold into a patch unless a concrete regression is reproduced and scoped. |
 

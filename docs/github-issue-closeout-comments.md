@@ -1,5 +1,64 @@
 # GitHub Issue Closeout Comments
 
+Prepared: 2026-05-10
+
+Use these comments after a `2.1.8` release is published and its release assets
+plus CI have been verified. Until then, treat them as draft validation notes.
+
+## Current 2.1.8 Draft Notes
+
+### Issue #73
+
+```text
+Follow-up from the 2.1.8 runtime pass:
+
+I reproduced this against the packaged 2.1.7 plugin on local Divi 4 and Divi 5 sites. When focus was on a mobile menu link and Escape was pressed, the menu stayed open (`aria-expanded="true"` / `.mobile_nav.opened`) and focus stayed on the menu link.
+
+The 2.1.8 fix closes the open mobile menu from that path, sets the menu button back to `aria-expanded="false"`, removes the open menu class, returns focus to `.mobile_menu_bar`, and leaves no focused menu link.
+
+Validated locally on:
+- WordPress 6.9.4 / PHP 8.5.3 / Divi 4.27.6
+- WordPress 6.9.4 / PHP 8.5.3 / Divi 5.3.3
+```
+
+### Issue #72
+
+```text
+Related 2.1.8 validation:
+
+Escape from a focused mobile menu link now closes the mobile menu and restores focus to the menu button on local Divi 4 and Divi 5 sites. That covers the shared "focus remains inside a closed/opening mobile menu path" failure mode.
+
+I would keep this issue open until the original submenu-specific reverse-tab path is retested, because that report may involve a different submenu/focus sequence.
+```
+
+### Issue #88
+
+```text
+Additional 2.1.8 validation:
+
+I added a Divi 5 saved-attribute fixture and confirmed frontend output for both module accessibility toggles:
+- saved `hideAriaElement` output receives `aria-hidden` plus `aria-hidden="true"`
+- saved `showForScreenReadersOnly` output receives `screen-reader-text` and does not receive `aria-hidden="true"`
+
+D4-to-D5 migrated hide/screen-reader-only output also passed on the Divi 5 migration page. If maintainers require UI-level proof, the remaining validation is a live Visual Builder save/reopen pass on the reporter's Divi version.
+```
+
+### Issue #69
+
+```text
+Additional 2.1.8 validation:
+
+The default Divi 5 header path on the local `master-licenses` site exposes the expected names:
+- search icon: "Open search"
+- close search: "Close search"
+- cart: "View cart"
+- header search form: "Search form"
+
+I would keep this open for reporter validation because the original report is specifically about Theme Builder header output, and alternate Theme Builder/menu-module markup can differ from the default header path.
+```
+
+---
+
 Prepared: 2026-04-24
 
 Use these comments for final `2.1.0` upstream issue closeout.
