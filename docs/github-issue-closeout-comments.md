@@ -2,8 +2,8 @@
 
 Prepared: 2026-05-10
 
-Use these comments after a `2.1.8` release is published and its release assets
-plus CI have been verified. Until then, treat them as draft validation notes.
+Use these comments after the `2.1.8` release asset and CI verification recorded
+in `docs/afk-batch-2026-05-10.md`.
 
 ## Current 2.1.8 Draft Notes
 
@@ -19,6 +19,9 @@ The 2.1.8 fix closes the open mobile menu from that path, sets the menu button b
 Validated locally on:
 - WordPress 6.9.4 / PHP 8.5.3 / Divi 4.27.6
 - WordPress 6.9.4 / PHP 8.5.3 / Divi 5.3.3
+
+Release: https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/2.1.8
+Zip SHA-256: 5db50373276be3f67181357420a6c811616a8cac62785cd7e01c028a343f3ea9
 ```
 
 ### Issue #72

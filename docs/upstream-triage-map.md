@@ -12,14 +12,15 @@ Status checked: 2026-05-10
 
 ## Current Maintained-Fork Evidence
 
-- Current maintained-fork release: `2.1.7`
-- Release URL: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/2.1.7>
-- Release commit: `d2bddd36a5511bf14c20e3d24b38ae3f0e6193ba`
-- GitHub Actions run for the release commit: pass, <https://github.com/RichardGeorgeDavis/divi-accessibility/actions/runs/25629974111>
+- Current maintained-fork release: `2.1.8`
+- Release URL: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/2.1.8>
+- Release commit: `c532485116222402142aade1dcd7c1513dd6e03e`
+- GitHub Actions run for the release commit: pass, <https://github.com/RichardGeorgeDavis/divi-accessibility/actions/runs/25636586403>
+- Release assets verified on 2026-05-10: `divi-accessibility-2.1.8.zip` and `divi-accessibility-2.1.8.zip.sha256`
+- Verified package SHA-256: `5db50373276be3f67181357420a6c811616a8cac62785cd7e01c028a343f3ea9`
+- Previous maintained-fork release: `2.1.7`
 - Release assets verified on 2026-05-10: `divi-accessibility-2.1.7.zip` and `divi-accessibility-2.1.7.zip.sha256`
-- Verified package SHA-256: `6819326003004c5210956b3e475bbd1e27940b8c8c7f5a0416c8c9458aa9fada`
-- Current `master` prep version after targeted validation: `2.1.8`, unreleased.
-- Local `2.1.8` package SHA-256: `5db50373276be3f67181357420a6c811616a8cac62785cd7e01c028a343f3ea9`
+- Previous package SHA-256: `6819326003004c5210956b3e475bbd1e27940b8c8c7f5a0416c8c9458aa9fada`
 - Packaged-plugin smoke passed on WordPress `6.9.4`, PHP `8.5.3`, Divi `4.27.6` (`blueprint`) and Divi `5.4.1` (`master-licenses`).
 - Manual module matrix passed on WordPress `6.9.4`, PHP `8.5.3`, Divi `4.27.6` (`blueprint`) and Divi `5.3.3` (`tester`) in Chrome through Playwright MCP.
 - Targeted `2.1.8` validation reproduced and fixed mobile-menu Escape close/focus return on `blueprint` and `tester`; stale updater cache validation also passed without adding a missing-checksum PHP warning.
