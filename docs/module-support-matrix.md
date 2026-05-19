@@ -4,7 +4,7 @@ This matrix tracks plugin-owned accessibility fixes by module and Divi major ver
 
 | Module or Area | Divi 4 Supported? | Divi 5 Supported? | Fixes Applied | Known Limitations | Manual Test Notes | Last Tested Divi Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| Menu | Yes | Yes | Search/cart naming, mobile menu state, Escape close/focus return, submenu keyboard and ARIA support, skip-link navigation target compatibility. | Third-party menu replacements may use different markup. | Test desktop menu, mobile menu, Escape from focused menu links, search open/close, cart/account links, keyboard tab order, and `aria-expanded` state. | `2.1.8`: Divi `4.27.6`, Divi `5.3.3`; `2.1.7`: Divi `5.4.1` |
+| Menu | Yes | Yes | Search/cart naming, mobile menu state, Escape close/focus return, submenu keyboard and ARIA support, skip-link navigation target compatibility. | Third-party menu replacements may use different markup. | Test desktop menu, mobile menu, Escape from focused menu links, search open/close, cart/account links, keyboard tab order, and `aria-expanded` state. | `2.1.9`: Divi `4.27.6` targeted live-site check; `2.1.8`: Divi `4.27.6`, Divi `5.3.3`; `2.1.7`: Divi `5.4.1` |
 | Fullwidth Menu | Yes | Partial | Menu naming and mobile menu behavior where Divi markup matches supported selectors. | Fullwidth and custom header layouts vary by builder output. | Test desktop and mobile menu open/close, focus movement, and screen-reader isolation. | TBD |
 | Search | Yes | Yes | Search field labels, open/close accessible names, keyboard activation support. | Custom search modules may need site-specific review. | Test icon buttons, visible and screen-reader labels, Enter key submission, and focus return. | `2.1.7`: Divi `4.27.6`, Divi `5.4.1`, Divi `5.3.3` |
 | Contact Form | Yes | Yes | Label fixes, required/invalid state support, alert/live feedback, checkbox keyboard support. | Server-side validation messages depend on Divi output. | Submit empty/invalid/valid forms and confirm focusable fields expose labels and invalid state. | `2.1.7`: Divi `4.27.6`, Divi `5.3.3` |
@@ -49,3 +49,12 @@ This matrix tracks plugin-owned accessibility fixes by module and Divi major ver
 - Checks that passed: Escape from a focused mobile menu link closes the menu, updates `aria-expanded` to `false`, removes `.mobile_nav.opened`, returns focus to `.mobile_menu_bar`, and leaves no focused menu link on both Divi 4 and Divi 5.
 - Regression checks that still passed: Divi 5 saved hide/screen-reader-only module output, D4-to-D5 migrated hide/screen-reader-only output, and default-header search/cart labels.
 - Updater stale-cache check: stale cached release data without `checksum` was refreshed, and the missing-checksum warning count did not increase.
+
+## 2026-05-19 `2.1.9` Targeted Live-Site Evidence
+
+- Live site under test: <https://lucidity.design/>.
+- Browser: Chrome through Playwright MCP, desktop 1600 by 1000 and mobile 390 by 844 viewports.
+- Observed stack from live assets: WordPress `6.9.4`, Divi `4.27.6`, Divi Pixel `2.50.1`, and WP Rocket cached/minified frontend assets.
+- Scope: desktop dropdown keyboard-navigation helper visibility on a Divi 4 header that already renders its own submenu arrows.
+- Checks that passed: the current live page reproduced visible `.da11y-dropdown-toggle` chevrons for the `Solutions` and `Services` desktop menu items; injected patched CSS hid the helper by default, showed it on keyboard focus, and Enter still opened the submenu with `aria-expanded="true"` and `da11y-submenu-show`.
+- Additional scan: `/pricing/`, `/contact/`, `/work/`, and `/blog/` exposed only the same desktop dropdown helpers; mobile width did not inject the helper buttons, and contact form screen-reader labels remained clipped.

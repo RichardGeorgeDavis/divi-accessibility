@@ -22,11 +22,15 @@ header .menu-item-has-children,
 	background: transparent;
 	color: inherit;
 	cursor: pointer;
+	opacity: 0;
 	transform: translateY(-50%);
+	pointer-events: none;
 }
 .da11y-dropdown-toggle:focus {
 	outline: 2px solid currentColor;
 	outline-offset: 3px;
+	opacity: 1;
+	pointer-events: auto;
 }
 .da11y-dropdown-toggle::after {
 	content: "";

@@ -83,6 +83,13 @@ and footer landmarks. Only the content skip link is enabled by default for
 backward compatibility; navigation and footer links can be enabled and pointed at
 site-specific selectors from the plugin settings.
 
+## Release 2.1.9
+
+`2.1.9` is a focused desktop menu polish release. It hides the dropdown
+keyboard-navigation helper chevron until keyboard focus, preventing duplicate
+visible submenu indicators on Divi headers that already render their own
+dropdown arrow while preserving keyboard submenu control.
+
 ## Release 2.1.8
 
 `2.1.8` is a focused post-`2.1.7` runtime fix release. It restores

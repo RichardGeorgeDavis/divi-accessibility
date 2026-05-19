@@ -16,7 +16,7 @@
  * Plugin Name:       Divi Accessibility
  * Plugin URI:        https://github.com/RichardGeorgeDavis/divi-accessibility
  * Description:       Improve Divi accessibility across Divi 4 and Divi 5 with WCAG-aligned fixes.
- * Version:           2.1.8
+ * Version:           2.1.9
  * Author:            Richard George Davis
  * Author URI:        https://github.com/RichardGeorgeDavis
  * License:           GPL-2.0-or-later
@@ -32,7 +32,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 if ( ! defined( 'DA11Y_VERSION' ) ) {
-	define( 'DA11Y_VERSION', '2.1.8' );
+	define( 'DA11Y_VERSION', '2.1.9' );
 }
 
 // Used for referring to the plugin file or basename.

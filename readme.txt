@@ -3,7 +3,7 @@ Contributors: RichardGeorgeDavis, campuspress, JoeFusco, alexstine, vebailovity
 Tags: divi, accessibility, accessible, navigation, wcag, a11y, section508, focus, labels, aria
 Requires at least: 6.0
 Tested up to: 6.9.4
-Stable tag: 2.1.8
+Stable tag: 2.1.9
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
@@ -87,10 +87,12 @@ Support the work:
 
 = Last Recorded Runtime-Tested Integrations =
 
-The latest recorded focused browser runtime evidence is from version 2.1.8, with
+The latest recorded focused browser runtime evidence is from version 2.1.9, with
 broader Divi 4 and Divi 5 module-matrix evidence recorded for version 2.1.7.
 See docs/module-support-matrix.md and docs/afk-batch-2026-05-10.md in the
-GitHub repository for exact WordPress, PHP, Divi, browser, and package details.
+GitHub repository, plus docs/afk-batch-2026-05-19.md for the 2.1.9 focused
+dropdown-helper check, for exact WordPress, PHP, Divi, browser, and package
+details.
 
 * Divi Pixel 2.50.0 and 2.50.1: alternate/mobile header hamburger behavior,
   menu open/close state, aria-expanded sync, and screen-reader isolation while
@@ -157,6 +159,11 @@ divi-accessibility-*.zip.sha256 checksum asset.
 
 
 == Changelog ==
+
+= 2.1.9 =
+* Hid the desktop dropdown keyboard-navigation helper chevron until keyboard
+  focus, preventing duplicate visible submenu indicators on Divi headers that
+  already render their own dropdown arrow.
 
 = 2.1.8 =
 * Fixed mobile menu Escape handling so menus close and focus returns to the
