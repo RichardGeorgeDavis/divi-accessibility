@@ -83,6 +83,12 @@ and footer landmarks. Only the content skip link is enabled by default for
 backward compatibility; navigation and footer links can be enabled and pointed at
 site-specific selectors from the plugin settings.
 
+## Release 2.1.10
+
+`2.1.10` fixes desktop dropdown menu focus cleanup when keyboard users navigate
+backward with Shift+Tab. Previously focused sibling submenus now close and
+their expanded state resets instead of leaving multiple dropdowns open.
+
 ## Release 2.1.9
 
 `2.1.9` is a focused desktop menu polish release. It hides the dropdown

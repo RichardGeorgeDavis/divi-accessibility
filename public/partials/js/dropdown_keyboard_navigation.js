@@ -4,9 +4,6 @@ jQuery(document).ready(function($) {
 	};
 	labels.submenu = labels.submenu || 'submenu';
 
-	$('.et-menu > li').on('focusout', function() {
-		$(this).removeClass('et-hover');
-	});
 	if($('.menu-item-has-children > a').length ) {
 		$('.menu-item-has-children > a').addClass('da11y-submenu');
 		$('.menu-item-has-children > a').attr({
@@ -24,6 +21,22 @@ jQuery(document).ready(function($) {
 
 	function closeSiblingMenus($menuItem) {
 		$menuItem.siblings('.menu-item-has-children').each(function() {
+			setMenuExpanded($(this), false);
+		});
+	}
+
+	function getMenuBranch($menuItem) {
+		return $menuItem.parents('.menu-item-has-children').add($menuItem.filter('.menu-item-has-children'));
+	}
+
+	function closeMenuBranch($menuItem) {
+		$menuItem.find('.menu-item-has-children').add($menuItem.filter('.menu-item-has-children')).each(function() {
+			setMenuExpanded($(this), false);
+		});
+	}
+
+	function closeMenusOutside($menuItem) {
+		$('.menu-item-has-children').not(getMenuBranch($menuItem)).each(function() {
 			setMenuExpanded($(this), false);
 		});
 	}
@@ -76,25 +89,29 @@ jQuery(document).ready(function($) {
 		setMenuExpanded($menuItem, !isExpanded);
 	});
 
-	$('.menu-item a').on('focus', function() {
-		var menuItem = $(this).parent();
-		var menuParents = $(this).parents('.menu-item-has-children');
+	$(document).on('focusin', '.menu-item a, .da11y-dropdown-toggle', function() {
+		var menuItem = $(this).closest('.menu-item');
+		var menuParents = getMenuBranch(menuItem);
 
-		if (menuItem.hasClass('menu-item-has-children')) {
-			menuParents = menuParents.add(menuItem);
+		if (!menuItem.length) {
+			return;
 		}
+
+		closeMenusOutside(menuItem);
 
 		menuParents.each(function() {
 			setMenuExpanded($(this), true);
 		});
 	});
 
-	$('.menu-item-has-children a').on('focusout', function() {
-		if( $(this).parent().not('.menu-item-has-children').is(':last-child') ) {
-			$(this).parents('.menu-item-has-children').each(function() {
-				setMenuExpanded($(this), false);
-			});
-		}
+	$(document).on('focusout', '.menu-item-has-children', function() {
+		var menuItem = $(this);
+
+		setTimeout(function() {
+			if (!menuItem[0].contains(document.activeElement)) {
+				closeMenuBranch(menuItem);
+			}
+		}, 0);
 	});
 
 	$('.menu-item-has-children a').keyup(function(event) {

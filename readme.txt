@@ -3,7 +3,7 @@ Contributors: RichardGeorgeDavis, campuspress, JoeFusco, alexstine, vebailovity
 Tags: divi, accessibility, accessible, navigation, wcag, a11y, section508, focus, labels, aria
 Requires at least: 6.0
 Tested up to: 6.9.4
-Stable tag: 2.1.9
+Stable tag: 2.1.10
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
@@ -159,6 +159,11 @@ divi-accessibility-*.zip.sha256 checksum asset.
 
 
 == Changelog ==
+
+= 2.1.10 =
+* Fixed desktop dropdown menu focus cleanup when keyboard users navigate
+  backward with Shift+Tab, closing previously focused sibling submenus and
+  resetting their expanded state.
 
 = 2.1.9 =
 * Hid the desktop dropdown keyboard-navigation helper chevron until keyboard

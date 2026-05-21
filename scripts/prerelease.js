@@ -18,7 +18,7 @@ const assumeYes = !! process.env.npm_config_yes
 const checkOnly = 'true' === process.env.DA11Y_RELEASE_CHECK
 	|| process.argv.includes( '--check' );
 
-const versionRxSrc = '\\d+\\.(?:\\d\.)+\\d(?:(?:-alpha|-beta)-\\d+)?';
+const versionRxSrc = '\\d+\\.(?:\\d+\\.)+\\d+(?:(?:-alpha|-beta)-\\d+)?';
 const versionRx = new RegExp( versionRxSrc );
 const fileHeaderRx = new RegExp( `\\* Version:\\s+(${ versionRxSrc })\\s*$` );
 const defineRx = new RegExp(
