@@ -3,7 +3,7 @@ Contributors: RichardGeorgeDavis, campuspress, JoeFusco, alexstine, vebailovity
 Tags: divi, accessibility, accessible, navigation, wcag, a11y, section508, focus, labels, aria
 Requires at least: 6.0
 Tested up to: 6.9.4
-Stable tag: 2.1.11
+Stable tag: 2.1.11.1
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
@@ -159,6 +159,10 @@ divi-accessibility-*.zip.sha256 checksum asset.
 
 
 == Changelog ==
+
+= 2.1.11.1 =
+* Refreshed generated translation assets and ensured release artifacts match the
+  clean CI state.
 
 = 2.1.11 =
 * Added skip-link visibility controls so skip links can be visually hidden until keyboard

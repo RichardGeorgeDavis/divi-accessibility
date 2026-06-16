@@ -83,6 +83,11 @@ and footer landmarks. Only the content skip link is enabled by default for
 backward compatibility; navigation and footer links can be enabled and pointed at
 site-specific selectors from the plugin settings.
 
+## Release 2.1.11.1
+
+`2.1.11.1` refreshes generated translation assets so CI's required generated-files
+check stays clean and release packaging matches the source tree.
+
 ## Release 2.1.11
 
 `2.1.11` adds focused option parity and cleanup from recent parity work:
