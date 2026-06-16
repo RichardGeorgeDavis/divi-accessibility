@@ -200,6 +200,7 @@ class Divi_Accessibility_Admin {
 			'outline_color'                => '#2ea3f2',
 			'screen_reader_text'           => 1,
 			'skip_navigation_link'         => 1,
+			'hide_skip_navigation'         => 0,
 			'skip_link_navigation_enabled' => 0,
 			'skip_link_content_enabled'    => 1,
 			'skip_link_footer_enabled'     => 0,
@@ -213,7 +214,10 @@ class Divi_Accessibility_Admin {
 			'aria_mobile_menu'             => 1,
 			'fix_duplicate_menu_ids'       => 1,
 			'reduced_motion'               => 0,
+			'slider_nav_space'             => 0,
 			'underline_urls'               => 0,
+			'underline_heading'            => 0,
+			'underline_btns'               => 0,
 			'underline_urls_not_title'     => 0,
 			'underline_urls_not_menu'      => 0,
 			'image_alt_source'             => 'disabled',
@@ -221,6 +225,8 @@ class Divi_Accessibility_Admin {
 			'hide_image_title_tooltips'    => 0,
 			'image_helper_module_fields'   => 0,
 			'image_metadata_text_source'   => 'module',
+			'pinch_zoom'                   => 1,
+			'pinch_zoom_val'               => '5',
 			'tota11y'                      => 0,
 			'developer_mode'               => 0,
 		);
@@ -303,6 +309,12 @@ class Divi_Accessibility_Admin {
 					'type'        => 'checkbox',
 				),
 				array(
+					'name'        => 'slider_nav_space',
+					'title'       => __( 'Slider navigation spacing', 'divi-accessibility' ),
+					'description' => __( 'Add spacing between slider dots for easier targeting.', 'divi-accessibility' ),
+					'type'        => 'checkbox',
+				),
+				array(
 					'name'        => 'fix_labels',
 					'title'       => __( 'Fix labels', 'divi-accessibility' ),
 					'description' => __( 'Fix missing labels &amp; incorrect or missing assignments to their corresponding inputs.', 'divi-accessibility' ),
@@ -337,6 +349,12 @@ class Divi_Accessibility_Admin {
 					'name'        => 'skip_navigation_link',
 					'title'       => __( 'Skip navigation link', 'divi-accessibility' ),
 					'description' => __( 'Allow user to skip over Divi navigation when using keyboard and go straight to content.', 'divi-accessibility' ),
+					'type'        => 'checkbox',
+				),
+				array(
+					'name'        => 'hide_skip_navigation',
+					'title'       => __( 'Hide skip links until focused', 'divi-accessibility' ),
+					'description' => __( 'Keep skip links visually hidden until they receive keyboard focus.', 'divi-accessibility' ),
 					'type'        => 'checkbox',
 				),
 				array(
@@ -426,10 +444,34 @@ class Divi_Accessibility_Admin {
 					'type'        => 'checkbox',
 				),
 				array(
+					'name'        => 'underline_heading',
+					'title'       => __( 'Exclude underlines from headings', 'divi-accessibility' ),
+					'description' => __( 'Disable URL underlines on heading and title links.', 'divi-accessibility' ),
+					'type'        => 'checkbox',
+				),
+				array(
+					'name'        => 'underline_btns',
+					'title'       => __( 'Exclude underlines from buttons', 'divi-accessibility' ),
+					'description' => __( 'Disable URL underlines on button links and button-style links.', 'divi-accessibility' ),
+					'type'        => 'checkbox',
+				),
+				array(
 					'name'        => 'underline_urls_not_title',
 					'title'       => __( 'Exclude underlines from titles and buttons', 'divi-accessibility' ),
 					'description' => __( 'Disable URL underlines on titles, headings, tabs, and buttons.', 'divi-accessibility' ),
 					'type'        => 'checkbox',
+				),
+				array(
+					'name'        => 'pinch_zoom',
+					'title'       => __( 'Allow pinch zoom', 'divi-accessibility' ),
+					'description' => __( 'Allow visitors to scale the site with touch gestures when viewport is constrained.', 'divi-accessibility' ),
+					'type'        => 'checkbox',
+				),
+				array(
+					'name'        => 'pinch_zoom_val',
+					'title'       => __( 'Maximum pinch zoom', 'divi-accessibility' ),
+					'description' => __( 'Set the maximum viewport scale value used by browser zoom.', 'divi-accessibility' ),
+					'type'        => 'text',
 				),
 				array(
 					'name'        => 'underline_urls_not_menu',
@@ -582,6 +624,24 @@ class Divi_Accessibility_Admin {
 					$valid_options[ $key ] = $default_color;
 
 				}
+
+			} elseif ( 'pinch_zoom_val' === $key ) {
+
+				$default_text = (string) $option;
+				$text         = isset( $current_settings[ $key ] ) ? (string) $current_settings[ $key ] : $default_text;
+
+				if ( $is_active_field ) {
+					$text = isset( $input[ $key ] ) ? sanitize_text_field( wp_unslash( (string) $input[ $key ] ) ) : $default_text;
+				}
+
+				$text = trim( $text );
+
+				if ( '' === $text || ! preg_match( '/^\d+(?:\.\d+)?$/', $text ) ) {
+					$text = $default_text;
+				}
+
+				$valid_options[ $key ] = $text;
+
 			} elseif ( in_array( $field_type, array( 'text', 'textarea' ), true ) ) {
 
 				$default_text = (string) $option;

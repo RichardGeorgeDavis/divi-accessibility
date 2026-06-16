@@ -1,0 +1,14 @@
+.da11y-divi-4 .et_main_area .entry-title a,
+.da11y-divi-5 .et_main_area .entry-title a,
+#et-main-area .entry-title a,
+h1 > a,
+h2 > a,
+h3 > a,
+h4 > a,
+h5 > a,
+h6 > a,
+.et_pb_tabs_controls li a,
+.et_pb_module_header a,
+.et_pb_video_play {
+	text-decoration: none !important;
+}

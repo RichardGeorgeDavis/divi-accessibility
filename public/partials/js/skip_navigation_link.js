@@ -1,7 +1,8 @@
-jQuery(document).ready(function($) {
+	jQuery(document).ready(function($) {
 	const da11y = (window || {})._da11y || {};
 	const criticalStyleId = 'da11y-skip-link-critical-css';
 	const fallbackText = da11y.skip_navigation_link_text || 'Skip to content';
+	const hideSkipNavigation = da11y.hide_skip_navigation || false;
 	const defaultLinks = [
 		{
 			name: 'content',
@@ -27,7 +28,9 @@ jQuery(document).ready(function($) {
 		style.id = criticalStyleId;
 		style.textContent = [
 			'.skip-link.da11y-screen-reader-text,.skip-link[data-da11y-skip-link]{clip:rect(1px,1px,1px,1px);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;font-size:1em;font-weight:600;height:1px;letter-spacing:normal;line-height:normal;overflow:hidden;position:absolute!important;text-shadow:none;text-transform:none;width:1px;-webkit-font-smoothing:subpixel-antialiased;}',
-			'.skip-link.da11y-screen-reader-text:active,.skip-link.da11y-screen-reader-text:focus,.skip-link[data-da11y-skip-link]:active,.skip-link[data-da11y-skip-link]:focus{background:#f1f1f1;-webkit-box-shadow:0 0 2px 2px rgba(0,0,0,.6);box-shadow:0 0 2px 2px rgba(0,0,0,.6);color:#00547A;clip:auto!important;display:block;height:auto;left:5px;padding:15px 23px 14px;text-decoration:none;top:7px;width:auto;z-index:1000000;}'
+			'.skip-link.da11y-screen-reader-text:active,.skip-link.da11y-screen-reader-text:focus,.skip-link[data-da11y-skip-link]:active,.skip-link[data-da11y-skip-link]:focus{background:#f1f1f1;-webkit-box-shadow:0 0 2px 2px rgba(0,0,0,.6);box-shadow:0 0 2px 2px rgba(0,0,0,.6);color:#00547A;clip:auto!important;display:block;height:auto;left:5px;padding:15px 23px 14px;text-decoration:none;top:7px;width:auto;z-index:1000000;}',
+			hideSkipNavigation ? '.skip-link.da11y-screen-reader-text.da11y-skip-link-hidden,.skip-link.da11y-screen-reader-text.da11y-skip-link-hidden:visited{opacity:0;z-index:-1;}' : '',
+			hideSkipNavigation ? '.skip-link.da11y-screen-reader-text.da11y-skip-link-hidden:active,.skip-link.da11y-screen-reader-text.da11y-skip-link-hidden:focus{opacity:1;z-index:1000000;}' : ''
 		].join('');
 		target.appendChild(style);
 	}
@@ -105,9 +108,10 @@ jQuery(document).ready(function($) {
 		}
 
 		const id = getTargetId($target, name, index);
+		const linkClass = hideSkipNavigation ? 'skip-link da11y-screen-reader-text da11y-skip-link-hidden' : 'skip-link da11y-screen-reader-text';
 		const $skipLink = $('<a/>', {
 			href: '#' + id,
-			class: 'skip-link da11y-screen-reader-text',
+			class: linkClass,
 			'data-da11y-skip-link': name
 		}).text(link.text);
 

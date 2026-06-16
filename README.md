@@ -83,6 +83,16 @@ and footer landmarks. Only the content skip link is enabled by default for
 backward compatibility; navigation and footer links can be enabled and pointed at
 site-specific selectors from the plugin settings.
 
+## Release 2.1.11
+
+`2.1.11` adds focused option parity and cleanup from recent parity work:
+
+- optional skip-link visibility that can keep links hidden until keyboard focus
+- slider navigation dot spacing
+- pinch-zoom support with configurable maximum scale and safer defaults
+- granular controls for excluding underlined URLs from headings and buttons
+- tighter feature gating for frontend CSS/JS so only enabled settings are loaded
+
 ## Release 2.1.10
 
 `2.1.10` fixes desktop dropdown menu focus cleanup when keyboard users navigate

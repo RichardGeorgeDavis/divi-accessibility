@@ -83,6 +83,10 @@ class Divi_Accessibility_Public {
 	 * @since    1.0.2
 	 */
 	public function remove_divi_viewport_meta() {
+		if ( ! $this->can_load( 'pinch_zoom' ) ) {
+			return;
+		}
+
 		remove_action( 'wp_head', 'et_add_viewport_meta' );
 	}
 
@@ -92,7 +96,17 @@ class Divi_Accessibility_Public {
 	 * @since    1.0.2
 	 */
 	public function accessible_viewport_meta() {
-		echo '<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />';
+		if ( ! $this->can_load( 'pinch_zoom' ) ) {
+			return;
+		}
+
+		$pinch_zoom_val = isset( $this->settings['pinch_zoom_val'] ) ? (string) $this->settings['pinch_zoom_val'] : '5';
+		$pinch_zoom_val = trim( preg_replace( '/[^0-9\.]+/', '', $pinch_zoom_val ) );
+		if ( '' === $pinch_zoom_val ) {
+			$pinch_zoom_val = '5';
+		}
+
+		echo '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=' . esc_attr( $pinch_zoom_val ) . ', user-scalable=yes" />';
 	}
 
 	/**
@@ -169,6 +183,7 @@ class Divi_Accessibility_Public {
 			);
 
 			$data['skip_navigation_link_text'] = sanitize_text_field( $settings['skip_link_content_text'] );
+			$data['hide_skip_navigation']    = 1 === (int) $settings['hide_skip_navigation'];
 			$data['skip_links']                = array(
 				array(
 					'name'    => 'navigation',
@@ -231,19 +246,43 @@ class Divi_Accessibility_Public {
 	 * @return array
 	 */
 	public function get_script_resources() {
-		return array(
-			'dropdown_keyboard_navigation',
-			'slider_accessibility',
-			'skip_navigation_link',
-			'keyboard_navigation_outline',
-			'focusable_modules',
-			'fix_labels',
-			'aria_support',
-			'aria_hidden_icons',
-			'aria_mobile_menu',
-			'hide_image_title_tooltips',
-			'developer_mode',
-		);
+		$resources = array();
+
+		if ( $this->can_load( 'dropdown_keyboard_navigation' ) ) {
+			$resources[] = 'dropdown_keyboard_navigation';
+		}
+		if ( $this->can_load( 'slider_accessibility' ) ) {
+			$resources[] = 'slider_accessibility';
+		}
+		if ( $this->can_load( 'skip_navigation_link' ) ) {
+			$resources[] = 'skip_navigation_link';
+		}
+		if ( $this->can_load( 'keyboard_navigation_outline' ) ) {
+			$resources[] = 'keyboard_navigation_outline';
+		}
+		if ( $this->can_load( 'focusable_modules' ) ) {
+			$resources[] = 'focusable_modules';
+		}
+		if ( $this->can_load( 'fix_labels' ) ) {
+			$resources[] = 'fix_labels';
+		}
+		if ( $this->can_load( 'aria_support' ) ) {
+			$resources[] = 'aria_support';
+		}
+		if ( $this->can_load( 'aria_hidden_icons' ) ) {
+			$resources[] = 'aria_hidden_icons';
+		}
+		if ( $this->can_load( 'aria_mobile_menu' ) ) {
+			$resources[] = 'aria_mobile_menu';
+		}
+		if ( $this->can_load( 'hide_image_title_tooltips' ) ) {
+			$resources[] = 'hide_image_title_tooltips';
+		}
+		if ( $this->can_load( 'developer_mode' ) ) {
+			$resources[] = 'developer_mode';
+		}
+
+		return array_values( array_unique( $resources ) );
 	}
 
 	/**
@@ -252,18 +291,48 @@ class Divi_Accessibility_Public {
 	 * @return array
 	 */
 	public function get_style_resources() {
-		return array(
-			'dropdown_keyboard_navigation',
+		$resources = array(
 			'divi_version_compat',
-			'keyboard_navigation_outline',
-			'reduced_motion',
-			'screen_reader_text',
-			'skip_navigation_link',
-			'slider_accessibility',
-			'underline_urls',
-			'underline_urls_not_title',
-			'underline_urls_not_menu',
 		);
+
+		if ( $this->can_load( 'dropdown_keyboard_navigation' ) ) {
+			$resources[] = 'dropdown_keyboard_navigation';
+		}
+		if ( $this->can_load( 'keyboard_navigation_outline' ) ) {
+			$resources[] = 'keyboard_navigation_outline';
+		}
+		if ( $this->can_load( 'reduced_motion' ) ) {
+			$resources[] = 'reduced_motion';
+		}
+		if ( $this->can_load( 'screen_reader_text' ) ) {
+			$resources[] = 'screen_reader_text';
+		}
+		if ( $this->can_load( 'skip_navigation_link' ) ) {
+			$resources[] = 'skip_navigation_link';
+		}
+		if ( $this->can_load( 'slider_accessibility' ) ) {
+			$resources[] = 'slider_accessibility';
+		}
+		if ( $this->can_load( 'slider_nav_space' ) ) {
+			$resources[] = 'slider_nav_space';
+		}
+		if ( $this->can_load( 'underline_urls' ) ) {
+			$resources[] = 'underline_urls';
+		}
+		if ( $this->can_load( 'underline_urls_not_menu' ) ) {
+			$resources[] = 'underline_urls_not_menu';
+		}
+		if ( $this->can_load( 'underline_urls_not_title' ) ) {
+			$resources[] = 'underline_urls_not_heading';
+			$resources[] = 'underline_urls_not_btns';
+		} elseif ( $this->can_load( 'underline_heading' ) ) {
+			$resources[] = 'underline_urls_not_heading';
+		}
+		if ( $this->can_load( 'underline_btns' ) ) {
+			$resources[] = 'underline_urls_not_btns';
+		}
+
+		return array_values( array_unique( $resources ) );
 	}
 
 	/**
@@ -394,7 +463,9 @@ class Divi_Accessibility_Public {
 		}
 		$root     = trailingslashit( DA11Y_PATH ) . 'public/partials/' . $type;
 		$debug    = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG;
+		$force_unminified = 'skip_navigation_link' === $name;
 		$minified = $this->is_in_developer_mode() || $debug
+			|| $force_unminified
 			? ''
 			: '.min';
 		return trailingslashit( $root ) .
@@ -417,7 +488,9 @@ class Divi_Accessibility_Public {
 		}
 		$root     = trailingslashit( plugin_dir_url( __FILE__ ) ) . 'partials/' . $type;
 		$debug    = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG;
+		$force_unminified = 'skip_navigation_link' === $name;
 		$minified = $this->is_in_developer_mode() || $debug
+			|| $force_unminified
 			? ''
 			: '.min';
 		return trailingslashit( $root ) .

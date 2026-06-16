@@ -14,6 +14,18 @@
 	-webkit-font-smoothing: subpixel-antialiased;
 }
 
+.skip-link.da11y-screen-reader-text.da11y-skip-link-hidden,
+.skip-link.da11y-screen-reader-text.da11y-skip-link-hidden:visited {
+	opacity: 0;
+	z-index: -1;
+}
+
+.skip-link.da11y-screen-reader-text.da11y-skip-link-hidden:focus,
+.skip-link.da11y-screen-reader-text.da11y-skip-link-hidden:active {
+	opacity: 1;
+	z-index: 1000000;
+}
+
 .skip-link.da11y-screen-reader-text:focus,
 .skip-link.da11y-screen-reader-text:active {
 	background: #f1f1f1;

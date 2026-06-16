@@ -3,7 +3,7 @@ Contributors: RichardGeorgeDavis, campuspress, JoeFusco, alexstine, vebailovity
 Tags: divi, accessibility, accessible, navigation, wcag, a11y, section508, focus, labels, aria
 Requires at least: 6.0
 Tested up to: 6.9.4
-Stable tag: 2.1.10
+Stable tag: 2.1.11
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
@@ -159,6 +159,16 @@ divi-accessibility-*.zip.sha256 checksum asset.
 
 
 == Changelog ==
+
+= 2.1.11 =
+* Added skip-link visibility controls so skip links can be visually hidden until keyboard
+  focus, with optional content-only or hidden-by-default behavior.
+* Added slider navigation dot spacing, heading URL-underline exclusion, and button URL-
+  underline exclusion options for more precise visual tuning.
+* Added configurable pinch zoom toggles and maximum zoom value, with safe sanitization and
+  compatibility fallback handling.
+* Improved frontend asset loading by enqueuing only the feature scripts and styles that are
+  enabled, reducing unnecessary frontend output.
 
 = 2.1.10 =
 * Fixed desktop dropdown menu focus cleanup when keyboard users navigate
