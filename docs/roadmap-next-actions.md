@@ -1,22 +1,21 @@
 # Roadmap / Next Actions
 
-## Current 2.1.8 State
+## Current 2.1.11.1 State
 
-- Latest published maintained-fork release: `2.1.8`
-- Published release URL: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/2.1.8>
-- Release commit: `c532485116222402142aade1dcd7c1513dd6e03e`
-- `2.1.8` fixes mobile-menu Escape close/focus return when focus is inside the open menu and ignores stale cached updater release data missing the required checksum field.
-- The published `2.1.8` release has both `divi-accessibility-2.1.8.zip` and `divi-accessibility-2.1.8.zip.sha256`; the verified package SHA-256 is `5db50373276be3f67181357420a6c811616a8cac62785cd7e01c028a343f3ea9`.
+- Latest published maintained-fork release: `2.1.11.1`
+- Published release URL: <https://github.com/RichardGeorgeDavis/divi-accessibility/releases/tag/2.1.11.1>
+- Release commit: `30339c8c5ee9a363093a675771420bdd65f35d98`
+- `2.1.11.1` is a release-patch for CI-state consistency: generated translation artifacts were refreshed and the release metadata/package artifacts were republished cleanly.
+- The published `2.1.11.1` release has both `divi-accessibility-2.1.11.1.zip` and `divi-accessibility-2.1.11.1.zip.sha256`; the verified package SHA-256 is `21ca5633746c520c7a446b32c81b423d183b7783d5ad8d5e7bc09f77104fec7e`.
+- `2.1.11` adds feature-gated asset loading, skip-link visibility controls, slider navigation spacing, and pinch-zoom controls.
+- `2.1.10` plus earlier maintained-fork metadata checks remain the previous baseline for behavior changes.
 - `2.1.7` hardens the GitHub Releases updater by requiring exact zip and `.zip.sha256` assets, verifying update downloads before install, preserving saved settings while merging new defaults, fixing packaged translation loading, and documenting stale-status cleanup.
-- The published `2.1.7` release has both `divi-accessibility-2.1.7.zip` and `divi-accessibility-2.1.7.zip.sha256`; the verified package SHA-256 is `6819326003004c5210956b3e475bbd1e27940b8c8c7f5a0416c8c9458aa9fada`.
 - The historical `2.1.6` release has the packaged zip asset only. Checksum assets are required for updater-compatible releases starting with `2.1.7`.
-- Packaged `2.1.7` local smoke passed on `blueprint` with Divi `4.27.6` and `master-licenses` with Divi `5.4.1`.
-- The focused manual module matrix for `2.1.7` passed on `blueprint` with Divi `4.27.6` and on `tester` with Divi `5.3.3`; see `docs/afk-batch-2026-05-10.md` and `docs/module-support-matrix.md`.
-- Local `2.1.8` package smoke passed on `blueprint`, `tester`, and `master-licenses`; local package SHA-256 is `5db50373276be3f67181357420a6c811616a8cac62785cd7e01c028a343f3ea9`.
+- Local `2.1.11.1` package smoke passed for install/build/close checks through CI. Dedicated multi-version runtime evidence is still pending manual capture.
 
 ## Current Next Actions
 
-- Ask reporters or maintainers to validate `#73` and related mobile-header reports against the published `2.1.8` release.
+- Ask reporters or maintainers to validate open accessibility regressions against the published `2.1.11.1` package.
 - Watch the docs-only post-release closeout CI run before considering the batch fully settled.
 - Keep manual evidence dated and versioned. Do not broaden runtime-tested claims from static checks, package checks, or stale release notes.
 - Keep stale cached worktrees and unmerged local branches untouched until each has an explicit cleanup disposition.
@@ -140,9 +139,9 @@ The sections below preserve the `2.1.0` release and upstream PR history. They ar
 
 - Current upstream PR: `#121` is closed
 - Upstream PR head at 2026-04-24 status check: `75003ef`
-- Current maintained-fork release: `2.1.7`
+- Current maintained-fork release: `2.1.11.1`
 - Historical `2.1.0` RC builds are superseded.
 - Immediate handover action:
-  - use the dated `2.1.7` runtime evidence in `docs/afk-batch-2026-05-10.md` and `docs/module-support-matrix.md`
-  - open follow-up code work only for reproducible defects against the packaged `2.1.7` zip
+  - use the release notes in `readme.txt` and the clean CI run (`CI` for commit `30339c8`) as the current acceptance baseline
+  - open follow-up code work only for reproducible defects against the packaged `2.1.11.1` zip and validated behavior notes
   - keep the official-access history available without treating old upstream PR state as current
