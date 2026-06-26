@@ -22,6 +22,22 @@
 - Keep `npm run release:check` green before the next release.
 - Continue the official-access track with CampusPress/WordPress.org while treating the fork release as the practical user install path.
 
+## Standard Release + Handover Process
+
+- Bump versions in `package.json`, `package-lock.json`, `divi-accessibility.php`, and `readme.txt` in one pass.
+- Update changelog entries in both `readme.txt` and `README.md`.
+- Refresh generated assets with `npm run i18n` and `npm run build`.
+- Run release validation with `npm run release:check` (or `DA11Y_RELEASE_VERSION=<version> npm run release:check`).
+- Rebuild package artifacts with `npm run package`.
+- Commit release metadata + docs changes, then tag the exact commit as the release version.
+- Create/refresh GitHub release with:
+  - `divi-accessibility-<version>.zip`
+  - `divi-accessibility-<version>.zip.sha256`
+- Update this document’s “Current … State” block (release number, commit hash, release URL, checksum, next action).
+- If runtime evidence changed, update `docs/module-support-matrix.md` and include evidence date + environment details.
+- Push and verify the CI result is green on the release commit before closing the batch.
+- For follow-up maintenance release (like `2.1.11.1`), add a concise handover note that it is intentionally patch-only and what changed.
+
 ## Historical 2.1.3 Notes
 
 `2.1.3` added expanded skip links, focused module ARIA fields, ARIA guardrails/guidance, module support/testing docs, GitHub Actions CI, and `npm run release:check`. Those notes are historical and should not be used to select a current downloadable artifact.
